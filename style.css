@@ -8,6 +8,7 @@
     --accent: #F5F5F0;
     --accent-dim: #D4D4CF;
     --accent-dark: #A3A39E;
+    --accent-green: #19E639;
     --steel: #3A3A3A;
     --success: #F5F5F0;
     --warning: #8A8A85;
@@ -495,12 +496,12 @@ canvas {
 /* Bouton de gestion des habitudes */
 .edit-habits-btn {
     background: var(--accent);
-    color: var(--black);
+    color: var(--accent);
     border: 1px solid var(--accent-dark);
 }
 
 .edit-habits-btn:hover {
-    background: var(--accent-dark);
+    background: var(--accent-green);
 }
 
 /* Bouton de notifications */
@@ -562,7 +563,7 @@ canvas {
     right: 0;
     bottom: 0;
     background: rgba(0, 0, 0, 0.9);
-    z-index: 1000;
+    z-index: 20000;
     display: none;
     /* Cachée par défaut */
     align-items: center;
@@ -1424,7 +1425,7 @@ canvas {
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(135deg, #0A0A0A 0%, #1a1a2e 50%, #0A0A0A 100%);
+    background: var(--black);
     z-index: 10000;
     display: none;
     overflow-y: auto;
@@ -1554,13 +1555,13 @@ canvas {
     }
 }
 
-/* Titres */
+/* Titres - Harmonisés avec .header h1 et .section-title */
 .tutorial-title {
-    font-size: 1.8rem;
+    font-size: 1.4rem;
     font-weight: 900;
     color: var(--accent);
     text-transform: uppercase;
-    letter-spacing: 3px;
+    letter-spacing: 2px;
     margin-bottom: 10px;
     position: relative;
 }
@@ -1629,11 +1630,11 @@ canvas {
     }
 }
 
-/* Sous-titre */
+/* Sous-titre - Harmonisé avec .header .quote */
 .tutorial-subtitle {
-    font-size: 1rem;
-    color: var(--accent-dim);
-    margin-bottom: 30px;
+    font-size: 0.85rem;
+    color: var(--accent-dark);
+    margin-bottom: 25px;
     font-style: italic;
 }
 
@@ -1669,9 +1670,9 @@ canvas {
 }
 
 .tutorial-text {
-    font-size: 1rem;
+    font-size: 0.9rem;
     color: var(--accent-dim);
-    line-height: 1.8;
+    line-height: 1.6;
     margin-bottom: 20px;
 }
 
@@ -1687,19 +1688,20 @@ canvas {
     animation: fadeInUp 0.8s ease-out 0.3s backwards;
 }
 
-/* Citation Warrior */
+/* Citation Warrior - Harmonisé avec .motivation-card */
 .warrior-quote {
-    background: linear-gradient(135deg, var(--charcoal), var(--dark-gray));
+    background: var(--charcoal);
     border-left: 4px solid var(--accent);
     padding: 20px;
-    border-radius: 0 10px 10px 0;
+    border-radius: 10px;
     margin-top: 20px;
-    font-size: 1.1rem;
+    font-size: 0.9rem;
     color: var(--accent);
     font-style: italic;
     display: flex;
     align-items: center;
     gap: 15px;
+    line-height: 1.5;
 }
 
 .quote-icon {
@@ -1718,47 +1720,49 @@ canvas {
     }
 }
 
-/* Boutons */
+/* Boutons - Harmonisés avec .auth-btn et .reset-btn */
 .tutorial-btn {
-    padding: 16px 32px;
-    border-radius: 12px;
+    padding: 15px 30px;
+    border-radius: 10px;
     font-size: 1rem;
     font-weight: bold;
     text-transform: uppercase;
-    letter-spacing: 2px;
+    letter-spacing: 1px;
     cursor: pointer;
-    border: none;
-    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    border: 1px solid var(--accent-dark);
+    transition: all 0.2s ease;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 10px;
+    font-family: inherit;
 }
 
 .tutorial-btn.primary {
-    background: linear-gradient(135deg, var(--accent), var(--accent-dim));
+    background: var(--accent);
     color: var(--black);
-    box-shadow: 0 8px 30px rgba(245, 245, 240, 0.2);
+    border-color: var(--accent);
+    box-shadow: 0 4px 12px rgba(245, 245, 240, 0.1);
 }
 
 .tutorial-btn.primary:hover {
-    transform: translateY(-3px) scale(1.02);
-    box-shadow: 0 12px 40px rgba(245, 245, 240, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(245, 245, 240, 0.2);
 }
 
 .tutorial-btn.primary:active {
-    transform: translateY(0) scale(0.98);
+    transform: scale(0.98);
 }
 
 .tutorial-btn.secondary {
-    background: var(--charcoal);
+    background: var(--steel);
     color: var(--accent);
-    border: 2px solid var(--steel);
+    border: 1px solid var(--accent-dark);
 }
 
 .tutorial-btn.secondary:hover {
-    background: var(--steel);
-    border-color: var(--accent-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(245, 245, 240, 0.1);
 }
 
 .pulse-btn {
@@ -1767,10 +1771,10 @@ canvas {
 
 @keyframes pulseBtn {
     0%, 100% {
-        box-shadow: 0 8px 30px rgba(245, 245, 240, 0.2);
+        box-shadow: 0 4px 12px rgba(245, 245, 240, 0.1);
     }
     50% {
-        box-shadow: 0 8px 50px rgba(245, 245, 240, 0.4);
+        box-shadow: 0 6px 20px rgba(245, 245, 240, 0.2);
     }
 }
 
@@ -1821,18 +1825,17 @@ canvas {
 }
 
 .progress-dot {
-    width: 12px;
-    height: 12px;
+    width: 10px;
+    height: 10px;
     border-radius: 50%;
     background: var(--steel);
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
     cursor: pointer;
 }
 
 .progress-dot.active {
     background: var(--accent);
-    transform: scale(1.3);
-    box-shadow: 0 0 15px rgba(245, 245, 240, 0.5);
+    transform: scale(1.2);
 }
 
 .progress-dot.completed {
@@ -1878,9 +1881,9 @@ canvas {
 }
 
 .habit-preview {
-    background: linear-gradient(135deg, var(--charcoal), var(--dark-gray));
+    background: var(--charcoal);
     border: 1px solid var(--steel);
-    border-radius: 12px;
+    border-radius: 10px;
     padding: 15px;
     display: flex;
     flex-direction: column;
@@ -1888,13 +1891,13 @@ canvas {
     gap: 8px;
     animation: habitSlideIn 0.5s ease-out backwards;
     animation-delay: var(--delay);
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
 }
 
 .habit-preview:hover {
-    transform: translateY(-5px);
-    border-color: var(--accent);
-    box-shadow: 0 10px 30px rgba(245, 245, 240, 0.1);
+    transform: translateY(-2px);
+    border-color: var(--accent-dark);
+    box-shadow: 0 4px 12px rgba(245, 245, 240, 0.1);
 }
 
 @keyframes habitSlideIn {
@@ -1922,11 +1925,11 @@ canvas {
 }
 
 .tutorial-note {
-    background: rgba(245, 245, 240, 0.05);
-    border: 1px dashed var(--accent-dark);
+    background: var(--dark-gray);
+    border: 1px solid var(--steel);
     border-radius: 10px;
     padding: 15px;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     color: var(--accent-dim);
 }
 
@@ -1936,7 +1939,8 @@ canvas {
 
 .demo-create-habit {
     background: var(--charcoal);
-    border-radius: 15px;
+    border: 1px solid var(--steel);
+    border-radius: 10px;
     padding: 20px;
     margin-bottom: 20px;
 }
@@ -2028,9 +2032,9 @@ canvas {
 }
 
 .demo-result {
-    background: linear-gradient(135deg, rgba(245, 245, 240, 0.1), rgba(245, 245, 240, 0.05));
-    border: 2px solid var(--accent);
-    border-radius: 15px;
+    background: var(--charcoal);
+    border: 1px solid var(--accent);
+    border-radius: 10px;
     padding: 20px;
     text-align: center;
 }
@@ -2063,7 +2067,8 @@ canvas {
 
 .demo-validation {
     background: var(--charcoal);
-    border-radius: 15px;
+    border: 1px solid var(--steel);
+    border-radius: 10px;
     padding: 20px;
     margin-bottom: 20px;
 }
@@ -2224,8 +2229,9 @@ canvas {
     gap: 12px;
     padding: 12px 15px;
     background: var(--charcoal);
+    border: 1px solid var(--steel);
     border-radius: 10px;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     color: var(--accent-dim);
 }
 
@@ -2244,20 +2250,19 @@ canvas {
 }
 
 .rule-card {
-    background: linear-gradient(135deg, var(--charcoal), var(--dark-gray));
+    background: var(--charcoal);
     border: 1px solid var(--steel);
-    border-radius: 15px;
-    padding: 20px 15px;
+    border-radius: 10px;
+    padding: 15px;
     text-align: center;
     animation: ruleCardIn 0.5s ease-out backwards;
     animation-delay: var(--delay);
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
 }
 
 .rule-card:hover {
-    transform: translateY(-5px);
-    border-color: var(--accent-dark);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(245, 245, 240, 0.1);
 }
 
 @keyframes ruleCardIn {
@@ -2272,28 +2277,28 @@ canvas {
 }
 
 .rule-icon {
-    font-size: 2.5rem;
-    margin-bottom: 10px;
+    font-size: 2rem;
+    margin-bottom: 8px;
 }
 
 .rule-title {
-    font-size: 0.8rem;
+    font-size: 0.7rem;
     font-weight: bold;
     color: var(--accent);
     text-transform: uppercase;
     letter-spacing: 1px;
-    margin-bottom: 8px;
+    margin-bottom: 5px;
 }
 
 .rule-desc {
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     color: var(--accent-dim);
-    line-height: 1.5;
-    margin-bottom: 10px;
+    line-height: 1.4;
+    margin-bottom: 8px;
 }
 
 .rule-example {
-    font-size: 0.7rem;
+    font-size: 0.65rem;
     color: var(--accent-dark);
     font-style: italic;
 }
@@ -2314,11 +2319,11 @@ canvas {
     font-weight: bold;
 }
 
-.rank.recruit { color: #5A5A55; }
-.rank.soldier { color: #7A7A75; }
-.rank.warrior { color: #A3A39E; }
-.rank.elite { color: #D4D4CF; }
-.rank.legend {
+.rank.debutant { color: #5A5A55; }
+.rank.apprenti { color: #7A7A75; }
+.rank.confirme { color: #A3A39E; }
+.rank.expert { color: #D4D4CF; }
+.rank.maitre {
     color: var(--black);
     background: var(--accent);
 }
@@ -2337,14 +2342,14 @@ canvas {
 }
 
 .final-quote {
-    background: linear-gradient(135deg, var(--charcoal), var(--dark-gray));
+    background: var(--charcoal);
     border-left: 4px solid var(--accent);
-    padding: 25px;
-    border-radius: 0 15px 15px 0;
-    font-size: 1.1rem;
+    padding: 20px;
+    border-radius: 10px;
+    font-size: 0.9rem;
     font-style: italic;
     color: var(--accent);
-    line-height: 1.6;
+    line-height: 1.5;
     margin-bottom: 30px;
 }
 
@@ -2365,8 +2370,8 @@ canvas {
 .final-stat {
     background: var(--charcoal);
     border: 1px solid var(--steel);
-    border-radius: 12px;
-    padding: 20px 10px;
+    border-radius: 10px;
+    padding: 15px;
     text-align: center;
     animation: statPop 0.5s ease-out backwards;
 }
@@ -2388,23 +2393,23 @@ canvas {
 
 .stat-number {
     display: block;
-    font-size: 2rem;
+    font-size: 1.8rem;
     font-weight: 900;
     color: var(--accent);
     margin-bottom: 5px;
 }
 
-.stat-label {
-    font-size: 0.65rem;
-    color: var(--accent-dim);
+.final-stat .stat-label {
+    font-size: 0.6rem;
+    color: var(--accent-dark);
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
 
 .create-account-prompt {
-    background: linear-gradient(135deg, rgba(46, 204, 113, 0.15), rgba(46, 204, 113, 0.05));
-    border: 1px solid #2ECC71;
-    border-radius: 15px;
+    background: var(--charcoal);
+    border: 1px solid var(--accent);
+    border-radius: 10px;
     padding: 20px;
     text-align: center;
 }
@@ -2416,31 +2421,23 @@ canvas {
 }
 
 .cta-final {
-    background: linear-gradient(135deg, #2ECC71, #27AE60) !important;
-    animation: ctaGlow 2s infinite;
-}
-
-@keyframes ctaGlow {
-    0%, 100% {
-        box-shadow: 0 8px 30px rgba(46, 204, 113, 0.3);
-    }
-    50% {
-        box-shadow: 0 8px 50px rgba(46, 204, 113, 0.5);
-    }
+    background: var(--accent) !important;
+    color: var(--black) !important;
 }
 
 /* ============================================================ */
 /* RESPONSIVE */
 /* ============================================================ */
 
+/* Responsive tutoriel - Harmonisé avec le reste de l'application */
 @media (max-width: 400px) {
     .tutorial-title {
-        font-size: 1.4rem;
+        font-size: 1.2rem;
         letter-spacing: 2px;
     }
 
     .tutorial-icon-large {
-        font-size: 4rem;
+        font-size: 3.5rem;
     }
 
     .habits-showcase {
@@ -2449,19 +2446,20 @@ canvas {
     }
 
     .habit-preview {
-        padding: 12px;
+        padding: 10px;
     }
 
     .habit-icon {
-        font-size: 1.5rem;
+        font-size: 1.3rem;
     }
 
     .habit-label {
-        font-size: 0.6rem;
+        font-size: 0.55rem;
     }
 
     .rules-grid {
         grid-template-columns: 1fr;
+        gap: 10px;
     }
 
     .final-stats {
@@ -2470,7 +2468,7 @@ canvas {
     }
 
     .final-stat {
-        padding: 15px 8px;
+        padding: 12px 8px;
     }
 
     .stat-number {
@@ -2478,18 +2476,22 @@ canvas {
     }
 
     .tutorial-btn {
-        padding: 14px 20px;
+        padding: 12px 20px;
         font-size: 0.85rem;
+    }
+
+    .tutorial-container {
+        padding: 30px 15px 100px;
     }
 }
 
 @media (min-width: 600px) {
     .tutorial-container {
-        padding: 60px 30px 120px;
+        padding: 50px 25px 120px;
     }
 
     .tutorial-title {
-        font-size: 2.2rem;
+        font-size: 1.6rem;
     }
 
     .habits-showcase {
@@ -2498,7 +2500,7 @@ canvas {
 
     .rules-grid {
         grid-template-columns: repeat(2, 1fr);
-        gap: 20px;
+        gap: 15px;
     }
 }
 

@@ -85,8 +85,8 @@
 
     <!-- En-tête principal de l'application -->
     <div class="header">
-        <h1>⚔️ WARRIOR TRACKER</h1>
-        <div class="quote">"STAY HARD" - David Goggins</div>
+        <h1>PROJET FEVRIER</h1>
+        <div class="quote">Bonjour [Nom], pret pour aujourd'hui ?</div>
     </div>
 
     <!-- Page "Aujourd'hui" : affiche les habitudes du jour -->
@@ -137,7 +137,7 @@
         <!-- Affichage du rang de l'utilisateur -->
         <div class="rank-display">
             <div class="rank-title">Ton Rang Actuel</div>
-            <div class="rank-name" id="rankName">RECRUIT</div>
+            <div class="rank-name" id="rankName">DÉBUTANT</div>
             <div class="rank-progress">
                 <div class="rank-progress-bar" id="rankProgress" style="width: 0%"></div>
             </div>
@@ -183,7 +183,7 @@
 
     <!-- Page "Motivation" : citations, règles et informations -->
     <div id="page-motivation" class="page">
-        <div class="section-title">🔥 MENTAL DE CHAMPION</div>
+        <div class="section-title">🔥 MENTAL</div>
         <div class="motivation-card">
             <div class="quote-text" id="dailyQuote">"I don't count my sit-ups. I only start counting when it hurts."
             </div>
@@ -191,32 +191,32 @@
         </div>
 
         <!-- Système de rangs dans la page informations -->
-        <div class="section-title">🏆RANG</div>
+        <div class="section-title">🏆RANG A ATTEINDRE</div>
         <div style="padding: 15px;">
             <div class="stat-card" style="margin-bottom: 10px; border-color: #5A5A55;">
-                <div style="color: #5A5A55; font-weight: bold;">RECRUIT</div>
+                <div style="color: #5A5A55; font-weight: bold;">DÉBUTANT</div>
                 <div style="color: #5A5A55; font-size: 0.7rem;">0-30%</div>
             </div>
             <div class="stat-card" style="margin-bottom: 10px; border-color: #7A7A75;">
-                <div style="color: #7A7A75; font-weight: bold;">SOLDIER</div>
+                <div style="color: #7A7A75; font-weight: bold;">APPRENTI</div>
                 <div style="color: #7A7A75; font-size: 0.7rem;">31-50%</div>
             </div>
             <div class="stat-card" style="margin-bottom: 10px; border-color: #A3A39E;">
-                <div style="color: #A3A39E; font-weight: bold;">WARRIOR</div>
+                <div style="color: #A3A39E; font-weight: bold;">CONFIRMÉ</div>
                 <div style="color: #A3A39E; font-size: 0.7rem;">51-70%</div>
             </div>
             <div class="stat-card" style="margin-bottom: 10px; border-color: #D4D4CF;">
-                <div style="color: #D4D4CF; font-weight: bold;">ELITE</div>
+                <div style="color: #D4D4CF; font-weight: bold;">EXPERT</div>
                 <div style="color: #D4D4CF; font-size: 0.7rem;">71-85%</div>
             </div>
             <div class="stat-card" style="border-color: var(--accent); background: var(--accent);">
-                <div style="color: var(--black); font-weight: bold;">LEGEND</div>
+                <div style="color: var(--black); font-weight: bold;">MAÎTRE</div>
                 <div style="color: var(--black); font-size: 0.7rem;">86-100%</div>
             </div>
         </div>
 
         <!-- Section des paramètres -->
-        <div class="section-title">⚙️ PARAMÈTRES</div>
+        <div class="section-title">⚙️ PARAMÈTRES DU SYSTEME</div>
 
         <!-- Catégorie : Habitudes -->
         <div style="padding: 0 15px; margin-bottom: 30px;">
@@ -244,7 +244,7 @@
         <div style="padding: 0 15px; margin-bottom: 30px;">
             <div style="color: var(--accent); font-size: 0.85rem; font-weight: bold; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px;">👤 Compte</div>
             <div class="settings-section">
-                <button id="logoutBtn" class="reset-btn" style="display: none;" onclick="handleLogout()">🚪 DÉCONNEXION</button>
+                <button id="logoutBtn" class="reset-btn" style="display: none;" onclick="handleLogout()">🚪 SE DÉCONNEXION</button>
                 <button id="deleteAccountBtn" class="reset-btn" style="display: none;" onclick="handleDeleteAccount()">❌ SUPPRIMER MON COMPTE</button>
             </div>
         </div>
@@ -261,7 +261,7 @@
         <div style="padding: 0 15px; margin-bottom: 30px;">
             <div style="color: var(--accent); font-size: 0.85rem; font-weight: bold; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px;">💾 Données</div>
             <div class="settings-section">
-                <button class="reset-btn" onclick="resetAllData()">🗑️ RÉINITIALISER TOUTES LES DONNÉES</button>
+                <button class="reset-btn" onclick="resetAllData()">🗑️ RÉINITIALISER TOUTES MES DONNÉES</button>
             </div>
         </div>
     </div>
@@ -373,6 +373,56 @@
             <div style="display: flex; gap: 15px; margin-top: 30px;">
                 <button class="modal-btn cancel" onclick="closeValidateDayModal()">Annuler</button>
                 <button class="modal-btn save" onclick="confirmValidateDay()">Confirmer</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de déconnexion -->
+    <div class="modal-overlay" id="logoutModal">
+        <div class="modal">
+            <h3>🚪 DÉCONNEXION</h3>
+            <p style="color: var(--accent); text-align: center; margin: 20px 0; font-size: 1.1rem;">
+                Veux-tu vraiment te déconnecter ?
+            </p>
+            <div class="modal-buttons">
+                <button class="modal-btn cancel" onclick="closeLogoutModal()">Annuler</button>
+                <button class="modal-btn save" onclick="confirmLogout()">Déconnecter</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de confirmation générique -->
+    <div class="modal-overlay" id="confirmModal">
+        <div class="modal">
+            <h3 id="confirmModalTitle">Confirmation</h3>
+            <p id="confirmModalMessage" style="color: var(--accent); text-align: center; margin: 20px 0; font-size: 1rem; line-height: 1.5;"></p>
+            <p id="confirmModalSubtext" style="color: var(--accent-dim); text-align: center; margin-bottom: 20px; font-size: 0.85rem; display: none;"></p>
+            <div class="modal-buttons">
+                <button class="modal-btn cancel" id="confirmModalCancel">Annuler</button>
+                <button class="modal-btn save" id="confirmModalConfirm">Confirmer</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de suppression de compte -->
+    <div class="modal-overlay" id="deleteAccountModal">
+        <div class="modal">
+            <h3>⚠️ SUPPRIMER MON COMPTE</h3>
+            <p style="color: #FF6B6B; text-align: center; margin: 15px 0; font-size: 1rem; font-weight: bold;">
+                Cette action est IRRÉVERSIBLE !
+            </p>
+            <div style="background: var(--dark-gray); padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                <p style="color: var(--accent-dim); font-size: 0.85rem; text-align: left; margin-bottom: 10px;">
+                    Toutes tes données seront <strong>définitivement supprimées,</strong> ton historique sera effacé et tes habitudes enregistrées seront <strong>PERDUES.</strong>
+                </p>
+            </div>
+            <p style="color: var(--accent); text-align: center; margin-bottom: 10px; font-size: 0.9rem;">
+                Tape <strong>SUPPRIMER</strong> pour confirmer :
+            </p>
+            <input type="text" id="deleteAccountInput" placeholder="SUPPRIMER" style="width: 100%; padding: 12px; background: var(--charcoal); border: 1px solid var(--steel); border-radius: 8px; color: var(--accent); font-size: 1rem; text-align: center; margin-bottom: 20px;">
+            <div class="modal-buttons">
+                <button class="modal-btn cancel" onclick="closeDeleteAccountModal()">Annuler</button>
+                <button class="modal-btn save" style="background: #8B0000; color: #FFE5E5;" onclick="confirmDeleteAccount()">Supprimer</button>
             </div>
         </div>
     </div>
@@ -577,15 +627,15 @@
                             <div class="rule-title">SYSTÈME DE RANG</div>
                             <div class="rule-desc">Évolue selon ta moyenne globale</div>
                             <div class="rule-ranks">
-                                <span class="rank recruit">GRAINE</span>
+                                <span class="rank debutant">DÉBUTANT</span>
                                 <span class="rank-arrow">→</span>
-                                <span class="rank soldier">POUSSE</span>
+                                <span class="rank apprenti">APPRENTI</span>
                                 <span class="rank-arrow">→</span>
-                                <span class="rank warrior">ARBRE</span>
+                                <span class="rank confirme">CONFIRMÉ</span>
                                 <span class="rank-arrow">→</span>
-                                <span class="rank elite">ARBRE FORT</span>
+                                <span class="rank expert">EXPERT</span>
                                 <span class="rank-arrow">→</span>
-                                <span class="rank legend">CHÊNE</span>
+                                <span class="rank maitre">MAÎTRE</span>
                             </div>
                         </div>
                     </div>
@@ -723,15 +773,8 @@
             isFirebaseMode: isFirebaseConfigured
         };
 
-        // Données initiales des habitudes
-        const habits = [
-            { id: 'coldshower', name: 'DOUCHE FROIDE', icon: '🧊' },
-            { id: 'reading', name: 'LECTURE (30 min)', icon: '📚' },
-            { id: 'nutrition', name: 'NUTRITION CLEAN', icon: '🥗' },
-            { id: 'sleep', name: 'SOMMEIL 8H+ (couché avant 22h)', icon: '😴' },
-            { id: 'hydration', name: 'HYDRATATION 2L+', icon: '💧' },
-            { id: 'wakeup', name: 'RÉVEIL 5H-6H', icon: '⏰' }
-        ];
+        // Données initiales des habitudes (vide - l'utilisateur doit créer ses propres habitudes)
+        const habits = [];
 
         // Collection de citations de motivation
         const quotes = [
@@ -851,6 +894,67 @@
         }
 
         // ============================================================
+        // SYSTÈME DE MODAL DE CONFIRMATION
+        // ============================================================
+        const ConfirmModal = {
+            show(options) {
+                return new Promise((resolve) => {
+                    const modal = document.getElementById('confirmModal');
+                    const title = document.getElementById('confirmModalTitle');
+                    const message = document.getElementById('confirmModalMessage');
+                    const subtext = document.getElementById('confirmModalSubtext');
+                    const cancelBtn = document.getElementById('confirmModalCancel');
+                    const confirmBtn = document.getElementById('confirmModalConfirm');
+
+                    // Configuration du modal
+                    title.textContent = options.title || 'Confirmation';
+                    message.innerHTML = options.message || 'Es-tu sûr ?';
+
+                    if (options.subtext) {
+                        subtext.textContent = options.subtext;
+                        subtext.style.display = 'block';
+                    } else {
+                        subtext.style.display = 'none';
+                    }
+
+                    cancelBtn.textContent = options.cancelText || 'Annuler';
+                    confirmBtn.textContent = options.confirmText || 'Confirmer';
+
+                    // Style du bouton confirmer (danger ou normal)
+                    if (options.danger) {
+                        confirmBtn.style.background = '#8B0000';
+                        confirmBtn.style.color = '#FFE5E5';
+                    } else {
+                        confirmBtn.style.background = '';
+                        confirmBtn.style.color = '';
+                    }
+
+                    // Handlers
+                    const handleConfirm = () => {
+                        cleanup();
+                        resolve(true);
+                    };
+
+                    const handleCancel = () => {
+                        cleanup();
+                        resolve(false);
+                    };
+
+                    const cleanup = () => {
+                        modal.classList.remove('active');
+                        confirmBtn.removeEventListener('click', handleConfirm);
+                        cancelBtn.removeEventListener('click', handleCancel);
+                    };
+
+                    confirmBtn.addEventListener('click', handleConfirm);
+                    cancelBtn.addEventListener('click', handleCancel);
+
+                    modal.classList.add('active');
+                });
+            }
+        };
+
+        // ============================================================
         // AUTHENTICATION FUNCTIONS
         // ============================================================
 
@@ -921,6 +1025,12 @@
                 // Vérifier si migration nécessaire
                 checkLocalStorageMigration(userCredential.user);
 
+                // Lancer le tutoriel pour les nouveaux utilisateurs
+                localStorage.removeItem('warriorTutorialCompleted');
+                currentTutorialStep = 1;
+                goToTutorialStep(1);
+                showTutorial();
+
             } catch (error) {
                 console.error('❌ Erreur inscription:', error);
                 errorEl.textContent = getAuthErrorMessage(error.code);
@@ -973,17 +1083,24 @@
         }
 
         // Gérer la déconnexion
-        async function handleLogout() {
+        function handleLogout() {
             if (!isFirebaseConfigured) return;
+            document.getElementById('logoutModal').classList.add('active');
+        }
 
-            if (confirm('Veux-tu vraiment te déconnecter ?')) {
-                try {
-                    await auth.signOut();
-                    console.log('✅ Déconnexion réussie');
-                } catch (error) {
-                    console.error('❌ Erreur déconnexion:', error);
-                    showPopup('Erreur lors de la déconnexion', 'error');
-                }
+        function closeLogoutModal() {
+            document.getElementById('logoutModal').classList.remove('active');
+        }
+
+        async function confirmLogout() {
+            try {
+                await auth.signOut();
+                console.log('✅ Déconnexion réussie');
+                closeLogoutModal();
+            } catch (error) {
+                console.error('❌ Erreur déconnexion:', error);
+                ToastManager.show('Erreur lors de la déconnexion', 'error');
+                closeLogoutModal();
             }
         }
 
@@ -998,7 +1115,14 @@
                 return;
             }
 
-            if (confirm(`📧 Envoyer un email de réinitialisation à ${email} ?`)) {
+            const confirmed = await ConfirmModal.show({
+                title: '📧 RÉINITIALISATION',
+                message: `Envoyer un email de réinitialisation à <strong>${email}</strong> ?`,
+                confirmText: 'Envoyer',
+                cancelText: 'Annuler'
+            });
+
+            if (confirmed) {
                 try {
                     await auth.sendPasswordResetEmail(email);
                     showPopup('Email de réinitialisation envoyé ! Vérifie ta boîte mail (et les spams).', 'success');
@@ -1012,7 +1136,7 @@
         }
 
         // Suppression du compte utilisateur
-        async function handleDeleteAccount() {
+        function handleDeleteAccount() {
             if (!isFirebaseConfigured) return;
 
             const user = auth.currentUser;
@@ -1021,17 +1145,24 @@
                 return;
             }
 
-            // Triple confirmation pour éviter les suppressions accidentelles
-            if (!confirm('⚠️ ES-TU SÛR de vouloir SUPPRIMER ton compte ?\n\n⚠️ ATTENTION : Cette action est IRRÉVERSIBLE !\n\n- Toutes tes données seront SUPPRIMÉES\n- Ton historique sera PERDU\n- Tes habitudes seront EFFACÉES\n\nTape "SUPPRIMER" pour confirmer')) {
+            // Ouvrir le modal de suppression
+            document.getElementById('deleteAccountInput').value = '';
+            document.getElementById('deleteAccountModal').classList.add('active');
+        }
+
+        function closeDeleteAccountModal() {
+            document.getElementById('deleteAccountModal').classList.remove('active');
+        }
+
+        async function confirmDeleteAccount() {
+            const input = document.getElementById('deleteAccountInput').value.trim();
+
+            if (input !== 'SUPPRIMER') {
+                showPopup('Tu dois taper exactement "SUPPRIMER" pour confirmer', 'warning');
                 return;
             }
 
-            const confirmation = prompt('⚠️ DERNIÈRE CHANCE !\n\nTape exactement "SUPPRIMER" (en majuscules) pour confirmer la suppression définitive de ton compte :');
-
-            if (confirmation !== 'SUPPRIMER') {
-                showPopup('Suppression annulée. Ton compte est en sécurité.', 'info');
-                return;
-            }
+            closeDeleteAccountModal();
 
             try {
                 const userId = user.uid;
@@ -1092,7 +1223,7 @@
             return messages[errorCode] || 'Erreur d\'authentification : ' + errorCode;
         }
 
-        // Créer le profil utilisateur dans Firestore
+        // Créer le profil utilisateur dans Firestore (sans habitudes par défaut)
         async function createUserProfile(user) {
             const userRef = db.collection('users').doc(user.uid);
 
@@ -1102,32 +1233,7 @@
                 lastLogin: firebase.firestore.FieldValue.serverTimestamp()
             });
 
-            // Habitudes par défaut à créer
-            const defaultHabits = [
-                { id: 'coldshower', name: 'DOUCHE FROIDE', icon: '🧊' },
-                { id: 'reading', name: 'LECTURE (30 min)', icon: '📚' },
-                { id: 'nutrition', name: 'NUTRITION CLEAN', icon: '🥗' },
-                { id: 'sleep', name: 'SOMMEIL 8H+ (couché avant 22h)', icon: '😴' },
-                { id: 'hydration', name: 'HYDRATATION 2L+', icon: '💧' },
-                { id: 'wakeup', name: 'RÉVEIL 5H-6H', icon: '⏰' }
-            ];
-
-            // Créer les habitudes par défaut dans Firestore
-            const batch = db.batch();
-            defaultHabits.forEach((habit, index) => {
-                const habitRef = userRef.collection('habits').doc(habit.id);
-                batch.set(habitRef, {
-                    name: habit.name,
-                    icon: habit.icon,
-                    color: '#F5F5F0', // Couleur par défaut
-                    order: index,
-                    isActive: true,
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                });
-            });
-
-            await batch.commit();
-            console.log('✅ Profil utilisateur créé avec 6 habitudes par défaut');
+            console.log('✅ Profil utilisateur créé (l\'utilisateur doit ajouter ses propres habitudes)');
         }
 
         // Auth State Listener sera géré dans DOMContentLoaded
@@ -1259,12 +1365,21 @@
         }
 
         // Ignorer la migration
-        function skipMigration() {
+        async function skipMigration() {
             closeMigrationModal();
 
             // Demander si on veut supprimer les données locales
-            if (confirm('Veux-tu supprimer les données locales ?')) {
+            const confirmed = await ConfirmModal.show({
+                title: '🗑️ DONNÉES LOCALES',
+                message: 'Veux-tu supprimer les données locales ?',
+                confirmText: 'Supprimer',
+                cancelText: 'Conserver',
+                danger: true
+            });
+
+            if (confirmed) {
                 localStorage.removeItem('warriorTracker');
+                showPopup('Données locales supprimées', 'success');
             }
         }
 
@@ -1342,6 +1457,7 @@
 
         // Calcule le score (en %) d'un jour donné
         function getDayScore(date) {
+            if (habits.length === 0) return 0;
             const dayData = getDayData(date);
             const completed = habits.filter(h => dayData[h.id]).length;
             return Math.round((completed / habits.length) * 100);
@@ -1383,11 +1499,11 @@
 
         // Détermine le rang de l'utilisateur en fonction de son score moyen
         function getRank(score) {
-            if (score >= 86) return { name: 'LEGEND', color: '#F5F5F0' };
-            if (score >= 71) return { name: 'ELITE', color: '#D4D4CF' };
-            if (score >= 51) return { name: 'WARRIOR', color: '#A3A39E' };
-            if (score >= 31) return { name: 'SOLDIER', color: '#7A7A75' };
-            return { name: 'RECRUIT', color: '#5A5A55' };
+            if (score >= 86) return { name: 'MAÎTRE', color: '#F5F5F0' };
+            if (score >= 71) return { name: 'EXPERT', color: '#D4D4CF' };
+            if (score >= 51) return { name: 'CONFIRMÉ', color: '#A3A39E' };
+            if (score >= 31) return { name: 'APPRENTI', color: '#7A7A75' };
+            return { name: 'DÉBUTANT', color: '#5A5A55' };
         }
 
         // Calcule la série pour une habitude spécifique
@@ -1440,7 +1556,7 @@
         function getAvgScore() {
             const data = getData();
             const days = Object.keys(data.days);
-            if (days.length === 0) return 0;
+            if (days.length === 0 || habits.length === 0) return 0;
             let total = 0;
             days.forEach(key => {
                 const dayData = data.days[key];
@@ -1492,6 +1608,26 @@
             const container = document.getElementById('habitsList');
             const dayData = getDayData(currentDate);
             const locked = !canEditDate(currentDate); // Verrouille si ce n'est pas aujourd'hui
+
+            // Message si aucune habitude
+            if (habits.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 40px 20px; color: var(--accent-dim);">
+                        <div style="font-size: 3rem; margin-bottom: 15px;">🎯</div>
+                        <div style="font-size: 1.1rem; color: var(--accent); margin-bottom: 10px; font-weight: bold;">
+                            AUCUNE HABITUDE
+                        </div>
+                        <div style="font-size: 0.85rem; margin-bottom: 20px; line-height: 1.5;">
+                            Crée tes propres habitudes pour commencer ton parcours de guerrier !
+                        </div>
+                        <button class="reset-btn edit-habits-btn" onclick="openManageHabitsModal()" style="max-width: 250px; margin: 0 auto;">
+                            ➕ CRÉER MES HABITUDES
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+
             container.innerHTML = habits.map(habit => {
                 const checked = dayData[habit.id] || false;
                 const streak = getHabitStreak(habit.id);
@@ -1767,13 +1903,31 @@
         
 
         // Réinitialise toutes les données de l'application après confirmation
-        function resetAllData() {
-            if (confirm('⚠️ Es-tu sûr de vouloir tout réinitialiser ? Cette action est irréversible !')) {
-                if (confirm('🔥 DERNIÈRE CHANCE : Vraiment tout supprimer ?')) {
-                    localStorage.removeItem('warriorTracker');
-                    updateUI();
-                    showPopup('Données réinitialisées. Nouveau départ WARRIOR !', 'success');
-                }
+        async function resetAllData() {
+            const firstConfirm = await ConfirmModal.show({
+                title: '⚠️ RÉINITIALISATION',
+                message: 'Es-tu sûr de vouloir tout réinitialiser ?',
+                subtext: 'Cette action est irréversible !',
+                confirmText: 'Continuer',
+                cancelText: 'Annuler',
+                danger: true
+            });
+
+            if (!firstConfirm) return;
+
+            const secondConfirm = await ConfirmModal.show({
+                title: '🔥 DERNIÈRE CHANCE',
+                message: 'Vraiment TOUT supprimer ?',
+                subtext: 'Toutes tes données seront perdues définitivement.',
+                confirmText: 'Supprimer tout',
+                cancelText: 'Annuler',
+                danger: true
+            });
+
+            if (secondConfirm) {
+                localStorage.removeItem('warriorTracker');
+                updateUI();
+                showPopup('Données réinitialisées. Nouveau départ WARRIOR !', 'success');
             }
         }
 
@@ -1976,27 +2130,11 @@
 
             // Sauvegarder
             const data = getData();
-            if (!data.customHabitNames) data.customHabitNames = {};
+            if (!data.customHabits) data.customHabits = [];
 
-            // Si c'est une habitude par défaut
-            const defaultHabit = [
-                { id: 'coldshower', name: 'DOUCHE FROIDE' },
-                { id: 'reading', name: 'LECTURE (30 min)' },
-                { id: 'nutrition', name: 'NUTRITION CLEAN' },
-                { id: 'sleep', name: 'SOMMEIL 8H+ (couché avant 22h)' },
-                { id: 'hydration', name: 'HYDRATATION 2L+' },
-                { id: 'wakeup', name: 'RÉVEIL 5H-6H' }
-            ].find(h => h.id === habitId);
-
-            if (defaultHabit) {
-                data.customHabitNames[habitId] = newName;
-            } else {
-                // Habitude personnalisée
-                if (!data.customHabits) data.customHabits = [];
-                const customHabit = data.customHabits.find(h => h.id === habitId);
-                if (customHabit) {
-                    customHabit.name = newName;
-                }
+            const customHabit = data.customHabits.find(h => h.id === habitId);
+            if (customHabit) {
+                customHabit.name = newName;
             }
 
             saveData(data);
@@ -2009,13 +2147,20 @@
         }
 
         // Supprimer une habitude
-        function deleteHabit(habitId) {
+        async function deleteHabit(habitId) {
             const habit = habits.find(h => h.id === habitId);
             if (!habit) return;
 
-            if (!confirm(`🗑️ Supprimer "${habit.name}" ?\n\nL'historique sera conservé mais l'habitude n'apparaîtra plus.`)) {
-                return;
-            }
+            const confirmed = await ConfirmModal.show({
+                title: '🗑️ SUPPRIMER HABITUDE',
+                message: `Supprimer "<strong>${habit.name}</strong>" ?`,
+                subtext: "L'historique sera conservé mais l'habitude n'apparaîtra plus.",
+                confirmText: 'Supprimer',
+                cancelText: 'Annuler',
+                danger: true
+            });
+
+            if (!confirmed) return;
 
             // Retirer du tableau
             const index = habits.findIndex(h => h.id === habitId);
@@ -2248,7 +2393,7 @@
             if (data.notificationsEnabled) {
                 data.notificationsEnabled = false;
                 saveData(data);
-                alert('🔕 Notifications désactivées');
+                showPopup('🔕 Notifications désactivées', 'info');
             } else {
                 requestNotificationPermission().then(granted => {
                     if (granted) {
@@ -2256,9 +2401,9 @@
                         saveData(data);
                         scheduleNotification();
                         const notifTime = data.notificationTime || '21:00';
-                        alert(`🔔 Notifications activées ! Rappel à ${notifTime}.`);
+                        showPopup(`🔔 Notifications activées ! Rappel à ${notifTime}.`, 'success');
                     } else {
-                        alert('❌ Permission refusée.');
+                        showPopup('❌ Permission refusée', 'error');
                     }
                 });
             }
@@ -2326,7 +2471,7 @@
             // Vérifier si déjà validé
             if (data.validatedDays.includes(today)) {
                 closeValidateDayModal();
-                alert('✅ Cette journée est déjà validée !');
+                showPopup('✅ Cette journée est déjà validée !', 'info');
                 return;
             }
 
@@ -2339,7 +2484,7 @@
 
             // Feedback
             if (navigator.vibrate) navigator.vibrate([100, 50, 100, 50, 100]);
-            alert('✅ Journée validée ! Bravo WARRIOR ! 💪');
+            showPopup('✅ Journée validée ! Bravo WARRIOR ! 💪', 'success');
 
             // Confettis si jour parfait
             const dayData = getDayData(new Date());
@@ -2537,8 +2682,16 @@
         }
 
         // Skip le tutoriel
-        function skipTutorial() {
-            if (confirm('⚠️ Es-tu sûr de vouloir passer le tutoriel ?\n\nTu peux toujours le revoir plus tard dans les paramètres.')) {
+        async function skipTutorial() {
+            const confirmed = await ConfirmModal.show({
+                title: '⏭️ PASSER LE TUTORIEL',
+                message: 'Es-tu sûr de vouloir passer le tutoriel ?',
+                subtext: 'Tu peux toujours le revoir plus tard dans les paramètres.',
+                confirmText: 'Passer',
+                cancelText: 'Annuler'
+            });
+
+            if (confirmed) {
                 completeTutorialAndContinue();
             }
         }
