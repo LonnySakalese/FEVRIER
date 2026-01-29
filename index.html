@@ -31,7 +31,7 @@
     <!-- Favicon SVG intégré directement dans le HTML -->
     <link rel="apple-touch-icon" href="favicon.svg">
     <!-- Icône pour l'écran d'accueil sur les appareils Apple -->
-    <title>WARRIOR TRACKER</title>
+    <title>PROJET FEVRIER</title>
     <!-- Titre de la page qui s'affiche dans l'onglet du navigateur -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- Inclusion de la bibliothèque Chart.js pour les graphiques -->
@@ -51,11 +51,13 @@
         <div class="auth-container">
             <div class="auth-logo">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-                    <rect fill="#0A0A0A" width="100" height="100" rx="20"/>
-                    <path d="M 23 74 Q 27 70 31 66 Q 39 58 47 54 Q 55 50 62 39 Q 68 29 74 19" fill="none" stroke="#F5F5F0" stroke-width="6" stroke-linecap="round"/>
-                    <path d="M 66 16 L 77 18 L 75 29" fill="none" stroke="#F5F5F0" stroke-width="6" stroke-linecap="round"/>
+                    <rect fill="#0A0A0A" width="100" height="100" rx="20" />
+                    <path d="M 23 74 Q 27 70 31 66 Q 39 58 47 54 Q 55 50 62 39 Q 68 29 74 19" fill="none"
+                        stroke="#F5F5F0" stroke-width="6" stroke-linecap="round" />
+                    <path d="M 66 16 L 77 18 L 75 29" fill="none" stroke="#F5F5F0" stroke-width="6"
+                        stroke-linecap="round" />
                 </svg>
-                <h1>WARRIOR TRACKER</h1>
+                <h1>PROJET FEVRIER</h1>
             </div>
 
             <div class="auth-tabs">
@@ -66,17 +68,21 @@
             <!-- Formulaire de connexion -->
             <div id="auth-login" class="auth-form active">
                 <input type="email" id="login-email" placeholder="Email" autocomplete="email" required>
-                <input type="password" id="login-password" placeholder="Mot de passe (min 8 caractères)" autocomplete="current-password" required>
+                <input type="password" id="login-password" placeholder="Mot de passe (min 8 caractères)"
+                    autocomplete="current-password" required>
                 <button class="auth-btn" onclick="handleLogin()">Se connecter</button>
                 <div class="auth-error" id="login-error"></div>
-                <a href="#" class="forgot-password-link" onclick="handleForgotPassword(); return false;">Mot de passe oublié ?</a>
+                <a href="#" class="forgot-password-link" onclick="handleForgotPassword(); return false;">Mot de passe
+                    oublié ?</a>
             </div>
 
             <!-- Formulaire d'inscription -->
             <div id="auth-signup" class="auth-form">
                 <input type="email" id="signup-email" placeholder="Email" autocomplete="email" required>
-                <input type="password" id="signup-password" placeholder="Mot de passe (min 8 caractères)" autocomplete="new-password" required>
-                <input type="password" id="signup-confirm" placeholder="Confirmer le mot de passe" autocomplete="new-password" required>
+                <input type="password" id="signup-password" placeholder="Mot de passe (min 8 caractères)"
+                    autocomplete="new-password" required>
+                <input type="password" id="signup-confirm" placeholder="Confirmer le mot de passe"
+                    autocomplete="new-password" required>
                 <button class="auth-btn" onclick="handleSignup()">S'inscrire</button>
                 <div class="auth-error" id="signup-error"></div>
             </div>
@@ -220,18 +226,25 @@
 
         <!-- Catégorie : Habitudes -->
         <div style="padding: 0 15px; margin-bottom: 30px;">
-            <div style="color: var(--accent); font-size: 0.85rem; font-weight: bold; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px;">📝 Habitudes</div>
+            <div
+                style="color: var(--accent); font-size: 0.85rem; font-weight: bold; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px;">
+                📝 Habitudes</div>
             <div class="settings-section">
-                <button class="reset-btn edit-habits-btn" onclick="openManageHabitsModal()">⚙️ GÉRER LES HABITUDES</button>
+                <button class="reset-btn edit-habits-btn" onclick="openManageHabitsModal()">⚙️ GÉRER LES
+                    HABITUDES</button>
             </div>
         </div>
 
         <!-- Catégorie : Notifications -->
         <div style="padding: 0 15px; margin-bottom: 30px;">
-            <div style="color: var(--accent); font-size: 0.85rem; font-weight: bold; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px;">🔔 Notifications</div>
+            <div
+                style="color: var(--accent); font-size: 0.85rem; font-weight: bold; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px;">
+                🔔 Notifications</div>
             <div class="settings-section">
                 <div class="notif-time-container">
-                    <label for="notifTime" style="color: var(--accent); font-size: 0.9rem; margin-bottom: 8px; display: block;">⏰ Heure de rappel :</label>
+                    <label for="notifTime"
+                        style="color: var(--accent); font-size: 0.9rem; margin-bottom: 8px; display: block;">⏰ Heure de
+                        rappel :</label>
                     <input type="time" id="notifTime" value="21:00" onchange="updateNotificationTime()"
                         style="width: 100%; padding: 12px; background: var(--charcoal); color: var(--accent);
                         border: 1px solid var(--accent-dark); border-radius: 8px; font-size: 1rem; text-align: center;">
@@ -242,24 +255,34 @@
 
         <!-- Catégorie : Compte -->
         <div style="padding: 0 15px; margin-bottom: 30px;">
-            <div style="color: var(--accent); font-size: 0.85rem; font-weight: bold; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px;">👤 Compte</div>
+            <div
+                style="color: var(--accent); font-size: 0.85rem; font-weight: bold; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px;">
+                👤 Compte</div>
             <div class="settings-section">
-                <button id="logoutBtn" class="reset-btn" style="display: none;" onclick="handleLogout()">🚪 SE DÉCONNEXION</button>
-                <button id="deleteAccountBtn" class="reset-btn" style="display: none;" onclick="handleDeleteAccount()">❌ SUPPRIMER MON COMPTE</button>
+                <button id="logoutBtn" class="reset-btn" style="display: none;" onclick="handleLogout()">🚪 SE
+                    DÉCONNEXION</button>
+                <button id="deleteAccountBtn" class="reset-btn" style="display: none;" onclick="handleDeleteAccount()">❌
+                    SUPPRIMER MON COMPTE</button>
             </div>
         </div>
 
         <!-- Catégorie : Aide -->
         <div style="padding: 0 15px; margin-bottom: 30px;">
-            <div style="color: var(--accent); font-size: 0.85rem; font-weight: bold; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px;">❓ Aide</div>
+            <div
+                style="color: var(--accent); font-size: 0.85rem; font-weight: bold; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px;">
+                ❓ Aide</div>
             <div class="settings-section">
-                <button class="reset-btn" onclick="restartTutorial()" style="background: linear-gradient(135deg, var(--charcoal), var(--steel));">🎓 REVOIR LE TUTORIEL</button>
+                <button class="reset-btn" onclick="restartTutorial()"
+                    style="background: linear-gradient(135deg, var(--charcoal), var(--steel));">🎓 REVOIR LE
+                    TUTORIEL</button>
             </div>
         </div>
 
         <!-- Catégorie : Données -->
         <div style="padding: 0 15px; margin-bottom: 30px;">
-            <div style="color: var(--accent); font-size: 0.85rem; font-weight: bold; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px;">💾 Données</div>
+            <div
+                style="color: var(--accent); font-size: 0.85rem; font-weight: bold; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px;">
+                💾 Données</div>
             <div class="settings-section">
                 <button class="reset-btn" onclick="resetAllData()">🗑️ RÉINITIALISER TOUTES MES DONNÉES</button>
             </div>
@@ -289,18 +312,16 @@
                             <div class="icon-option" data-icon="🧘">🧘</div>
                             <div class="icon-option" data-icon="🏃">🏃</div>
                             <div class="icon-option" data-icon="💪">💪</div>
-                            <div class="icon-option" data-icon="🎯">🎯</div>
+                            <div class="icon-option" data-icon="🎵">🎵</div>
                             <div class="icon-option" data-icon="📖">📖</div>
                             <div class="icon-option" data-icon="✍️">✍️</div>
                             <div class="icon-option" data-icon="🎨">🎨</div>
-                            <div class="icon-option" data-icon="🎵">🎵</div>
                             <div class="icon-option" data-icon="🧠">🧠</div>
                             <div class="icon-option" data-icon="❤️">❤️</div>
                             <div class="icon-option" data-icon="🌱">🌱</div>
                             <div class="icon-option" data-icon="☀️">☀️</div>
                             <div class="icon-option" data-icon="🌙">🌙</div>
                             <div class="icon-option" data-icon="⭐">⭐</div>
-                            <div class="icon-option" data-icon="🔥">🔥</div>
                             <div class="icon-option" data-icon="💎">💎</div>
                         </div>
                     </div>
@@ -395,8 +416,12 @@
     <div class="modal-overlay" id="confirmModal">
         <div class="modal">
             <h3 id="confirmModalTitle">Confirmation</h3>
-            <p id="confirmModalMessage" style="color: var(--accent); text-align: center; margin: 20px 0; font-size: 1rem; line-height: 1.5;"></p>
-            <p id="confirmModalSubtext" style="color: var(--accent-dim); text-align: center; margin-bottom: 20px; font-size: 0.85rem; display: none;"></p>
+            <p id="confirmModalMessage"
+                style="color: var(--accent); text-align: center; margin: 20px 0; font-size: 1rem; line-height: 1.5;">
+            </p>
+            <p id="confirmModalSubtext"
+                style="color: var(--accent-dim); text-align: center; margin-bottom: 20px; font-size: 0.85rem; display: none;">
+            </p>
             <div class="modal-buttons">
                 <button class="modal-btn cancel" id="confirmModalCancel">Annuler</button>
                 <button class="modal-btn save" id="confirmModalConfirm">Confirmer</button>
@@ -413,16 +438,19 @@
             </p>
             <div style="background: var(--dark-gray); padding: 15px; border-radius: 8px; margin-bottom: 20px;">
                 <p style="color: var(--accent-dim); font-size: 0.85rem; text-align: left; margin-bottom: 10px;">
-                    Toutes tes données seront <strong>définitivement supprimées,</strong> ton historique sera effacé et tes habitudes enregistrées seront <strong>PERDUES.</strong>
+                    Toutes tes données seront <strong>définitivement supprimées,</strong> ton historique sera effacé et
+                    tes habitudes enregistrées seront <strong>PERDUES.</strong>
                 </p>
             </div>
             <p style="color: var(--accent); text-align: center; margin-bottom: 10px; font-size: 0.9rem;">
                 Tape <strong>SUPPRIMER</strong> pour confirmer :
             </p>
-            <input type="text" id="deleteAccountInput" placeholder="SUPPRIMER" style="width: 100%; padding: 12px; background: var(--charcoal); border: 1px solid var(--steel); border-radius: 8px; color: var(--accent); font-size: 1rem; text-align: center; margin-bottom: 20px;">
+            <input type="text" id="deleteAccountInput" placeholder="SUPPRIMER"
+                style="width: 100%; padding: 12px; background: var(--charcoal); border: 1px solid var(--steel); border-radius: 8px; color: var(--accent); font-size: 1rem; text-align: center; margin-bottom: 20px;">
             <div class="modal-buttons">
                 <button class="modal-btn cancel" onclick="closeDeleteAccountModal()">Annuler</button>
-                <button class="modal-btn save" style="background: #8B0000; color: #FFE5E5;" onclick="confirmDeleteAccount()">Supprimer</button>
+                <button class="modal-btn save" style="background: #8B0000; color: #FFE5E5;"
+                    onclick="confirmDeleteAccount()">Supprimer</button>
             </div>
         </div>
     </div>
@@ -445,7 +473,8 @@
                 <div class="tutorial-content">
                     <p class="tutorial-text fade-in-delay">
                         <strong>PROJET FEVRIER</strong> n'est pas une simple application.<br>
-                        C'est un <span class="highlight">Système</span> conçu pour forger ta discipline et atteindre tes objectifs.
+                        C'est un <span class="highlight">Système</span> conçu pour forger ta discipline et atteindre tes
+                        objectifs.
                     </p>
                     <div class="warrior-quote">
                         <span class="quote-icon">🔥</span>
@@ -493,7 +522,8 @@
                         </div>
                     </div>
                     <p class="tutorial-note">
-                        💡 Tu pourras <strong>personnaliser</strong>, <strong>ajouter</strong> ou <strong>supprimer</strong> des habitudes selon tes objectifs !
+                        💡 Tu pourras <strong>personnaliser</strong>, <strong>ajouter</strong> ou
+                        <strong>supprimer</strong> des habitudes selon tes objectifs !
                     </p>
                 </div>
                 <div class="tutorial-nav-buttons">
@@ -675,7 +705,8 @@
                         </div>
                     </div>
                     <div class="create-account-prompt">
-                        <p>📱 <strong>Crée ton compte</strong> pour sauvegarder ta progression et synchroniser tes données sur tous tes appareils !</p>
+                        <p>📱 <strong>Crée ton compte</strong> pour sauvegarder ta progression et synchroniser tes
+                            données sur tous tes appareils !</p>
                     </div>
                 </div>
                 <div class="tutorial-nav-buttons">
@@ -703,7 +734,7 @@
 
             <!-- Bouton skip -->
             <button class="tutorial-skip" onclick="skipTutorial()">
-                Passer le tutoriel →
+                Passer
             </button>
         </div>
     </div>
@@ -1826,81 +1857,81 @@
             });
         }
 
-                // Gère l'affichage des différentes pages (Aujourd'hui, Stats, Motivation)
+        // Gère l'affichage des différentes pages (Aujourd'hui, Stats, Motivation)
 
-                function showPage(page, event) {
+        function showPage(page, event) {
 
-                    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
 
-                    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
 
-                    
 
-                    const pageElement = document.getElementById('page-' + page);
 
-                    if (pageElement) {
+            const pageElement = document.getElementById('page-' + page);
 
-                        pageElement.classList.add('active');
+            if (pageElement) {
 
-                    }
+                pageElement.classList.add('active');
 
-        
+            }
 
-                    if (event && event.currentTarget) {
 
-                        event.currentTarget.classList.add('active');
 
-                    }
+            if (event && event.currentTarget) {
 
-        
+                event.currentTarget.classList.add('active');
 
-        
+            }
 
-                    if (page === 'stats') {
 
-                        updateStats();
 
-                    } else if (page === 'motivation') {
 
-                        const quote = quotes[Math.floor(Math.random() * quotes.length)];
 
-                        document.getElementById('dailyQuote').textContent = '"' + quote.text + '"';
+            if (page === 'stats') {
 
-                        document.getElementById('quoteAuthor').textContent = '- ' + quote.author;
+                updateStats();
 
-                    }
+            } else if (page === 'motivation') {
 
-                }
+                const quote = quotes[Math.floor(Math.random() * quotes.length)];
 
-        
+                document.getElementById('dailyQuote').textContent = '"' + quote.text + '"';
 
-                // FONCTIONS BOUCHONS POUR LES FONCTIONNALITÉS NON IMPLEMENTÉES
+                document.getElementById('quoteAuthor').textContent = '- ' + quote.author;
 
-                function openManageHabitsModal() { showPopup('La gestion des habitudes est en cours de développement.', 'info'); }
+            }
 
-                function closeManageHabitsModal() { console.log("closeManageHabitsModal called"); }
+        }
 
-                function toggleAddHabitForm() { showPopup('La gestion des habitudes est en cours de développement.', 'info'); }
 
-                function cancelAddHabit() { console.log("cancelAddHabit called"); }
 
-                function saveNewHabit() { showPopup('La gestion des habitudes est en cours de développement.', 'info'); }
+        // FONCTIONS BOUCHONS POUR LES FONCTIONNALITÉS NON IMPLEMENTÉES
 
-                function renderHabitsManagementList() { console.log("renderHabitsManagementList called"); }
+        function openManageHabitsModal() { showPopup('La gestion des habitudes est en cours de développement.', 'info'); }
 
-                function setupIconPicker() { console.log("setupIconPicker called"); }
+        function closeManageHabitsModal() { console.log("closeManageHabitsModal called"); }
 
-                function setupColorPicker() { console.log("setupColorPicker called"); }
+        function toggleAddHabitForm() { showPopup('La gestion des habitudes est en cours de développement.', 'info'); }
 
-                function resetAddHabitForm() { console.log("resetAddHabitForm called"); }
+        function cancelAddHabit() { console.log("cancelAddHabit called"); }
 
-                function updateHabitName(id) { showPopup('La gestion des habitudes est en cours de développement.', 'info'); }
+        function saveNewHabit() { showPopup('La gestion des habitudes est en cours de développement.', 'info'); }
 
-                function deleteHabit(id) { showPopup('La gestion des habitudes est en cours de développement.', 'info'); }
+        function renderHabitsManagementList() { console.log("renderHabitsManagementList called"); }
 
-                function moveHabit(id, dir) { showPopup('La gestion des habitudes est en cours de développement.', 'info'); }
+        function setupIconPicker() { console.log("setupIconPicker called"); }
 
-        
+        function setupColorPicker() { console.log("setupColorPicker called"); }
+
+        function resetAddHabitForm() { console.log("resetAddHabitForm called"); }
+
+        function updateHabitName(id) { showPopup('La gestion des habitudes est en cours de développement.', 'info'); }
+
+        function deleteHabit(id) { showPopup('La gestion des habitudes est en cours de développement.', 'info'); }
+
+        function moveHabit(id, dir) { showPopup('La gestion des habitudes est en cours de développement.', 'info'); }
+
+
 
         // Réinitialise toutes les données de l'application après confirmation
         async function resetAllData() {
@@ -1985,7 +2016,7 @@
         function setupIconPicker() {
             const iconOptions = document.querySelectorAll('#iconPicker .icon-option');
             iconOptions.forEach(option => {
-                option.addEventListener('click', function() {
+                option.addEventListener('click', function () {
                     iconOptions.forEach(opt => opt.classList.remove('selected'));
                     this.classList.add('selected');
                     selectedIcon = this.dataset.icon;
@@ -2003,7 +2034,7 @@
         function setupColorPicker() {
             const colorOptions = document.querySelectorAll('#colorPicker .color-option');
             colorOptions.forEach(option => {
-                option.addEventListener('click', function() {
+                option.addEventListener('click', function () {
                     colorOptions.forEach(opt => opt.classList.remove('selected'));
                     this.classList.add('selected');
                     selectedColor = this.dataset.color;
