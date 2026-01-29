@@ -185,6 +185,13 @@
                 <div class="stat-label">Moyenne globale</div>
             </div>
         </div>
+
+        <!-- Bouton calendrier visuel -->
+        <div class="calendar-btn-container">
+            <button class="calendar-view-btn" onclick="openCalendarModal()">
+                📅 VOIR LE CALENDRIER DU MOIS
+            </button>
+        </div>
     </div>
 
     <!-- Page "Motivation" : citations, règles et informations -->
@@ -222,69 +229,120 @@
         </div>
 
         <!-- Section des paramètres -->
-        <div class="section-title">⚙️ PARAMÈTRES DU SYSTEME</div>
+        <div class="section-title">⚙️ PARAMÈTRES</div>
 
-        <!-- Catégorie : Habitudes -->
-        <div style="padding: 0 15px; margin-bottom: 30px;">
-            <div
-                style="color: var(--accent); font-size: 0.85rem; font-weight: bold; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px;">
-                📝 Habitudes</div>
-            <div class="settings-section">
-                <button class="reset-btn edit-habits-btn" onclick="openManageHabitsModal()">⚙️ GÉRER LES
-                    HABITUDES</button>
-            </div>
-        </div>
-
-        <!-- Catégorie : Notifications -->
-        <div style="padding: 0 15px; margin-bottom: 30px;">
-            <div
-                style="color: var(--accent); font-size: 0.85rem; font-weight: bold; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px;">
-                🔔 Notifications</div>
-            <div class="settings-section">
-                <div class="notif-time-container">
-                    <label for="notifTime"
-                        style="color: var(--accent); font-size: 0.9rem; margin-bottom: 8px; display: block;">⏰ Heure de
-                        rappel :</label>
-                    <input type="time" id="notifTime" value="21:00" onchange="updateNotificationTime()"
-                        style="width: 100%; padding: 12px; background: var(--charcoal); color: var(--accent);
-                        border: 1px solid var(--accent-dark); border-radius: 8px; font-size: 1rem; text-align: center;">
+        <div class="settings-container">
+            <!-- Catégorie : Habitudes -->
+            <div class="settings-category">
+                <div class="settings-category-header">
+                    <span class="settings-category-icon">📝</span>
+                    <span class="settings-category-title">Habitudes</span>
                 </div>
-                <button id="notifBtn" class="reset-btn" onclick="toggleNotifications()">🔕 Notifications OFF</button>
+                <div class="settings-category-content">
+                    <div class="settings-item">
+                        <div class="settings-item-info">
+                            <div class="settings-item-label">Gestion des habitudes</div>
+                            <div class="settings-item-desc">Ajouter, modifier ou supprimer</div>
+                        </div>
+                        <div class="settings-item-action">
+                            <button class="settings-btn primary" onclick="openManageHabitsModal()">Modifier</button>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
 
-        <!-- Catégorie : Compte -->
-        <div style="padding: 0 15px; margin-bottom: 30px;">
-            <div
-                style="color: var(--accent); font-size: 0.85rem; font-weight: bold; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px;">
-                👤 Compte</div>
-            <div class="settings-section">
-                <button id="logoutBtn" class="reset-btn" style="display: none;" onclick="handleLogout()">🚪 SE
-                    DÉCONNEXION</button>
-                <button id="deleteAccountBtn" class="reset-btn" style="display: none;" onclick="handleDeleteAccount()">❌
-                    SUPPRIMER MON COMPTE</button>
+            <!-- Catégorie : Notifications -->
+            <div class="settings-category">
+                <div class="settings-category-header">
+                    <span class="settings-category-icon">🔔</span>
+                    <span class="settings-category-title">Notifications</span>
+                </div>
+                <div class="settings-category-content">
+                    <div class="settings-item">
+                        <div class="settings-item-info">
+                            <div class="settings-item-label">Heure de rappel</div>
+                            <div class="settings-item-desc">Rappel quotidien</div>
+                        </div>
+                        <div class="settings-item-action">
+                            <input type="time" id="notifTime" value="21:00" class="settings-time-input" onchange="updateNotificationTime()">
+                        </div>
+                    </div>
+                    <div class="settings-item">
+                        <div class="settings-item-info">
+                            <div class="settings-item-label">Activer les notifications</div>
+                            <div class="settings-item-desc">Recevoir des rappels</div>
+                        </div>
+                        <div class="settings-item-action">
+                            <button id="notifBtn" class="settings-btn" onclick="toggleNotifications()">OFF</button>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
 
-        <!-- Catégorie : Aide -->
-        <div style="padding: 0 15px; margin-bottom: 30px;">
-            <div
-                style="color: var(--accent); font-size: 0.85rem; font-weight: bold; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px;">
-                ❓ Aide</div>
-            <div class="settings-section">
-                <button class="reset-btn" onclick="restartTutorial()"
-                    style="background: linear-gradient(135deg, var(--charcoal), var(--steel));">🎓 REVOIR LE
-                    TUTORIEL</button>
+            <!-- Catégorie : Compte -->
+            <div class="settings-category">
+                <div class="settings-category-header">
+                    <span class="settings-category-icon">👤</span>
+                    <span class="settings-category-title">Compte</span>
+                </div>
+                <div class="settings-category-content">
+                    <div class="settings-item" id="logoutItem" style="display: none;">
+                        <div class="settings-item-info">
+                            <div class="settings-item-label">Déconnexion</div>
+                            <div class="settings-item-desc">Se déconnecter de l'application</div>
+                        </div>
+                        <div class="settings-item-action">
+                            <button id="logoutBtn" class="settings-btn" onclick="handleLogout()">Sortir</button>
+                        </div>
+                    </div>
+                    <div class="settings-item" id="deleteItem" style="display: none;">
+                        <div class="settings-item-info">
+                            <div class="settings-item-label">Supprimer le compte</div>
+                            <div class="settings-item-desc">Action irréversible</div>
+                        </div>
+                        <div class="settings-item-action">
+                            <button id="deleteAccountBtn" class="settings-btn danger" onclick="handleDeleteAccount()">Supprimer</button>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
 
-        <!-- Catégorie : Données -->
-        <div style="padding: 0 15px; margin-bottom: 30px;">
-            <div
-                style="color: var(--accent); font-size: 0.85rem; font-weight: bold; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px;">
-                💾 Données</div>
-            <div class="settings-section">
-                <button class="reset-btn" onclick="resetAllData()">🗑️ RÉINITIALISER TOUTES MES DONNÉES</button>
+            <!-- Catégorie : Aide -->
+            <div class="settings-category">
+                <div class="settings-category-header">
+                    <span class="settings-category-icon">❓</span>
+                    <span class="settings-category-title">Aide</span>
+                </div>
+                <div class="settings-category-content">
+                    <div class="settings-item">
+                        <div class="settings-item-info">
+                            <div class="settings-item-label">Tutoriel</div>
+                            <div class="settings-item-desc">Revoir le guide de démarrage</div>
+                        </div>
+                        <div class="settings-item-action">
+                            <button class="settings-btn" onclick="restartTutorial()">Revoir</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Catégorie : Données -->
+            <div class="settings-category">
+                <div class="settings-category-header">
+                    <span class="settings-category-icon">💾</span>
+                    <span class="settings-category-title">Données</span>
+                </div>
+                <div class="settings-category-content">
+                    <div class="settings-item">
+                        <div class="settings-item-info">
+                            <div class="settings-item-label">Réinitialiser</div>
+                            <div class="settings-item-desc">Effacer toutes les données</div>
+                        </div>
+                        <div class="settings-item-action">
+                            <button class="settings-btn danger" onclick="resetAllData()">Effacer</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -451,6 +509,50 @@
                 <button class="modal-btn cancel" onclick="closeDeleteAccountModal()">Annuler</button>
                 <button class="modal-btn save" style="background: #8B0000; color: #FFE5E5;"
                     onclick="confirmDeleteAccount()">Supprimer</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- MODAL CALENDRIER VISUEL - IMPACT PSYCHOLOGIQUE -->
+    <!-- ============================================================ -->
+    <div class="modal-overlay" id="calendarModal">
+        <div class="modal modal-calendar">
+            <div class="calendar-header">
+                <button class="calendar-nav-btn" onclick="changeCalendarMonth(-1)">◀</button>
+                <h3 id="calendarTitle">📅 JANVIER 2025</h3>
+                <button class="calendar-nav-btn" onclick="changeCalendarMonth(1)">▶</button>
+            </div>
+            <p class="calendar-subtitle">Visualise tes victoires et tes échecs d'un seul regard</p>
+
+            <!-- Légende -->
+            <div class="calendar-legend">
+                <div class="legend-item">
+                    <span class="legend-box legend-success"></span>
+                    <span>Fait</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-box legend-fail"></span>
+                    <span>Non fait</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-box legend-future"></span>
+                    <span>À venir</span>
+                </div>
+            </div>
+
+            <!-- Calendrier généré dynamiquement -->
+            <div class="calendar-grid-container" id="calendarGridContainer">
+                <!-- Rempli par JavaScript -->
+            </div>
+
+            <!-- Résumé du mois -->
+            <div class="calendar-summary" id="calendarSummary">
+                <!-- Rempli par JavaScript -->
+            </div>
+
+            <div class="modal-buttons">
+                <button class="modal-btn cancel" onclick="closeCalendarModal()" style="flex: 1;">Fermer</button>
             </div>
         </div>
     </div>
@@ -1659,6 +1761,9 @@
                 return;
             }
 
+            // Déterminer si c'est un jour passé (pas aujourd'hui)
+            const isPastDay = !isToday(currentDate);
+
             container.innerHTML = habits.map(habit => {
                 const checked = dayData[habit.id] || false;
                 const streak = getHabitStreak(habit.id);
@@ -1666,10 +1771,30 @@
                 const displayName = getHabitDisplayName(habit);
                 const escapedId = habit.id.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
                 const onclickAttr = locked ? '' : `onclick="toggleHabit('${escapedId}')"`;
-                const streakText = locked ? '🔒 Verrouillé' : `🔥 Série: ${streak} jours`;
+
+                // Déterminer le statut : completed (vert), failed (rouge sur jours passés), ou normal
+                const isFailed = isPastDay && !checked;
+                const streakText = locked ? (isFailed ? '❌ Non fait' : '✅ Fait') : `🔥 Série: ${streak} jours`;
+
+                // Classes CSS
+                let itemClasses = 'habit-item';
+                let checkboxClasses = 'habit-checkbox';
+
+                if (locked) {
+                    itemClasses += ' locked';
+                    checkboxClasses += ' locked';
+                }
+                if (checked) {
+                    itemClasses += ' completed';
+                    checkboxClasses += ' checked';
+                } else if (isFailed) {
+                    itemClasses += ' failed';
+                    checkboxClasses += ' failed';
+                }
+
                 return `
-                    <div class="habit-item ${locked ? 'locked' : ''}" ${onclickAttr}>
-                        <div class="habit-checkbox ${checked ? 'checked' : ''} ${locked ? 'locked' : ''}"></div>
+                    <div class="${itemClasses}" ${onclickAttr}>
+                        <div class="${checkboxClasses}"></div>
                         <div class="habit-info">
                             <div class="habit-name">${habit.icon} ${displayName}</div>
                             <div class="habit-streak">${streakText}</div>
@@ -1704,14 +1829,105 @@
             return totalDays > 0 ? Math.round((completed / totalDays) * 100) : 0;
         }
 
+        // ============================================================
+        // SYSTÈME DE SON - FEEDBACK AUDIO
+        // ============================================================
+
+        // Contexte audio pour les sons
+        let audioContext = null;
+
+        function getAudioContext() {
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            return audioContext;
+        }
+
+        // Son de VICTOIRE quand on coche une habitude
+        function playSuccessSound() {
+            try {
+                const ctx = getAudioContext();
+                const now = ctx.currentTime;
+
+                // Créer un son de "ding" satisfaisant
+                const oscillator1 = ctx.createOscillator();
+                const oscillator2 = ctx.createOscillator();
+                const gainNode = ctx.createGain();
+
+                // Fréquences pour un son de victoire (accord majeur)
+                oscillator1.frequency.setValueAtTime(880, now); // La5
+                oscillator1.frequency.setValueAtTime(1108.73, now + 0.1); // Do#6
+                oscillator2.frequency.setValueAtTime(1318.51, now); // Mi6
+
+                oscillator1.type = 'sine';
+                oscillator2.type = 'sine';
+
+                // Envelope du volume
+                gainNode.gain.setValueAtTime(0, now);
+                gainNode.gain.linearRampToValueAtTime(0.3, now + 0.02);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.4);
+
+                // Connexions
+                oscillator1.connect(gainNode);
+                oscillator2.connect(gainNode);
+                gainNode.connect(ctx.destination);
+
+                // Jouer
+                oscillator1.start(now);
+                oscillator2.start(now);
+                oscillator1.stop(now + 0.4);
+                oscillator2.stop(now + 0.4);
+
+            } catch (e) {
+                console.log('Audio non disponible:', e);
+            }
+        }
+
+        // Son d'ÉCHEC quand on décoche (optionnel, plus discret)
+        function playUndoSound() {
+            try {
+                const ctx = getAudioContext();
+                const now = ctx.currentTime;
+
+                const oscillator = ctx.createOscillator();
+                const gainNode = ctx.createGain();
+
+                oscillator.frequency.setValueAtTime(300, now);
+                oscillator.frequency.linearRampToValueAtTime(200, now + 0.15);
+                oscillator.type = 'sine';
+
+                gainNode.gain.setValueAtTime(0.15, now);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.15);
+
+                oscillator.connect(gainNode);
+                gainNode.connect(ctx.destination);
+
+                oscillator.start(now);
+                oscillator.stop(now + 0.15);
+
+            } catch (e) {
+                console.log('Audio non disponible:', e);
+            }
+        }
+
         // Gère le clic sur une habitude pour la cocher/décocher
         function toggleHabit(habitId) {
             const dayData = getDayData(currentDate);
             const newStatus = !dayData[habitId];
             setHabitStatus(habitId, newStatus);
-            if (navigator.vibrate) { // Vibration pour le retour haptique
+
+            // Feedback audio
+            if (newStatus) {
+                playSuccessSound(); // Son de victoire
+            } else {
+                playUndoSound(); // Son discret de décochage
+            }
+
+            // Vibration pour le retour haptique
+            if (navigator.vibrate) {
                 navigator.vibrate(newStatus ? [30, 30, 30] : 20);
             }
+
             if (newStatus) {
                 const completed = habits.filter(h => getDayData(currentDate)[h.id]).length;
                 if (completed === habits.length) {
@@ -2931,6 +3147,183 @@
                 });
             }
         });
+
+        // ============================================================
+        // CALENDRIER VISUEL - FONCTIONS
+        // ============================================================
+
+        let currentCalendarMonth = new Date();
+
+        function openCalendarModal() {
+            currentCalendarMonth = new Date();
+            renderCalendarGrid();
+            document.getElementById('calendarModal').classList.add('active');
+        }
+
+        function closeCalendarModal() {
+            document.getElementById('calendarModal').classList.remove('active');
+        }
+
+        function changeCalendarMonth(delta) {
+            currentCalendarMonth.setMonth(currentCalendarMonth.getMonth() + delta);
+            renderCalendarGrid();
+        }
+
+        function renderCalendarGrid() {
+            const container = document.getElementById('calendarGridContainer');
+            const summaryContainer = document.getElementById('calendarSummary');
+            const titleEl = document.getElementById('calendarTitle');
+
+            const year = currentCalendarMonth.getFullYear();
+            const month = currentCalendarMonth.getMonth();
+
+            // Mettre à jour le titre
+            const monthNames = ['JANVIER', 'FÉVRIER', 'MARS', 'AVRIL', 'MAI', 'JUIN',
+                               'JUILLET', 'AOÛT', 'SEPTEMBRE', 'OCTOBRE', 'NOVEMBRE', 'DÉCEMBRE'];
+            titleEl.textContent = `📅 ${monthNames[month]} ${year}`;
+
+            // Récupérer les habitudes
+            const data = getData();
+            const habits = data.habits || [];
+
+            if (habits.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: var(--accent-dark); padding: 20px;">Aucune habitude créée</p>';
+                summaryContainer.innerHTML = '';
+                return;
+            }
+
+            // Calculer les jours du mois
+            const firstDay = new Date(year, month, 1);
+            const lastDay = new Date(year, month + 1, 0);
+            const daysInMonth = lastDay.getDate();
+            const startDayOfWeek = (firstDay.getDay() + 6) % 7; // Lundi = 0
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            let totalSuccess = 0;
+            let totalFail = 0;
+            let totalPossible = 0;
+
+            // Générer le HTML pour chaque habitude
+            let html = '';
+
+            habits.forEach((habit, habitIndex) => {
+                let habitSuccess = 0;
+                let habitFail = 0;
+                let habitTotal = 0;
+
+                // Générer les jours pour cette habitude
+                let daysHtml = '';
+
+                // Headers des jours de la semaine
+                const dayHeaders = ['L', 'M', 'M', 'J', 'V', 'S', 'D'];
+                dayHeaders.forEach(d => {
+                    daysHtml += `<div class="calendar-day-header">${d}</div>`;
+                });
+
+                // Cases vides avant le premier jour
+                for (let i = 0; i < startDayOfWeek; i++) {
+                    daysHtml += '<div class="calendar-day empty"></div>';
+                }
+
+                // Jours du mois
+                for (let day = 1; day <= daysInMonth; day++) {
+                    const date = new Date(year, month, day);
+                    date.setHours(0, 0, 0, 0);
+                    const dateKey = getDateKey(date);
+
+                    const dayData = data.days && data.days[dateKey];
+                    const isCompleted = dayData && dayData.habits && dayData.habits[habit.id];
+                    const isPast = date < today;
+                    const isToday = date.getTime() === today.getTime();
+                    const isFuture = date > today;
+
+                    let dayClass = 'calendar-day';
+                    const animDelay = (day * 0.02) + (habitIndex * 0.1);
+
+                    if (isFuture) {
+                        dayClass += ' future';
+                    } else if (isCompleted) {
+                        dayClass += ' success';
+                        habitSuccess++;
+                        totalSuccess++;
+                    } else if (isPast) {
+                        dayClass += ' fail';
+                        habitFail++;
+                        totalFail++;
+                    }
+
+                    if (isToday) {
+                        dayClass += ' today';
+                    }
+
+                    if (!isFuture) {
+                        habitTotal++;
+                        totalPossible++;
+                    }
+
+                    daysHtml += `<div class="${dayClass}" style="animation-delay: ${animDelay}s">${day}</div>`;
+                }
+
+                // Calculer le pourcentage
+                const percent = habitTotal > 0 ? Math.round((habitSuccess / habitTotal) * 100) : 0;
+                let percentClass = 'bad';
+                if (percent >= 80) percentClass = 'good';
+                else if (percent >= 50) percentClass = 'medium';
+
+                html += `
+                    <div class="calendar-habit-section">
+                        <div class="calendar-habit-header">
+                            <span class="calendar-habit-icon">${habit.icon}</span>
+                            <span class="calendar-habit-name">${habit.name}</span>
+                            <span class="calendar-habit-percent ${percentClass}">${percent}%</span>
+                        </div>
+                        <div class="calendar-days-grid">
+                            ${daysHtml}
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+
+            // Résumé du mois
+            const overallPercent = totalPossible > 0 ? Math.round((totalSuccess / totalPossible) * 100) : 0;
+
+            let motivationMessage = '';
+            let motivationClass = '';
+
+            if (overallPercent >= 80) {
+                motivationMessage = '🏆 Exceptionnel ! Tu domines ce mois avec une discipline de fer !';
+            } else if (overallPercent >= 60) {
+                motivationMessage = '💪 Bon travail ! Continue sur cette lancée pour atteindre l\'excellence !';
+            } else if (overallPercent >= 40) {
+                motivationMessage = '⚡ Tu peux faire mieux. Chaque jour est une nouvelle opportunité !';
+                motivationClass = 'warning';
+            } else {
+                motivationMessage = '🔥 C\'est l\'heure de se battre ! Reprends le contrôle de tes habitudes !';
+                motivationClass = 'warning';
+            }
+
+            summaryContainer.innerHTML = `
+                <div class="summary-title">Résumé du mois</div>
+                <div class="summary-stats">
+                    <div class="summary-stat">
+                        <span class="summary-stat-value green">${totalSuccess}</span>
+                        <span class="summary-stat-label">Réussites</span>
+                    </div>
+                    <div class="summary-stat">
+                        <span class="summary-stat-value red">${totalFail}</span>
+                        <span class="summary-stat-label">Échecs</span>
+                    </div>
+                    <div class="summary-stat">
+                        <span class="summary-stat-value blue">${overallPercent}%</span>
+                        <span class="summary-stat-label">Global</span>
+                    </div>
+                </div>
+                <div class="calendar-motivation ${motivationClass}">${motivationMessage}</div>
+            `;
+        }
     </script>
 </body>
 

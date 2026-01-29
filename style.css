@@ -167,17 +167,23 @@ html {
     background: var(--dark-gray);
     border-bottom: 1px solid var(--charcoal);
     gap: 15px;
+    transition: all 0.3s ease;
+    border-left: 3px solid transparent;
+}
+
+/* Style quand l'habitude est complétée - EFFET VERT SATISFAISANT */
+.habit-item.completed {
+    background: linear-gradient(90deg, rgba(46, 204, 113, 0.15), rgba(46, 204, 113, 0.05), transparent);
+    border-left-color: #2ECC71;
 }
 
 .habit-item:active {
     background: var(--charcoal);
-    /* Effet visuel au toucher */
 }
 
 .habit-item.locked {
     opacity: 0.5;
     cursor: not-allowed;
-    /* Style pour les jours passés non modifiables */
 }
 
 .habit-item.locked:active {
@@ -194,31 +200,84 @@ html {
     height: 45px;
     border: 2px solid var(--accent-dark);
     border-radius: 50%;
-    /* Forme circulaire */
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
     flex-shrink: 0;
+    position: relative;
 }
 
+/* Checkbox cochée - VERT VICTOIRE */
 .habit-checkbox.checked {
-    background: var(--accent);
-    border-color: var(--accent);
-    /* Style quand l'habitude est complétée */
+    background: linear-gradient(135deg, #2ECC71, #27AE60);
+    border-color: #2ECC71;
+    box-shadow: 0 0 15px rgba(46, 204, 113, 0.5), 0 0 30px rgba(46, 204, 113, 0.2);
+    animation: checkSuccess 0.4s ease-out;
+}
+
+@keyframes checkSuccess {
+    0% {
+        transform: scale(1);
+    }
+    30% {
+        transform: scale(1.2);
+    }
+    50% {
+        transform: scale(0.95);
+    }
+    100% {
+        transform: scale(1);
+    }
 }
 
 .habit-checkbox.checked::after {
     content: '✓';
-    /* Affiche une coche */
     font-size: 1.5rem;
     font-weight: bold;
-    color: var(--black);
+    color: white;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* Checkbox ÉCHEC - CROIX ROUGE (jours passés non complétés) */
+.habit-checkbox.failed {
+    background: linear-gradient(135deg, #E74C3C, #C0392B);
+    border-color: #E74C3C;
+    box-shadow: 0 0 12px rgba(231, 76, 60, 0.4);
+}
+
+.habit-checkbox.failed::after {
+    content: '✕';
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: white;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* Style ligne ÉCHEC */
+.habit-item.failed {
+    background: linear-gradient(90deg, rgba(231, 76, 60, 0.12), rgba(231, 76, 60, 0.04), transparent);
+    border-left-color: #E74C3C;
+}
+
+.habit-item.failed .habit-name {
+    color: #E74C3C;
+    opacity: 0.8;
+}
+
+.habit-item.failed .habit-streak {
+    color: rgba(231, 76, 60, 0.6);
+}
+
+.habit-item.failed .habit-progress .percent {
+    color: #E74C3C;
+    opacity: 0.7;
 }
 
 .habit-info {
     flex: 1;
+    transition: all 0.3s ease;
 }
 
 .habit-name {
@@ -226,11 +285,23 @@ html {
     font-weight: 600;
     color: var(--accent);
     margin-bottom: 3px;
+    transition: all 0.3s ease;
+}
+
+/* Nom de l'habitude quand complétée */
+.habit-item.completed .habit-name {
+    color: #2ECC71;
 }
 
 .habit-streak {
     font-size: 0.7rem;
     color: var(--accent-dark);
+    transition: all 0.3s ease;
+}
+
+/* Streak quand complétée */
+.habit-item.completed .habit-streak {
+    color: rgba(46, 204, 113, 0.7);
 }
 
 .habit-progress {
@@ -242,6 +313,13 @@ html {
     font-size: 1rem;
     font-weight: bold;
     color: var(--accent-dim);
+    transition: all 0.3s ease;
+}
+
+/* Pourcentage quand complétée */
+.habit-item.completed .habit-progress .percent {
+    color: #2ECC71;
+    text-shadow: 0 0 8px rgba(46, 204, 113, 0.4);
 }
 
 /* Styles pour les graphiques */
@@ -459,14 +537,231 @@ canvas {
     color: var(--black);
 }
 
-/* Section des paramètres */
-.settings-section {
-    padding: 20px;
+/* ============================================================ */
+/* SECTION PARAMÈTRES - STYLE JEU VIDÉO / CYBERPUNK */
+/* ============================================================ */
+
+.settings-container {
+    padding: 15px;
+    position: relative;
+}
+
+/* Catégorie - Style carte de jeu */
+.settings-category {
+    background: linear-gradient(135deg, rgba(20, 20, 20, 0.95), rgba(30, 30, 30, 0.9));
+    margin-bottom: 12px;
+    overflow: hidden;
+    border: 1px solid transparent;
+    border-image: linear-gradient(135deg, var(--accent-dark), transparent, var(--accent-dark)) 1;
+    position: relative;
+    clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+}
+
+.settings-category::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    opacity: 0.6;
+}
+
+.settings-category::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 12px;
+    height: 12px;
+    background: var(--accent);
+    clip-path: polygon(100% 0, 0 100%, 100% 100%);
+    opacity: 0.3;
+}
+
+/* Header de catégorie - Style HUD */
+.settings-category-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    background: linear-gradient(90deg, rgba(245, 245, 240, 0.08), transparent);
+    border-bottom: 1px solid rgba(245, 245, 240, 0.1);
+    position: relative;
+}
+
+.settings-category-header::before {
+    content: '//';
+    color: var(--accent);
+    font-size: 0.7rem;
+    opacity: 0.5;
+    font-family: monospace;
+}
+
+.settings-category-icon {
+    font-size: 1.1rem;
+    filter: drop-shadow(0 0 4px rgba(245, 245, 240, 0.3));
+}
+
+.settings-category-title {
+    color: var(--accent);
+    font-size: 0.75rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', monospace;
+}
+
+/* Contenu de catégorie */
+.settings-category-content {
+    padding: 10px;
     display: flex;
     flex-direction: column;
+    gap: 6px;
+}
+
+/* Item de paramètre - Style menu de jeu */
+.settings-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 14px;
+    background: rgba(0, 0, 0, 0.3);
+    border-left: 2px solid transparent;
     gap: 12px;
-    max-width: 600px;
-    margin: 0 auto;
+    transition: all 0.2s ease;
+    position: relative;
+    cursor: default;
+}
+
+.settings-item:hover {
+    background: rgba(245, 245, 240, 0.05);
+    border-left-color: var(--accent);
+}
+
+.settings-item:hover .settings-item-label {
+    color: var(--accent);
+    text-shadow: 0 0 8px rgba(245, 245, 240, 0.3);
+}
+
+.settings-item-info {
+    flex: 1;
+}
+
+.settings-item-label {
+    color: var(--accent-dim);
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    transition: all 0.2s ease;
+}
+
+.settings-item-desc {
+    color: var(--accent-dark);
+    font-size: 0.65rem;
+    margin-top: 2px;
+    font-family: monospace;
+    opacity: 0.7;
+}
+
+.settings-item-action {
+    flex-shrink: 0;
+}
+
+/* Boutons style gaming */
+.settings-btn {
+    background: transparent;
+    color: var(--accent-dim);
+    border: 1px solid var(--accent-dark);
+    padding: 8px 16px;
+    font-size: 0.7rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    white-space: nowrap;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative;
+    clip-path: polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 6px 100%, 0 calc(100% - 6px));
+}
+
+.settings-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--accent);
+    opacity: 0;
+    transition: opacity 0.15s ease;
+    z-index: -1;
+}
+
+.settings-btn:hover {
+    color: var(--black);
+    border-color: var(--accent);
+    text-shadow: none;
+}
+
+.settings-btn:hover::before {
+    opacity: 1;
+}
+
+.settings-btn:active {
+    transform: scale(0.95);
+}
+
+.settings-btn.primary {
+    background: var(--accent);
+    color: var(--black);
+    border-color: var(--accent);
+    box-shadow: 0 0 10px rgba(245, 245, 240, 0.2);
+}
+
+.settings-btn.primary:hover {
+    box-shadow: 0 0 15px rgba(245, 245, 240, 0.4);
+}
+
+.settings-btn.danger {
+    background: transparent;
+    color: #FF6B6B;
+    border-color: #8B0000;
+}
+
+.settings-btn.danger::before {
+    background: #8B0000;
+}
+
+.settings-btn.danger:hover {
+    color: #FFE5E5;
+    border-color: #FF6B6B;
+    box-shadow: 0 0 10px rgba(139, 0, 0, 0.4);
+}
+
+/* Input time style gaming */
+.settings-time-input {
+    width: 85px;
+    padding: 7px 10px;
+    background: rgba(0, 0, 0, 0.4);
+    color: var(--accent);
+    border: 1px solid var(--accent-dark);
+    font-size: 0.85rem;
+    text-align: center;
+    font-family: monospace;
+    clip-path: polygon(0 0, calc(100% - 4px) 0, 100% 4px, 100% 100%, 4px 100%, 0 calc(100% - 4px));
+    transition: all 0.2s ease;
+}
+
+.settings-time-input:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 8px rgba(245, 245, 240, 0.2);
+}
+
+.settings-section {
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
 /* Bouton de réinitialisation */
@@ -1083,11 +1378,14 @@ canvas {
 
 /* HABIT MANAGEMENT STYLES */
 .modal-large {
-    max-width: 600px;
+    max-width: 500px;
+    max-height: 85vh;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .habits-management-list {
-    max-height: 400px;
+    max-height: 250px;
     overflow-y: auto;
     margin-bottom: 15px;
 }
@@ -1176,27 +1474,29 @@ canvas {
 }
 
 .add-habit-section {
-    background: var(--charcoal);
-    border: 2px dashed var(--steel);
-    border-radius: 10px;
-    padding: 20px;
-    margin-bottom: 20px;
+    background: var(--dark-gray);
+    border: 1px solid var(--steel);
+    border-radius: 12px;
+    padding: 15px;
+    margin-bottom: 15px;
 }
 
 .add-habit-section.collapsed {
     padding: 0;
+    background: transparent;
+    border: none;
 }
 
 .add-habit-toggle {
     width: 100%;
-    padding: 15px;
-    background: var(--charcoal);
+    padding: 14px;
+    background: linear-gradient(135deg, var(--charcoal), var(--dark-gray));
     border: 2px dashed var(--steel);
     color: var(--accent);
     border-radius: 10px;
     cursor: pointer;
     font-weight: bold;
-    font-size: 0.95rem;
+    font-size: 0.85rem;
     transition: all 0.2s;
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -1204,10 +1504,12 @@ canvas {
 
 .add-habit-toggle:hover {
     background: var(--steel);
+    border-style: solid;
 }
 
 .add-habit-form {
     display: none;
+    padding-top: 15px;
 }
 
 .add-habit-form.active {
@@ -1215,28 +1517,29 @@ canvas {
 }
 
 .form-group {
-    margin-bottom: 15px;
+    margin-bottom: 12px;
 }
 
 .form-group label {
     display: block;
     color: var(--accent-dim);
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     font-weight: bold;
     text-transform: uppercase;
-    margin-bottom: 8px;
-    letter-spacing: 1px;
+    margin-bottom: 6px;
+    letter-spacing: 0.5px;
 }
 
 .form-group input[type="text"] {
     width: 100%;
-    padding: 12px;
-    background: var(--dark-gray);
+    padding: 10px 12px;
+    background: var(--charcoal);
     border: 1px solid var(--steel);
     border-radius: 8px;
     color: var(--accent);
-    font-size: 1rem;
+    font-size: 0.95rem;
     font-family: inherit;
+    box-sizing: border-box;
 }
 
 .form-group input[type="text"]:focus {
@@ -1246,15 +1549,16 @@ canvas {
 
 .icon-picker {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(45px, 1fr));
-    gap: 6px;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
     margin-top: 10px;
-    max-width: 100%;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .icon-option {
-    font-size: 1.5rem;
-    padding: 10px;
+    font-size: 1.3rem;
+    padding: 8px;
     text-align: center;
     background: var(--dark-gray);
     border: 2px solid var(--steel);
@@ -1265,25 +1569,26 @@ canvas {
     align-items: center;
     justify-content: center;
     aspect-ratio: 1;
+    min-width: 0;
 }
 
 .icon-option:hover {
-    transform: scale(1.05);
     background: var(--charcoal);
+    border-color: var(--accent-dark);
 }
 
 .icon-option.selected {
     border-color: var(--accent);
     background: var(--accent);
-    transform: scale(1.1);
 }
 
 .color-picker-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(45px, 1fr));
+    grid-template-columns: repeat(6, 1fr);
     gap: 8px;
     margin-top: 10px;
-    max-width: 100%;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .color-option {
@@ -1293,85 +1598,72 @@ canvas {
     cursor: pointer;
     border: 3px solid transparent;
     transition: all 0.2s;
-    min-height: 45px;
+    min-width: 0;
 }
 
 .color-option:hover {
-    transform: scale(1.05);
+    border-color: var(--accent-dark);
 }
 
 .color-option.selected {
     border-color: white;
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
-    transform: scale(1.1);
 }
 
 /* Responsive adjustments for habit creation */
-@media (max-width: 480px) {
+@media (max-width: 360px) {
     .icon-picker {
-        grid-template-columns: repeat(auto-fit, minmax(40px, 1fr));
+        grid-template-columns: repeat(5, 1fr);
         gap: 5px;
     }
 
     .icon-option {
-        font-size: 1.3rem;
-        padding: 8px;
+        font-size: 1.1rem;
+        padding: 6px;
     }
 
     .color-picker-grid {
-        grid-template-columns: repeat(auto-fit, minmax(40px, 1fr));
+        grid-template-columns: repeat(4, 1fr);
+        gap: 6px;
+    }
+}
+
+@media (min-width: 361px) and (max-width: 480px) {
+    .icon-picker {
+        grid-template-columns: repeat(6, 1fr);
         gap: 6px;
     }
 
-    .color-option {
-        min-height: 40px;
-    }
-}
-
-@media (min-width: 481px) and (max-width: 768px) {
-    .icon-picker {
-        grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
-    }
-
     .icon-option {
-        font-size: 1.6rem;
+        font-size: 1.2rem;
+        padding: 7px;
     }
 
     .color-picker-grid {
-        grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
-    }
-}
-
-@media (min-width: 769px) {
-    .icon-picker {
-        grid-template-columns: repeat(8, 1fr);
-    }
-
-    .icon-option {
-        font-size: 1.8rem;
-    }
-
-    .color-picker-grid {
-        grid-template-columns: repeat(6, 1fr);
+        grid-template-columns: repeat(5, 1fr);
+        gap: 7px;
     }
 }
 
 .form-actions {
     display: flex;
     gap: 10px;
-    margin-top: 15px;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--steel);
 }
 
 .form-btn {
     flex: 1;
-    padding: 12px;
+    padding: 10px;
     border-radius: 8px;
     font-weight: bold;
     cursor: pointer;
     border: none;
     transition: all 0.2s;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 0.5px;
+    font-size: 0.85rem;
 }
 
 .form-btn.cancel {
@@ -2676,5 +2968,367 @@ canvas {
 
     .toast-message {
         font-size: 0.85rem;
+    }
+}
+
+/* ============================================================ */
+/* CALENDRIER VISUEL - IMPACT PSYCHOLOGIQUE */
+/* ============================================================ */
+
+.calendar-view-btn {
+    width: calc(100% - 30px);
+    margin: 15px;
+    padding: 16px;
+    background: linear-gradient(135deg, var(--charcoal), var(--dark-gray));
+    border: 2px solid var(--accent-dark);
+    color: var(--accent);
+    border-radius: 12px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.calendar-view-btn:hover {
+    background: var(--steel);
+    border-color: var(--accent);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(245, 245, 240, 0.15);
+}
+
+.calendar-view-btn:active {
+    transform: scale(0.98);
+}
+
+/* Modal calendrier */
+.modal-calendar {
+    max-width: 95%;
+    width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+    background: var(--dark-gray);
+    border: 1px solid var(--steel);
+    padding: 20px;
+}
+
+.calendar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.calendar-header h3 {
+    font-size: 1.1rem;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 0;
+}
+
+.calendar-nav-btn {
+    background: var(--charcoal);
+    border: 1px solid var(--steel);
+    color: var(--accent);
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.calendar-nav-btn:hover {
+    background: var(--steel);
+    border-color: var(--accent);
+}
+
+.calendar-nav-btn:active {
+    transform: scale(0.95);
+}
+
+.calendar-subtitle {
+    text-align: center;
+    font-size: 0.75rem;
+    color: var(--accent-dark);
+    margin-bottom: 15px;
+    font-style: italic;
+}
+
+/* Légende */
+.calendar-legend {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 15px;
+    padding: 10px;
+    background: var(--charcoal);
+    border-radius: 8px;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.7rem;
+    color: var(--accent-dim);
+}
+
+.legend-box {
+    width: 16px;
+    height: 16px;
+    border-radius: 4px;
+}
+
+.legend-success {
+    background: linear-gradient(135deg, #2ECC71, #27AE60);
+    box-shadow: 0 0 6px rgba(46, 204, 113, 0.4);
+}
+
+.legend-fail {
+    background: linear-gradient(135deg, #E74C3C, #C0392B);
+    box-shadow: 0 0 6px rgba(231, 76, 60, 0.4);
+}
+
+.legend-future {
+    background: var(--steel);
+    border: 1px dashed var(--accent-dark);
+}
+
+/* Container du calendrier */
+.calendar-grid-container {
+    max-height: 50vh;
+    overflow-y: auto;
+    padding-right: 5px;
+}
+
+/* Grille pour chaque habitude */
+.calendar-habit-section {
+    margin-bottom: 15px;
+    background: var(--charcoal);
+    border-radius: 10px;
+    padding: 12px;
+    border: 1px solid var(--steel);
+}
+
+.calendar-habit-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--steel);
+}
+
+.calendar-habit-icon {
+    font-size: 1.3rem;
+}
+
+.calendar-habit-name {
+    font-size: 0.85rem;
+    font-weight: bold;
+    color: var(--accent);
+    flex: 1;
+}
+
+.calendar-habit-percent {
+    font-size: 0.8rem;
+    font-weight: bold;
+    padding: 4px 10px;
+    border-radius: 12px;
+    background: var(--dark-gray);
+}
+
+.calendar-habit-percent.good {
+    color: #2ECC71;
+}
+
+.calendar-habit-percent.medium {
+    color: #F39C12;
+}
+
+.calendar-habit-percent.bad {
+    color: #E74C3C;
+}
+
+/* Grille des jours */
+.calendar-days-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+}
+
+.calendar-day-header {
+    text-align: center;
+    font-size: 0.6rem;
+    color: var(--accent-dark);
+    font-weight: bold;
+    text-transform: uppercase;
+    padding: 5px 0;
+}
+
+.calendar-day {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    font-weight: bold;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+.calendar-day.empty {
+    background: transparent;
+}
+
+.calendar-day.success {
+    background: linear-gradient(135deg, #2ECC71, #27AE60);
+    color: white;
+    box-shadow: 0 0 8px rgba(46, 204, 113, 0.3);
+}
+
+.calendar-day.fail {
+    background: linear-gradient(135deg, #E74C3C, #C0392B);
+    color: white;
+    box-shadow: 0 0 8px rgba(231, 76, 60, 0.3);
+}
+
+.calendar-day.future {
+    background: var(--steel);
+    color: var(--accent-dark);
+    opacity: 0.5;
+}
+
+.calendar-day.today {
+    border: 2px solid var(--accent);
+    box-shadow: 0 0 10px rgba(245, 245, 240, 0.3);
+}
+
+/* Résumé du mois */
+.calendar-summary {
+    margin-top: 15px;
+    padding: 15px;
+    background: var(--charcoal);
+    border-radius: 10px;
+    border: 1px solid var(--steel);
+}
+
+.summary-title {
+    font-size: 0.75rem;
+    color: var(--accent-dark);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+    text-align: center;
+}
+
+.summary-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.summary-stat {
+    text-align: center;
+    padding: 10px;
+    background: var(--dark-gray);
+    border-radius: 8px;
+}
+
+.summary-stat-value {
+    display: block;
+    font-size: 1.5rem;
+    font-weight: 900;
+    margin-bottom: 4px;
+}
+
+.summary-stat-value.green {
+    color: #2ECC71;
+}
+
+.summary-stat-value.red {
+    color: #E74C3C;
+}
+
+.summary-stat-value.blue {
+    color: #3498DB;
+}
+
+.summary-stat-label {
+    font-size: 0.65rem;
+    color: var(--accent-dark);
+    text-transform: uppercase;
+}
+
+/* Message motivationnel */
+.calendar-motivation {
+    margin-top: 12px;
+    padding: 12px;
+    background: linear-gradient(90deg, rgba(46, 204, 113, 0.1), transparent);
+    border-left: 3px solid #2ECC71;
+    border-radius: 0 8px 8px 0;
+    font-size: 0.8rem;
+    color: var(--accent);
+    font-style: italic;
+}
+
+.calendar-motivation.warning {
+    background: linear-gradient(90deg, rgba(231, 76, 60, 0.1), transparent);
+    border-left-color: #E74C3C;
+}
+
+/* Animation d'apparition des jours */
+@keyframes dayPop {
+    from {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.calendar-day {
+    animation: dayPop 0.3s ease-out backwards;
+}
+
+/* Responsive */
+@media (max-width: 400px) {
+    .modal-calendar {
+        padding: 15px;
+    }
+
+    .calendar-legend {
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .legend-item {
+        font-size: 0.6rem;
+    }
+
+    .calendar-day {
+        font-size: 0.6rem;
+    }
+
+    .summary-stats {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 6px;
+    }
+
+    .summary-stat-value {
+        font-size: 1.2rem;
     }
 }
