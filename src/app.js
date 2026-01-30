@@ -1672,6 +1672,339 @@ function loadNotificationTime() {
     notifTimeInput.value = savedTime;
 }
 
+// ============================================================
+// CALENDRIER VISUEL - FONCTIONS
+// ============================================================
+
+let calendarCurrentMonth = new Date().getMonth();
+let calendarCurrentYear = new Date().getFullYear();
+
+// Génère des données d'exemple pour la démonstration
+function generateExampleData() {
+    const data = getData();
+    const today = new Date();
+
+    console.log('Génération des données exemple...');
+    console.log('Nombre d\'habitudes:', habits.length);
+
+    // Si pas d'habitudes, utiliser les habitudes par défaut
+    const habitsToUse = habits.length > 0 ? habits : [
+        { id: 'coldshower', name: 'DOUCHE FROIDE', icon: '🧊' },
+        { id: 'reading', name: 'LECTURE (30 min)', icon: '📚' },
+        { id: 'nutrition', name: 'NUTRITION CLEAN', icon: '🥗' },
+        { id: 'sleep', name: 'SOMMEIL 8H+', icon: '😴' },
+        { id: 'hydration', name: 'HYDRATATION 2L+', icon: '💧' },
+        { id: 'wakeup', name: 'RÉVEIL 5H-6H', icon: '⏰' }
+    ];
+
+    // Générer des données pour les 30 derniers jours
+    for (let i = 30; i >= 0; i--) {
+        const date = new Date(today);
+        date.setDate(date.getDate() - i);
+        const dateKey = getDateKey(date);
+
+        // Toujours générer/mettre à jour les données pour la démo
+        if (!data.days[dateKey]) {
+            data.days[dateKey] = {};
+        }
+
+        // Générer des completions aléatoires mais réalistes
+        habitsToUse.forEach(habit => {
+            if (data.days[dateKey][habit.id] === undefined) {
+                // 70% de chance de compléter une habitude
+                const completed = Math.random() < 0.7;
+                data.days[dateKey][habit.id] = completed;
+            }
+        });
+    }
+
+    saveData(data);
+    console.log('Données générées:', Object.keys(data.days).length, 'jours');
+    return data;
+}
+
+// Ouvrir le modal du calendrier
+function openCalendarModal() {
+    const modal = document.getElementById('calendarModal');
+    if (!modal) {
+        console.error('Modal calendrier non trouvé');
+        return;
+    }
+
+    console.log('Ouverture du calendrier...');
+    console.log('Habitudes:', habits);
+
+    // Réinitialiser au mois actuel
+    calendarCurrentMonth = new Date().getMonth();
+    calendarCurrentYear = new Date().getFullYear();
+
+    // Toujours générer les données d'exemple pour la démo
+    generateExampleData();
+
+    renderCalendar();
+    modal.classList.add('active');
+    console.log('Calendrier ouvert');
+}
+
+// Fermer le modal du calendrier
+function closeCalendarModal() {
+    const modal = document.getElementById('calendarModal');
+    if (modal) {
+        modal.classList.remove('active');
+    }
+}
+
+// Changer de mois
+function changeCalendarMonth(delta) {
+    calendarCurrentMonth += delta;
+
+    if (calendarCurrentMonth > 11) {
+        calendarCurrentMonth = 0;
+        calendarCurrentYear++;
+    } else if (calendarCurrentMonth < 0) {
+        calendarCurrentMonth = 11;
+        calendarCurrentYear--;
+    }
+
+    renderCalendar();
+}
+
+// Render le calendrier complet
+function renderCalendar() {
+    const container = document.getElementById('calendarGridContainer');
+    const summaryContainer = document.getElementById('calendarSummary');
+    const titleEl = document.getElementById('calendarTitle');
+
+    if (!container || !summaryContainer || !titleEl) {
+        console.error('Éléments du calendrier non trouvés');
+        return;
+    }
+
+    // Mettre à jour le titre
+    const monthNames = ['JANVIER', 'FÉVRIER', 'MARS', 'AVRIL', 'MAI', 'JUIN',
+                        'JUILLET', 'AOÛT', 'SEPTEMBRE', 'OCTOBRE', 'NOVEMBRE', 'DÉCEMBRE'];
+    titleEl.textContent = `📅 ${monthNames[calendarCurrentMonth]} ${calendarCurrentYear}`;
+
+    // Utiliser les habitudes par défaut si le tableau est vide
+    const habitsToRender = habits.length > 0 ? habits : [
+        { id: 'coldshower', name: 'DOUCHE FROIDE', icon: '🧊' },
+        { id: 'reading', name: 'LECTURE (30 min)', icon: '📚' },
+        { id: 'nutrition', name: 'NUTRITION CLEAN', icon: '🥗' },
+        { id: 'sleep', name: 'SOMMEIL 8H+', icon: '😴' },
+        { id: 'hydration', name: 'HYDRATATION 2L+', icon: '💧' },
+        { id: 'wakeup', name: 'RÉVEIL 5H-6H', icon: '⏰' }
+    ];
+
+    console.log('Rendu du calendrier pour', habitsToRender.length, 'habitudes');
+
+    // Générer le calendrier pour chaque habitude
+    let html = '';
+
+    habitsToRender.forEach(habit => {
+        const habitStats = getHabitCalendarStats(habit.id);
+        const percentClass = habitStats.percent >= 70 ? 'good' : habitStats.percent >= 40 ? 'medium' : 'bad';
+        const displayName = habit.name || habit.id;
+
+        html += `
+            <div class="calendar-habit-section">
+                <div class="calendar-habit-header">
+                    <span class="calendar-habit-icon">${habit.icon}</span>
+                    <span class="calendar-habit-name">${displayName}</span>
+                    <span class="calendar-habit-percent ${percentClass}">${habitStats.percent}%</span>
+                </div>
+                <div class="calendar-days-grid">
+                    ${renderCalendarDaysHeader()}
+                    ${renderCalendarDays(habit.id)}
+                </div>
+            </div>
+        `;
+    });
+
+    container.innerHTML = html;
+    console.log('Calendrier généré');
+
+    // Render le résumé
+    renderCalendarSummary(summaryContainer);
+}
+
+// Header des jours de la semaine
+function renderCalendarDaysHeader() {
+    const days = ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'];
+    return days.map(day => `<div class="calendar-day-header">${day}</div>`).join('');
+}
+
+// Render les jours du calendrier pour une habitude
+function renderCalendarDays(habitId) {
+    const data = getData();
+    const today = new Date();
+    const todayKey = getDateKey(today);
+
+    // Premier jour du mois
+    const firstDay = new Date(calendarCurrentYear, calendarCurrentMonth, 1);
+    // Nombre de jours dans le mois
+    const daysInMonth = new Date(calendarCurrentYear, calendarCurrentMonth + 1, 0).getDate();
+
+    // Jour de la semaine du premier jour (0=dimanche, convertir en 0=lundi)
+    let startDay = firstDay.getDay() - 1;
+    if (startDay < 0) startDay = 6;
+
+    let html = '';
+
+    // Cases vides avant le premier jour
+    for (let i = 0; i < startDay; i++) {
+        html += '<div class="calendar-day empty"></div>';
+    }
+
+    // Jours du mois
+    for (let day = 1; day <= daysInMonth; day++) {
+        const date = new Date(calendarCurrentYear, calendarCurrentMonth, day);
+        const dateKey = getDateKey(date);
+        const dayData = data.days[dateKey] || {};
+        const isCompleted = dayData[habitId] === true;
+        const isFuture = date > today;
+        const isToday = dateKey === todayKey;
+
+        let statusClass = 'empty';
+        if (isFuture) {
+            statusClass = 'future';
+        } else if (isCompleted) {
+            statusClass = 'success';
+        } else if (Object.keys(dayData).length > 0 || date < today) {
+            // Si on a des données pour ce jour ou si c'est passé sans données = échec
+            statusClass = 'fail';
+        }
+
+        const todayClass = isToday ? 'today' : '';
+        const delay = (day + startDay) * 0.02;
+
+        html += `<div class="calendar-day ${statusClass} ${todayClass}" style="animation-delay: ${delay}s">${day}</div>`;
+    }
+
+    return html;
+}
+
+// Statistiques d'une habitude pour le mois
+function getHabitCalendarStats(habitId) {
+    const data = getData();
+    const today = new Date();
+    const daysInMonth = new Date(calendarCurrentYear, calendarCurrentMonth + 1, 0).getDate();
+
+    let completed = 0;
+    let totalDays = 0;
+
+    for (let day = 1; day <= daysInMonth; day++) {
+        const date = new Date(calendarCurrentYear, calendarCurrentMonth, day);
+
+        // Ne compter que les jours passés ou aujourd'hui
+        if (date <= today) {
+            totalDays++;
+            const dateKey = getDateKey(date);
+            const dayData = data.days[dateKey] || {};
+            if (dayData[habitId] === true) {
+                completed++;
+            }
+        }
+    }
+
+    return {
+        completed,
+        totalDays,
+        percent: totalDays > 0 ? Math.round((completed / totalDays) * 100) : 0
+    };
+}
+
+// Render le résumé du mois
+function renderCalendarSummary(container) {
+    const data = getData();
+    const today = new Date();
+    const daysInMonth = new Date(calendarCurrentYear, calendarCurrentMonth + 1, 0).getDate();
+
+    let totalSuccesses = 0;
+    let totalFails = 0;
+    let perfectDays = 0;
+    let daysAnalyzed = 0;
+
+    for (let day = 1; day <= daysInMonth; day++) {
+        const date = new Date(calendarCurrentYear, calendarCurrentMonth, day);
+
+        if (date <= today) {
+            const dateKey = getDateKey(date);
+            const dayData = data.days[dateKey] || {};
+
+            // Compter uniquement si on a des données
+            if (Object.keys(dayData).length > 0) {
+                daysAnalyzed++;
+                let dayCompleted = 0;
+
+                habits.forEach(habit => {
+                    if (dayData[habit.id] === true) {
+                        totalSuccesses++;
+                        dayCompleted++;
+                    } else {
+                        totalFails++;
+                    }
+                });
+
+                if (dayCompleted === habits.length) {
+                    perfectDays++;
+                }
+            }
+        }
+    }
+
+    const totalHabitsAnalyzed = totalSuccesses + totalFails;
+    const globalPercent = totalHabitsAnalyzed > 0 ? Math.round((totalSuccesses / totalHabitsAnalyzed) * 100) : 0;
+
+    // Message motivationnel
+    let motivationMessage = '';
+    let motivationClass = '';
+
+    if (globalPercent >= 80) {
+        motivationMessage = "🏆 Excellent ! Tu es sur la voie de la maîtrise. Continue ainsi !";
+    } else if (globalPercent >= 60) {
+        motivationMessage = "💪 Bon travail ! Tu progresses bien. Pousse encore un peu !";
+    } else if (globalPercent >= 40) {
+        motivationMessage = "⚡ Tu as du potentiel ! Chaque jour est une nouvelle chance de s'améliorer.";
+        motivationClass = 'warning';
+    } else {
+        motivationMessage = "🔥 Ne lâche rien ! Les vrais guerriers se relèvent toujours. Recommence demain !";
+        motivationClass = 'warning';
+    }
+
+    container.innerHTML = `
+        <div class="summary-title">📊 RÉSUMÉ DU MOIS</div>
+        <div class="summary-stats">
+            <div class="summary-stat">
+                <span class="summary-stat-value green">${totalSuccesses}</span>
+                <span class="summary-stat-label">Victoires</span>
+            </div>
+            <div class="summary-stat">
+                <span class="summary-stat-value red">${totalFails}</span>
+                <span class="summary-stat-label">Échecs</span>
+            </div>
+            <div class="summary-stat">
+                <span class="summary-stat-value blue">${perfectDays}</span>
+                <span class="summary-stat-label">Jours parfaits</span>
+            </div>
+        </div>
+        <div class="calendar-motivation ${motivationClass}">
+            ${motivationMessage}
+        </div>
+    `;
+}
+
+// Fermer le modal si on clique en dehors
+document.addEventListener('DOMContentLoaded', () => {
+    const calendarModal = document.getElementById('calendarModal');
+    if (calendarModal) {
+        calendarModal.addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeCalendarModal();
+            }
+        });
+    }
+});
+
 // --- DIVERS ---
 
 // Affiche un message de bienvenue différent selon l'heure

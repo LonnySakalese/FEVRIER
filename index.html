@@ -264,7 +264,10 @@
                             <div class="settings-item-desc">Rappel quotidien</div>
                         </div>
                         <div class="settings-item-action">
-                            <input type="time" id="notifTime" value="21:00" class="settings-time-input" onchange="updateNotificationTime()">
+                            <div class="time-input-wrapper">
+                                <span class="time-icon">⏰</span>
+                                <input type="time" id="notifTime" value="21:00" class="settings-time-input" onchange="updateNotificationTime()">
+                            </div>
                         </div>
                     </div>
                     <div class="settings-item">
@@ -3155,8 +3158,9 @@
         let currentCalendarMonth = new Date();
 
         function openCalendarModal() {
-            currentCalendarMonth = new Date();
+            currentCalendarMonth = new Date(); // Toujours commencer au mois actuel
             renderCalendarGrid();
+            updateCalendarNavButtons(); // Désactiver le bouton suivant au démarrage
             document.getElementById('calendarModal').classList.add('active');
         }
 
@@ -3165,8 +3169,36 @@
         }
 
         function changeCalendarMonth(delta) {
-            currentCalendarMonth.setMonth(currentCalendarMonth.getMonth() + delta);
+            const now = new Date();
+            const newMonth = new Date(currentCalendarMonth);
+            newMonth.setMonth(newMonth.getMonth() + delta);
+
+            // Empêcher de naviguer vers les mois futurs
+            if (delta > 0) {
+                if (newMonth.getFullYear() > now.getFullYear() ||
+                    (newMonth.getFullYear() === now.getFullYear() && newMonth.getMonth() > now.getMonth())) {
+                    return; // Ne pas avancer au-delà du mois actuel
+                }
+            }
+
+            currentCalendarMonth = newMonth;
             renderCalendarGrid();
+            updateCalendarNavButtons();
+        }
+
+        // Met à jour l'état des boutons de navigation
+        function updateCalendarNavButtons() {
+            const now = new Date();
+            const nextBtn = document.querySelector('.calendar-header .calendar-nav-btn:last-child');
+
+            if (nextBtn) {
+                // Désactiver le bouton "suivant" si on est au mois actuel
+                const isCurrentMonth = currentCalendarMonth.getFullYear() === now.getFullYear() &&
+                                       currentCalendarMonth.getMonth() === now.getMonth();
+                nextBtn.disabled = isCurrentMonth;
+                nextBtn.style.opacity = isCurrentMonth ? '0.3' : '1';
+                nextBtn.style.cursor = isCurrentMonth ? 'not-allowed' : 'pointer';
+            }
         }
 
         function renderCalendarGrid() {
@@ -3182,11 +3214,24 @@
                                'JUILLET', 'AOÛT', 'SEPTEMBRE', 'OCTOBRE', 'NOVEMBRE', 'DÉCEMBRE'];
             titleEl.textContent = `📅 ${monthNames[month]} ${year}`;
 
-            // Récupérer les habitudes
+            // Récupérer les données
             const data = getData();
-            const habits = data.habits || [];
 
-            if (habits.length === 0) {
+            // Utiliser la variable globale habits (pas data.habits)
+            // Si habits est vide, utiliser les habitudes par défaut
+            const habitsToShow = (typeof habits !== 'undefined' && habits.length > 0) ? habits : [
+                { id: 'coldshower', name: 'DOUCHE FROIDE', icon: '🧊' },
+                { id: 'reading', name: 'LECTURE (30 min)', icon: '📚' },
+                { id: 'nutrition', name: 'NUTRITION CLEAN', icon: '🥗' },
+                { id: 'sleep', name: 'SOMMEIL 8H+', icon: '😴' },
+                { id: 'hydration', name: 'HYDRATATION 2L+', icon: '💧' },
+                { id: 'wakeup', name: 'RÉVEIL 5H-6H', icon: '⏰' }
+            ];
+
+            // Utiliser les vraies données (pas de génération automatique)
+            let calendarData = data;
+
+            if (habitsToShow.length === 0) {
                 container.innerHTML = '<p style="text-align: center; color: var(--accent-dark); padding: 20px;">Aucune habitude créée</p>';
                 summaryContainer.innerHTML = '';
                 return;
@@ -3207,7 +3252,7 @@
             // Générer le HTML pour chaque habitude
             let html = '';
 
-            habits.forEach((habit, habitIndex) => {
+            habitsToShow.forEach((habit, habitIndex) => {
                 let habitSuccess = 0;
                 let habitFail = 0;
                 let habitTotal = 0;
@@ -3232,8 +3277,8 @@
                     date.setHours(0, 0, 0, 0);
                     const dateKey = getDateKey(date);
 
-                    const dayData = data.days && data.days[dateKey];
-                    const isCompleted = dayData && dayData.habits && dayData.habits[habit.id];
+                    const dayData = calendarData.days && calendarData.days[dateKey];
+                    const isCompleted = dayData && dayData[habit.id] === true;
                     const isPast = date < today;
                     const isToday = date.getTime() === today.getTime();
                     const isFuture = date > today;
@@ -3296,7 +3341,7 @@
             if (overallPercent >= 80) {
                 motivationMessage = '🏆 Exceptionnel ! Tu domines ce mois avec une discipline de fer !';
             } else if (overallPercent >= 60) {
-                motivationMessage = '💪 Bon travail ! Continue sur cette lancée pour atteindre l\'excellence !';
+                motivationMessage = '💪 Bon travail ! Continue sur cette lancée !';
             } else if (overallPercent >= 40) {
                 motivationMessage = '⚡ Tu peux faire mieux. Chaque jour est une nouvelle opportunité !';
                 motivationClass = 'warning';
