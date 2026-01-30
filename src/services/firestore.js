@@ -107,3 +107,78 @@ export function canEditDate(date) {
     if (isDayValidated(date)) return false;
     return true;
 }
+
+// --- VALIDATION DE JOURNÉE ---
+
+/**
+ * Marque une journée comme validée
+ * @param {string} userId - L'identifiant de l'utilisateur
+ * @param {Date} date - La date à valider
+ * @returns {Promise<boolean>} - true si la validation a réussi
+ */
+export async function setDayAsValidated(userId, date) {
+    const dateKey = getDateKey(date);
+
+    // Sauvegarde dans localStorage
+    const data = getData();
+
+    // Initialiser le tableau des jours validés s'il n'existe pas
+    if (!data.validatedDays) {
+        data.validatedDays = [];
+    }
+
+    // Vérifier si déjà validé
+    if (data.validatedDays.includes(dateKey)) {
+        console.log('Cette journée est déjà validée.');
+        return true;
+    }
+
+    // Ajouter la date aux jours validés
+    data.validatedDays.push(dateKey);
+
+    // Enregistrer le timestamp de validation
+    if (!data.validationTimestamps) {
+        data.validationTimestamps = {};
+    }
+    data.validationTimestamps[dateKey] = new Date().toISOString();
+
+    // Sauvegarder dans localStorage
+    saveData(data);
+
+    console.log(`Journée ${dateKey} validée avec succès.`);
+
+    // Si Firebase est configuré, sauvegarder aussi dans Firestore
+    if (typeof firebase !== 'undefined' && firebase.firestore) {
+        try {
+            const db = firebase.firestore();
+            await db.collection('users').doc(userId).collection('validatedDays').doc(dateKey).set({
+                validatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                dateKey: dateKey
+            });
+            console.log('Validation sauvegardée dans Firestore.');
+        } catch (error) {
+            console.warn('Erreur Firestore (localStorage utilisé):', error);
+        }
+    }
+
+    return true;
+}
+
+/**
+ * Récupère la liste des jours validés
+ * @returns {string[]} - Tableau des dates validées (format AAAA-MM-JJ)
+ */
+export function getValidatedDays() {
+    const data = getData();
+    return data.validatedDays || [];
+}
+
+/**
+ * Vérifie si une journée spécifique est validée
+ * @param {string} dateKey - La date au format AAAA-MM-JJ
+ * @returns {boolean}
+ */
+export function isDateValidated(dateKey) {
+    const validatedDays = getValidatedDays();
+    return validatedDays.includes(dateKey);
+}

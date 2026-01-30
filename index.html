@@ -2177,7 +2177,7 @@
             if (secondConfirm) {
                 localStorage.removeItem('warriorTracker');
                 updateUI();
-                showPopup('Données réinitialisées. Nouveau départ WARRIOR !', 'success');
+                showPopup('Données réinitialisées.', 'success');
             }
         }
 
@@ -2734,7 +2734,7 @@
 
             // Feedback
             if (navigator.vibrate) navigator.vibrate([100, 50, 100, 50, 100]);
-            showPopup('✅ Journée validée ! Bravo WARRIOR ! 💪', 'success');
+            showPopup('✅ Journée validée !', 'success');
 
             // Confettis si jour parfait
             const dayData = getDayData(new Date());
@@ -2753,11 +2753,17 @@
             const btn = document.getElementById('validateDayBtn');
             if (!btn) return;
 
+            // Masquer si aucune habitude créée
+            if (!habits || habits.length === 0) {
+                btn.style.display = 'none';
+                return;
+            }
+
             const today = getDateKey(new Date());
-            const currentDate = getDateKey(appState.currentDate);
+            const currentDateKey = getDateKey(currentDate); // Utilise la variable globale currentDate
 
             // Afficher uniquement si on visualise aujourd'hui
-            if (currentDate !== today) {
+            if (currentDateKey !== today) {
                 btn.style.display = 'none';
                 return;
             }

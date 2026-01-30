@@ -3424,3 +3424,254 @@ canvas {
         font-size: 1.2rem;
     }
 }
+
+/* ============================================================ */
+/* STYLES POUR LA PAGE TODAY (MODULE)                           */
+/* ============================================================ */
+
+.today-page {
+    padding: 20px;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.today-header {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.today-header h2 {
+    font-size: 1.8rem;
+    color: var(--accent);
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.today-date {
+    color: var(--accent-dark);
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+    text-transform: capitalize;
+}
+
+.today-score {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    padding: 15px;
+    background: var(--charcoal);
+    border-radius: 12px;
+    border: 1px solid var(--steel);
+}
+
+.score-value {
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: var(--accent);
+    text-shadow: 0 0 20px rgba(245, 245, 240, 0.3);
+}
+
+.score-label {
+    font-size: 0.85rem;
+    color: var(--accent-dark);
+}
+
+/* Liste des habitudes */
+.habit-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 25px;
+}
+
+.habit-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    background: var(--charcoal);
+    border: 1px solid var(--steel);
+    border-radius: 10px;
+    transition: all 0.3s ease;
+}
+
+.habit-item:hover {
+    border-color: var(--accent-dark);
+    transform: translateX(5px);
+}
+
+.habit-item.completed {
+    background: linear-gradient(90deg, rgba(46, 204, 113, 0.15), var(--charcoal));
+    border-color: #2ECC71;
+}
+
+.habit-item.locked {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.habit-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.habit-icon {
+    font-size: 1.5rem;
+}
+
+.habit-name {
+    font-size: 1rem;
+    color: var(--accent);
+    font-weight: 500;
+}
+
+.habit-checkbox {
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    accent-color: #2ECC71;
+}
+
+.no-habits {
+    text-align: center;
+    color: var(--accent-dark);
+    padding: 30px;
+    font-style: italic;
+}
+
+/* Bouton de validation */
+.validate-btn {
+    width: 100%;
+    padding: 18px 24px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    background: linear-gradient(135deg, var(--steel) 0%, var(--charcoal) 100%);
+    color: var(--accent);
+    border: 2px solid var(--steel);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.validate-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.validate-btn:not(:disabled) {
+    background: linear-gradient(135deg, #2ECC71 0%, #27AE60 100%);
+    border-color: #2ECC71;
+    color: #fff;
+    box-shadow: 0 0 20px rgba(46, 204, 113, 0.4);
+    animation: pulseGlow 2s ease-in-out infinite;
+}
+
+.validate-btn:not(:disabled):hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 30px rgba(46, 204, 113, 0.6);
+}
+
+.validate-btn:not(:disabled):active {
+    transform: translateY(0);
+}
+
+.validate-btn.validated {
+    background: linear-gradient(135deg, #27AE60 0%, #1E8449 100%);
+    border-color: #27AE60;
+    color: #fff;
+    animation: none;
+}
+
+@keyframes pulseGlow {
+    0%, 100% {
+        box-shadow: 0 0 20px rgba(46, 204, 113, 0.4);
+    }
+    50% {
+        box-shadow: 0 0 35px rgba(46, 204, 113, 0.7);
+    }
+}
+
+/* Banner de journée validée */
+.day-validated-banner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 16px 20px;
+    margin-bottom: 20px;
+    background: linear-gradient(135deg, rgba(46, 204, 113, 0.2), rgba(39, 174, 96, 0.1));
+    border: 2px solid #2ECC71;
+    border-radius: 12px;
+    animation: slideIn 0.5s ease-out;
+}
+
+.day-validated-banner.success-animation {
+    animation: successPop 0.6s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes successPop {
+    0% {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.validated-icon {
+    font-size: 1.8rem;
+    animation: bounce 1s ease infinite;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+}
+
+.validated-text {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #2ECC71;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Animation confettis */
+@keyframes confettiFall {
+    0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(100vh) rotate(720deg);
+        opacity: 0;
+    }
+}
+
+.confetti {
+    animation: confettiFall 3s linear forwards;
+}
