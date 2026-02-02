@@ -92,7 +92,7 @@
     <!-- En-tête principal de l'application -->
     <div class="header">
         <h1>PROJET FEVRIER</h1>
-        <div class="quote">Bonjour [Nom], pret pour aujourd'hui ?</div>
+        <div class="quote">TEXTE</div>
     </div>
 
     <!-- Page "Aujourd'hui" : affiche les habitudes du jour -->
@@ -149,6 +149,15 @@
             </div>
         </div>
 
+        <!-- Performance du mois -->
+        <div class="section-title">⏳​ CE MOIS-CI</div>
+        <!-- Bouton calendrier visuel -->
+        <div class="calendar-btn-container">
+            <button class="calendar-view-btn" onclick="openCalendarModal()">
+                📅 VOIR LE CALENDRIER DU MOIS
+            </button>
+        </div>
+
         <!-- Grille de performance de la semaine -->
         <div class="section-title">📊 CETTE SEMAINE</div>
         <div class="weekly-grid" id="weeklyGrid"></div>
@@ -185,13 +194,6 @@
                 <div class="stat-label">Moyenne globale</div>
             </div>
         </div>
-
-        <!-- Bouton calendrier visuel -->
-        <div class="calendar-btn-container">
-            <button class="calendar-view-btn" onclick="openCalendarModal()">
-                📅 VOIR LE CALENDRIER DU MOIS
-            </button>
-        </div>
     </div>
 
     <!-- Page "Motivation" : citations, règles et informations -->
@@ -204,28 +206,17 @@
         </div>
 
         <!-- Système de rangs dans la page informations -->
-        <div class="section-title">🏆RANG A ATTEINDRE</div>
-        <div style="padding: 15px;">
-            <div class="stat-card" style="margin-bottom: 10px; border-color: #5A5A55;">
-                <div style="color: #5A5A55; font-weight: bold;">DÉBUTANT</div>
-                <div style="color: #5A5A55; font-size: 0.7rem;">0-30%</div>
-            </div>
-            <div class="stat-card" style="margin-bottom: 10px; border-color: #7A7A75;">
-                <div style="color: #7A7A75; font-weight: bold;">APPRENTI</div>
-                <div style="color: #7A7A75; font-size: 0.7rem;">31-50%</div>
-            </div>
-            <div class="stat-card" style="margin-bottom: 10px; border-color: #A3A39E;">
-                <div style="color: #A3A39E; font-weight: bold;">CONFIRMÉ</div>
-                <div style="color: #A3A39E; font-size: 0.7rem;">51-70%</div>
-            </div>
-            <div class="stat-card" style="margin-bottom: 10px; border-color: #D4D4CF;">
-                <div style="color: #D4D4CF; font-weight: bold;">EXPERT</div>
-                <div style="color: #D4D4CF; font-size: 0.7rem;">71-85%</div>
-            </div>
-            <div class="stat-card" style="border-color: var(--accent); background: var(--accent);">
-                <div style="color: var(--black); font-weight: bold;">MAÎTRE</div>
-                <div style="color: var(--black); font-size: 0.7rem;">86-100%</div>
-            </div>
+        <div class="section-title" style="display: flex; justify-content: space-between; align-items: center;">
+            <span>🏆RANG À ATTEINDRE</span>
+            <button id="editRanksBtn" class="edit-ranks-btn" onclick="toggleRankEditMode()">✏️</button>
+        </div>
+        <div id="ranksContainer" style="padding: 15px;">
+            <!-- Généré dynamiquement par JavaScript -->
+        </div>
+        <!-- Boutons d'édition (cachés par défaut) -->
+        <div id="rankEditButtons" class="rank-edit-buttons" style="display: none; padding: 0 15px 15px; gap: 10px;">
+            <button class="modal-btn cancel" onclick="cancelRankEdit()">Annuler</button>
+            <button class="modal-btn save" onclick="saveRankSettings()">Enregistrer</button>
         </div>
 
         <!-- Section des paramètres -->
@@ -266,7 +257,8 @@
                         <div class="settings-item-action">
                             <div class="time-input-wrapper">
                                 <span class="time-icon">⏰</span>
-                                <input type="time" id="notifTime" value="21:00" class="settings-time-input" onchange="updateNotificationTime()">
+                                <input type="time" id="notifTime" value="21:00" class="settings-time-input"
+                                    onchange="updateNotificationTime()">
                             </div>
                         </div>
                     </div>
@@ -304,7 +296,8 @@
                             <div class="settings-item-desc">Action irréversible</div>
                         </div>
                         <div class="settings-item-action">
-                            <button id="deleteAccountBtn" class="settings-btn danger" onclick="handleDeleteAccount()">Supprimer</button>
+                            <button id="deleteAccountBtn" class="settings-btn danger"
+                                onclick="handleDeleteAccount()">Supprimer</button>
                         </div>
                     </div>
                 </div>
@@ -367,6 +360,11 @@
                     </div>
 
                     <div class="form-group">
+                        <label>Description <span class="optional-label">(optionnel)</span></label>
+                        <textarea id="newHabitDescription" placeholder="Ex: 10 minutes de méditation chaque matin" maxlength="150" rows="2"></textarea>
+                    </div>
+
+                    <div class="form-group">
                         <label>Icône</label>
                         <div class="icon-picker" id="iconPicker">
                             <!-- Icônes populaires pour habitudes -->
@@ -402,6 +400,27 @@
                             <div class="color-option" data-color="#32CD32" style="background: #32CD32;"></div>
                             <div class="color-option" data-color="#FF4500" style="background: #FF4500;"></div>
                             <div class="color-option" data-color="#8B4513" style="background: #8B4513;"></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Fréquence</label>
+                        <div class="schedule-type-picker" id="scheduleTypePicker">
+                            <button type="button" class="schedule-type-btn active" data-type="daily" onclick="setScheduleType('daily')">
+                                📅 Tous les jours
+                            </button>
+                            <button type="button" class="schedule-type-btn" data-type="weekly" onclick="setScheduleType('weekly')">
+                                📆 Certains jours
+                            </button>
+                        </div>
+                        <div class="days-of-week-picker" id="daysOfWeekPicker" style="display: none;">
+                            <div class="day-checkbox" data-day="1" onclick="toggleDayOfWeek(1)">L</div>
+                            <div class="day-checkbox" data-day="2" onclick="toggleDayOfWeek(2)">M</div>
+                            <div class="day-checkbox" data-day="3" onclick="toggleDayOfWeek(3)">M</div>
+                            <div class="day-checkbox" data-day="4" onclick="toggleDayOfWeek(4)">J</div>
+                            <div class="day-checkbox" data-day="5" onclick="toggleDayOfWeek(5)">V</div>
+                            <div class="day-checkbox" data-day="6" onclick="toggleDayOfWeek(6)">S</div>
+                            <div class="day-checkbox" data-day="0" onclick="toggleDayOfWeek(0)">D</div>
                         </div>
                     </div>
 
@@ -598,7 +617,7 @@
             <div class="tutorial-step" data-step="2">
                 <div class="tutorial-icon-large">🎯</div>
                 <h2 class="tutorial-title">TES MISSIONS QUOTIDIENNES</h2>
-                <div class="tutorial-subtitle">Des habitudes pour etre toujours 1% meilleur que hier</div>
+                <div class="tutorial-subtitle">Des habitudes pour être toujours 1% meilleur que hier</div>
                 <div class="tutorial-content">
                     <div class="habits-showcase">
                         <div class="habit-preview" style="--delay: 0.1s">
@@ -696,7 +715,7 @@
             <div class="tutorial-step" data-step="4">
                 <div class="tutorial-icon-large">✅</div>
                 <h2 class="tutorial-title">VALIDE TES VICTOIRES</h2>
-                <div class="tutorial-subtitle">Chaque case coché est une bataille gagnée</div>
+                <div class="tutorial-subtitle">Chaque case cochée est une bataille gagnée</div>
                 <div class="tutorial-content">
                     <div class="demo-validation">
                         <div class="demo-habit-item" id="demoHabitItem">
@@ -711,7 +730,7 @@
                             <span class="tap-icon">👆</span> Clique ici !
                         </div>
                         <div class="demo-success" id="demoSuccess">
-                            <span class="success-icon">🎉</span> VICTOIRE ! Continue comme ça demain !
+                            <span class="success-icon">🎉</span> VICTOIRE ! Continue comme ça !
                         </div>
                     </div>
                     <div class="validation-tips">
@@ -755,7 +774,7 @@
                             <div class="rule-icon">⭐</div>
                             <div class="rule-title">JOURS PARFAITS</div>
                             <div class="rule-desc">Compte tes jours à 100% d'accomplissement</div>
-                            <div class="rule-example">Pour que L'excellence devient une habitude</div>
+                            <div class="rule-example">Pour que l'excellence devienne une habitude</div>
                         </div>
                         <div class="rule-card" style="--delay: 0.4s">
                             <div class="rule-icon">🎖️</div>
@@ -796,16 +815,16 @@
                         </div>
                         <div class="final-stats">
                             <div class="final-stat">
-                                <span class="stat-number">6</span>
-                                <span class="stat-label">Habitudes à conquérir (ou plus)</span>
-                            </div>
-                            <div class="final-stat">
                                 <span class="stat-number">∞</span>
-                                <span class="stat-label">Possibilités</span>
+                                <span class="stat-label">Habitudes à conquérir</span>
                             </div>
                             <div class="final-stat">
                                 <span class="stat-number">1</span>
-                                <span class="stat-label">Personne : TOI</span>
+                                <span class="stat-label">Personne qui peut les valider</span>
+                            </div>
+                            <div class="final-stat">
+                                <span class="stat-number">24h</span>
+                                <span class="stat-label">Pour les réussir</span>
                             </div>
                         </div>
                     </div>
@@ -923,6 +942,327 @@
             { text: "La seule personne que tu es destiné à devenir est celle que tu décides d'être.", author: "Ralph Waldo Emerson" },
             { text: "Le travail acharné bat le talent quand le talent ne travaille pas dur.", author: "Tim Notke" }
         ];
+
+        // ============================================================
+        // SYSTÈME DE RANGS PERSONNALISABLES
+        // ============================================================
+
+        // Structure de données globale pour les rangs (source de vérité unique)
+        let rankSettings = [];
+        let isRankEditMode = false;
+        let rankSettingsBackup = []; // Pour annuler les modifications
+        let selectedPaletteId = 'samourai'; // Palette par défaut
+        let selectedPaletteIdBackup = 'samourai'; // Pour annuler
+
+        // Les 7 palettes de couleurs prédéfinies
+        const colorPalettes = [
+            {
+                id: 'monochrome',
+                name: 'Thème Principal',
+                colors: ['#4A4A45', '#6A6A65', '#9A9A95', '#C5C5C0', '#F5F5F0']
+            },
+            {
+                id: 'or-bronze',
+                name: 'Or & Bronze',
+                colors: ['#8B5A2B', '#CD853F', '#C0C0C0', '#DAA520', '#FFD700']
+            },
+            {
+                id: 'feu-glace',
+                name: 'Feu & Glace',
+                colors: ['#5B7C99', '#48D1CC', '#BFFF00', '#FF6B35', '#FF2D2D']
+            },
+            {
+                id: 'neon',
+                name: 'Néon Cyberpunk',
+                colors: ['#5C4B8A', '#00D4FF', '#39FF14', '#FFFF00', '#FF00FF']
+            },
+            {
+                id: 'nature',
+                name: 'Nature & Terre',
+                colors: ['#6B4423', '#8B9A6B', '#228B22', '#87CEEB', '#FFB347']
+            },
+            {
+                id: 'pastel',
+                name: 'Minimaliste Pastel',
+                colors: ['#A8D8EA', '#AA96DA', '#FCBAD3', '#FF9AA2', '#FFDAC1']
+            },
+            {
+                id: 'samourai',
+                name: 'Guerrier Samouraï',
+                colors: ['#2C2C2C', '#4B5D67', '#8B0000', '#D4AF37', '#FFFAF0']
+            }
+        ];
+
+        // Charge les rangs par défaut avec la palette Samouraï
+        function loadDefaultRanks() {
+            const palette = colorPalettes.find(p => p.id === selectedPaletteId) || colorPalettes[6];
+            return [
+                { id: 'debutant', name: 'DÉBUTANT', minScore: 0, color: palette.colors[0] },
+                { id: 'apprenti', name: 'APPRENTI', minScore: 31, color: palette.colors[1] },
+                { id: 'confirme', name: 'CONFIRMÉ', minScore: 51, color: palette.colors[2] },
+                { id: 'expert', name: 'EXPERT', minScore: 71, color: palette.colors[3] },
+                { id: 'maitre', name: 'MAÎTRE', minScore: 86, color: palette.colors[4], isTop: true }
+            ];
+        }
+
+        // Applique une palette de couleurs aux rangs
+        function applyPaletteToRanks(paletteId) {
+            const palette = colorPalettes.find(p => p.id === paletteId);
+            if (!palette) return;
+
+            selectedPaletteId = paletteId;
+            rankSettings.forEach((rank, index) => {
+                if (index < palette.colors.length) {
+                    rank.color = palette.colors[index];
+                }
+            });
+        }
+
+        // Charge les paramètres de rangs depuis le stockage
+        function loadRankSettings() {
+            const data = getData();
+            if (data.rankSettings && Array.isArray(data.rankSettings) && data.rankSettings.length > 0) {
+                rankSettings = data.rankSettings;
+                selectedPaletteId = data.selectedPaletteId || 'samourai';
+                console.log('✅ Rangs personnalisés chargés:', rankSettings.length);
+            } else {
+                rankSettings = loadDefaultRanks();
+                console.log('📋 Rangs par défaut chargés');
+            }
+            // Trier par minScore croissant
+            rankSettings.sort((a, b) => a.minScore - b.minScore);
+        }
+
+        // Sauvegarde les paramètres de rangs
+        function saveRankSettingsToStorage() {
+            const data = getData();
+            data.rankSettings = rankSettings;
+            data.selectedPaletteId = selectedPaletteId;
+            saveData(data);
+            console.log('💾 Rangs sauvegardés');
+        }
+
+        // Calcule la plage de score pour un rang donné
+        function getRankScoreRange(index) {
+            const rank = rankSettings[index];
+            const nextRank = rankSettings[index + 1];
+            const minScore = rank.minScore;
+            const maxScore = nextRank ? nextRank.minScore - 1 : 100;
+            return { min: minScore, max: maxScore };
+        }
+
+        // Génère l'aperçu d'une palette
+        function renderPalettePreview(palette) {
+            return palette.colors.map(color =>
+                `<span class="palette-color-dot" style="background: ${color};"></span>`
+            ).join('');
+        }
+
+        // Rendu dynamique de la liste des rangs
+        function renderRanks(isEditing = false) {
+            const container = document.getElementById('ranksContainer');
+            if (!container) return;
+
+            if (rankSettings.length === 0) {
+                loadRankSettings();
+            }
+
+            let html = '';
+
+            // En mode édition, ajouter le sélecteur de palette
+            if (isEditing) {
+                html += `
+                    <div class="palette-selector">
+                        <div class="palette-selector-header">
+                            <span class="palette-icon">🎨</span>
+                            <span class="palette-label">PALETTE DE COULEURS</span>
+                        </div>
+                        <div class="palette-grid" id="paletteGrid">
+                            ${colorPalettes.map(palette => `
+                                <div class="palette-card ${palette.id === selectedPaletteId ? 'selected' : ''}"
+                                     onclick="onPaletteChange('${palette.id}')"
+                                     data-palette-id="${palette.id}">
+                                    <div class="palette-card-colors">
+                                        ${palette.colors.map(color => `
+                                            <span class="palette-card-dot" style="background: ${color};"></span>
+                                        `).join('')}
+                                    </div>
+                                    <div class="palette-card-name">${palette.name}</div>
+                                    ${palette.id === 'samourai' ? '<span class="palette-recommended">★</span>' : ''}
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            rankSettings.forEach((rank, index) => {
+                const range = getRankScoreRange(index);
+                const isTopRank = rank.isTop || index === rankSettings.length - 1;
+
+                if (isEditing) {
+                    // Mode édition : nom modifiable, seuil de score fixe
+                    html += `
+                        <div class="stat-card rank-edit-card" style="margin-bottom: 10px; border-color: ${rank.color};">
+                            <div class="rank-edit-row">
+                                <span class="rank-color-preview" style="background: ${rank.color};"></span>
+                                <input type="text"
+                                    class="rank-name-input"
+                                    value="${rank.name}"
+                                    data-rank-id="${rank.id}"
+                                    data-field="name"
+                                    placeholder="Nom du rang"
+                                    style="color: ${rank.color}; border-color: ${rank.color};">
+                                <div class="rank-score-fixed" style="color: ${rank.color};">
+                                    ${range.min}-${range.max}%
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    // Mode affichage normal
+                    const bgStyle = isTopRank ? `background: ${rank.color};` : '';
+                    const textColor = isTopRank ? 'var(--black)' : rank.color;
+
+                    html += `
+                        <div class="stat-card" style="margin-bottom: 10px; border-color: ${rank.color}; ${bgStyle}">
+                            <div style="color: ${textColor}; font-weight: bold;">${rank.name}</div>
+                            <div style="color: ${textColor}; font-size: 0.7rem;">${range.min}-${range.max}%</div>
+                        </div>
+                    `;
+                }
+            });
+
+            container.innerHTML = html;
+        }
+
+        // Gère le changement de palette
+        function onPaletteChange(paletteId) {
+            applyPaletteToRanks(paletteId);
+
+            // Mettre à jour la sélection visuelle des cartes
+            document.querySelectorAll('.palette-card').forEach(card => {
+                if (card.dataset.paletteId === paletteId) {
+                    card.classList.add('selected');
+                } else {
+                    card.classList.remove('selected');
+                }
+            });
+
+            // Re-render pour mettre à jour les couleurs des inputs
+            renderRanks(true);
+
+            // Feedback
+            if (navigator.vibrate) navigator.vibrate(20);
+        }
+
+        // Active/désactive le mode édition des rangs
+        function toggleRankEditMode() {
+            isRankEditMode = !isRankEditMode;
+
+            const editBtn = document.getElementById('editRanksBtn');
+            const editButtons = document.getElementById('rankEditButtons');
+
+            if (isRankEditMode) {
+                // Sauvegarder l'état actuel pour pouvoir annuler
+                rankSettingsBackup = JSON.parse(JSON.stringify(rankSettings));
+                selectedPaletteIdBackup = selectedPaletteId;
+                editBtn.textContent = '🔒';
+                editBtn.title = 'Mode édition actif';
+                editButtons.style.display = 'flex';
+                renderRanks(true);
+            } else {
+                editBtn.textContent = '✏️';
+                editBtn.title = 'Modifier les rangs';
+                editButtons.style.display = 'none';
+                renderRanks(false);
+            }
+        }
+
+        // Annule l'édition des rangs
+        function cancelRankEdit() {
+            // Restaurer les valeurs sauvegardées
+            rankSettings = JSON.parse(JSON.stringify(rankSettingsBackup));
+            selectedPaletteId = selectedPaletteIdBackup;
+            isRankEditMode = false;
+
+            const editBtn = document.getElementById('editRanksBtn');
+            const editButtons = document.getElementById('rankEditButtons');
+
+            editBtn.textContent = '✏️';
+            editButtons.style.display = 'none';
+            renderRanks(false);
+
+            showPopup('Modifications annulées', 'info');
+        }
+
+        // Sauvegarde les paramètres de rangs depuis les inputs
+        function saveRankSettings() {
+            // Récupérer uniquement les noms (les scores sont fixes)
+            const nameInputs = document.querySelectorAll('.rank-name-input');
+
+            let hasError = false;
+
+            // Récupérer la palette sélectionnée
+            const palette = colorPalettes.find(p => p.id === selectedPaletteId);
+
+            nameInputs.forEach((input, index) => {
+                const name = input.value.trim().toUpperCase();
+
+                if (!name) {
+                    showPopup(`Le nom du rang ${index + 1} est requis`, 'warning');
+                    hasError = true;
+                    return;
+                }
+
+                // Mettre à jour uniquement le nom et la couleur (le score reste fixe)
+                rankSettings[index].name = name;
+                rankSettings[index].color = palette ? palette.colors[index] : rankSettings[index].color;
+            });
+
+            if (hasError) return;
+
+            // Marquer le dernier comme isTop
+            if (rankSettings.length > 0) {
+                rankSettings.forEach((r, i) => r.isTop = (i === rankSettings.length - 1));
+            }
+
+            // Sauvegarder
+            saveRankSettingsToStorage();
+
+            // Sortir du mode édition
+            isRankEditMode = false;
+            const editBtn = document.getElementById('editRanksBtn');
+            const editButtons = document.getElementById('rankEditButtons');
+
+            editBtn.textContent = '✏️';
+            editButtons.style.display = 'none';
+            renderRanks(false);
+
+            // Mettre à jour l'affichage du rang utilisateur
+            updateStats();
+
+            if (navigator.vibrate) navigator.vibrate([30, 30, 30]);
+            showPopup('Rangs personnalisés sauvegardés !', 'success');
+        }
+
+        // Réinitialiser les rangs par défaut
+        async function resetRanksToDefault() {
+            const confirmed = await ConfirmModal.show({
+                title: '🔄 RÉINITIALISER LES RANGS',
+                message: 'Remettre les rangs par défaut ?',
+                confirmText: 'Réinitialiser',
+                cancelText: 'Annuler'
+            });
+
+            if (confirmed) {
+                rankSettings = loadDefaultRanks();
+                saveRankSettingsToStorage();
+                renderRanks(false);
+                updateStats();
+                showPopup('Rangs réinitialisés', 'success');
+            }
+        }
 
         // ============================================================
         // SYSTÈME DE POPUP/TOAST NOTIFICATIONS
@@ -1594,9 +1934,14 @@
         // Calcule le score (en %) d'un jour donné
         function getDayScore(date) {
             if (habits.length === 0) return 0;
+
+            // Filtrer les habitudes planifiées pour ce jour
+            const scheduledHabits = habits.filter(h => isHabitScheduledForDate(h, date));
+            if (scheduledHabits.length === 0) return 100; // Jour de repos = 100%
+
             const dayData = getDayData(date);
-            const completed = habits.filter(h => dayData[h.id]).length;
-            return Math.round((completed / habits.length) * 100);
+            const completed = scheduledHabits.filter(h => dayData[h.id]).length;
+            return Math.round((completed / scheduledHabits.length) * 100);
         }
 
         // Calcule la série (streak) de jours consécutifs avec un score >= 70%
@@ -1621,43 +1966,85 @@
             return streak;
         }
 
-        // Compte le nombre total de jours parfaits (100% des habitudes complétées)
+        // Compte le nombre total de jours parfaits (100% des habitudes planifiées complétées)
         function getPerfectDays() {
             const data = getData();
             let count = 0;
             for (const key in data.days) {
+                // Recréer la date à partir de la clé (format: YYYY-MM-DD)
+                const [year, month, day] = key.split('-').map(Number);
+                const date = new Date(year, month - 1, day);
+
+                // Filtrer les habitudes planifiées pour ce jour
+                const scheduledHabits = habits.filter(h => isHabitScheduledForDate(h, date));
+                if (scheduledHabits.length === 0) continue; // Jour de repos ne compte pas
+
                 const dayData = data.days[key];
-                const completed = habits.filter(h => dayData[h.id]).length;
-                if (completed === habits.length) count++;
+                const completed = scheduledHabits.filter(h => dayData[h.id]).length;
+                if (completed === scheduledHabits.length) count++;
             }
             return count;
         }
 
-        // Détermine le rang de l'utilisateur en fonction de son score moyen
+        // Détermine le rang de l'utilisateur en fonction de son score moyen (utilise les rangs personnalisables)
         function getRank(score) {
-            if (score >= 86) return { name: 'MAÎTRE', color: '#F5F5F0' };
-            if (score >= 71) return { name: 'EXPERT', color: '#D4D4CF' };
-            if (score >= 51) return { name: 'CONFIRMÉ', color: '#A3A39E' };
-            if (score >= 31) return { name: 'APPRENTI', color: '#7A7A75' };
+            // S'assurer que les rangs sont chargés
+            if (rankSettings.length === 0) {
+                loadRankSettings();
+            }
+
+            // Parcourir les rangs du plus haut au plus bas pour trouver le rang correspondant
+            for (let i = rankSettings.length - 1; i >= 0; i--) {
+                if (score >= rankSettings[i].minScore) {
+                    return {
+                        name: rankSettings[i].name,
+                        color: rankSettings[i].color
+                    };
+                }
+            }
+
+            // Fallback au premier rang si aucun ne correspond
+            if (rankSettings.length > 0) {
+                return {
+                    name: rankSettings[0].name,
+                    color: rankSettings[0].color
+                };
+            }
+
+            // Fallback ultime
             return { name: 'DÉBUTANT', color: '#5A5A55' };
         }
 
         // Calcule la série pour une habitude spécifique
         function getHabitStreak(habitId) {
+            const habit = habits.find(h => h.id === habitId);
+            if (!habit) return 0;
+
             let streak = 0;
             let date = new Date();
             date.setDate(date.getDate() - 1); // Commence hier
+            let maxDaysBack = 365; // Limite pour éviter boucle infinie
 
-            while (true) {
-                const dayData = getDayData(date);
-                if (dayData[habitId]) {
-                    streak++;
-                    date.setDate(date.getDate() - 1);
-                } else {
-                    break;
+            while (maxDaysBack > 0) {
+                // Vérifier si l'habitude était planifiée ce jour
+                if (isHabitScheduledForDate(habit, date)) {
+                    const dayData = getDayData(date);
+                    if (dayData[habitId]) {
+                        streak++;
+                    } else {
+                        break; // Série rompue
+                    }
                 }
+                // Passer au jour précédent (même si non planifié)
+                date.setDate(date.getDate() - 1);
+                maxDaysBack--;
             }
-            if (getDayData(new Date())[habitId]) streak++; // Ajoute aujourd'hui
+
+            // Ajouter aujourd'hui si planifié et complété
+            const today = new Date();
+            if (isHabitScheduledForDate(habit, today) && getDayData(today)[habitId]) {
+                streak++;
+            }
             return streak;
         }
 
@@ -1693,13 +2080,26 @@
             const data = getData();
             const days = Object.keys(data.days);
             if (days.length === 0 || habits.length === 0) return 0;
+
             let total = 0;
+            let validDays = 0;
+
             days.forEach(key => {
+                // Recréer la date à partir de la clé (format: YYYY-MM-DD)
+                const [year, month, day] = key.split('-').map(Number);
+                const date = new Date(year, month - 1, day);
+
+                // Filtrer les habitudes planifiées pour ce jour
+                const scheduledHabits = habits.filter(h => isHabitScheduledForDate(h, date));
+                if (scheduledHabits.length === 0) return; // Jour de repos, ignorer
+
                 const dayData = data.days[key];
-                const completed = habits.filter(h => dayData[h.id]).length;
-                total += (completed / habits.length) * 100;
+                const completed = scheduledHabits.filter(h => dayData[h.id]).length;
+                total += (completed / scheduledHabits.length) * 100;
+                validDays++;
             });
-            return Math.round(total / days.length);
+
+            return validDays > 0 ? Math.round(total / validDays) : 0;
         }
 
         // Récupère la meilleure série enregistrée
@@ -1714,6 +2114,22 @@
         function formatDate(date) {
             const options = { weekday: 'short', day: 'numeric', month: 'short' };
             return date.toLocaleDateString('fr-FR', options);
+        }
+
+        // Vérifie si une habitude est planifiée pour une date donnée
+        function isHabitScheduledForDate(habit, date) {
+            // Compatibilité: les habitudes sans scheduleType sont considérées quotidiennes
+            const scheduleType = habit.scheduleType || 'daily';
+
+            if (scheduleType === 'daily') {
+                return true;
+            }
+
+            // Pour les habitudes hebdomadaires, vérifier si le jour est dans daysOfWeek
+            const daysOfWeek = habit.daysOfWeek || [0, 1, 2, 3, 4, 5, 6];
+            const dayOfWeek = date.getDay(); // 0 = Dimanche, 1 = Lundi, etc.
+
+            return daysOfWeek.includes(dayOfWeek);
         }
 
         // Change la date affichée (jour précédent/suivant)
@@ -1757,8 +2173,29 @@
                             Crée tes propres habitudes pour commencer !
                         </div>
                         <button class="reset-btn edit-habits-btn" onclick="openManageHabitsModal()" style="max-width: 250px; margin: 0 auto;">
-                            ➕ CRÉER MA PREMIERE HABITUDE
+                            ➕ CRÉER MA PREMIÈRE HABITUDE
                         </button>
+                    </div>
+                `;
+                return;
+            }
+
+            // Filtrer les habitudes planifiées pour ce jour
+            const scheduledHabits = habits.filter(habit => isHabitScheduledForDate(habit, currentDate));
+
+            // Message si aucune habitude planifiée pour ce jour
+            if (scheduledHabits.length === 0) {
+                const dayNames = ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
+                const dayName = dayNames[currentDate.getDay()];
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 40px 20px; color: var(--accent-dim);">
+                        <div style="font-size: 3rem; margin-bottom: 15px;">😌</div>
+                        <div style="font-size: 1.1rem; color: var(--accent); margin-bottom: 10px; font-weight: bold;">
+                            JOUR DE REPOS
+                        </div>
+                        <div style="font-size: 0.85rem; margin-bottom: 20px; line-height: 1.5;">
+                            Aucune habitude planifiée pour ${dayName}.
+                        </div>
                     </div>
                 `;
                 return;
@@ -1767,11 +2204,12 @@
             // Déterminer si c'est un jour passé (pas aujourd'hui)
             const isPastDay = !isToday(currentDate);
 
-            container.innerHTML = habits.map(habit => {
+            container.innerHTML = scheduledHabits.map(habit => {
                 const checked = dayData[habit.id] || false;
                 const streak = getHabitStreak(habit.id);
                 const monthData = getHabitMonthProgress(habit.id);
                 const displayName = getHabitDisplayName(habit);
+                const description = habit.description || '';
                 const escapedId = habit.id.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
                 const onclickAttr = locked ? '' : `onclick="toggleHabit('${escapedId}')"`;
 
@@ -1795,11 +2233,17 @@
                     checkboxClasses += ' failed';
                 }
 
+                // Afficher la description si elle existe
+                const descriptionHtml = description
+                    ? `<div class="habit-description">${description}</div>`
+                    : '';
+
                 return `
                     <div class="${itemClasses}" ${onclickAttr}>
                         <div class="${checkboxClasses}"></div>
                         <div class="habit-info">
                             <div class="habit-name">${habit.icon} ${displayName}</div>
+                            ${descriptionHtml}
                             <div class="habit-streak">${streakText}</div>
                         </div>
                         <div class="habit-progress">
@@ -1812,24 +2256,32 @@
 
         // Calcule le pourcentage de complétion d'une habitude pour le mois en cours
         function getHabitMonthProgress(habitId) {
+            const habit = habits.find(h => h.id === habitId);
+            if (!habit) return 0;
+
             const now = new Date();
             const year = now.getFullYear();
             const month = now.getMonth();
             const dayOfMonth = now.getDate();
 
             let completed = 0;
-            let totalDays = dayOfMonth; // Nombre de jours écoulés ce mois
+            let scheduledDays = 0;
 
             // Parcourir chaque jour du mois jusqu'à aujourd'hui
             for (let day = 1; day <= dayOfMonth; day++) {
                 const d = new Date(year, month, day);
-                const dayData = getDayData(d);
-                if (dayData[habitId]) {
-                    completed++;
+
+                // Ne compter que les jours où l'habitude était planifiée
+                if (isHabitScheduledForDate(habit, d)) {
+                    scheduledDays++;
+                    const dayData = getDayData(d);
+                    if (dayData[habitId]) {
+                        completed++;
+                    }
                 }
             }
 
-            return totalDays > 0 ? Math.round((completed / totalDays) * 100) : 0;
+            return scheduledDays > 0 ? Math.round((completed / scheduledDays) * 100) : 100;
         }
 
         // ============================================================
@@ -2197,6 +2649,8 @@
         // Variables globales pour la gestion des habitudes
         let selectedIcon = '🎯';
         let selectedColor = '#F5F5F0';
+        let selectedScheduleType = 'daily';
+        let selectedDaysOfWeek = [0, 1, 2, 3, 4, 5, 6]; // Tous les jours par défaut
 
         // Ouvrir la modal de gestion des habitudes
         function openManageHabitsModal() {
@@ -2267,6 +2721,52 @@
             }
         }
 
+        // Configuration du type de planification (quotidien/hebdomadaire)
+        function setScheduleType(type) {
+            selectedScheduleType = type;
+
+            // Mettre à jour les boutons
+            document.querySelectorAll('.schedule-type-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.type === type);
+            });
+
+            // Afficher/masquer le sélecteur de jours
+            const daysOfWeekPicker = document.getElementById('daysOfWeekPicker');
+            if (type === 'weekly') {
+                daysOfWeekPicker.style.display = 'flex';
+                // Si aucun jour n'est sélectionné, sélectionner tous par défaut
+                if (selectedDaysOfWeek.length === 0) {
+                    selectedDaysOfWeek = [1, 2, 3, 4, 5]; // Jours de semaine par défaut
+                    updateDaysOfWeekUI();
+                }
+            } else {
+                daysOfWeekPicker.style.display = 'none';
+                selectedDaysOfWeek = [0, 1, 2, 3, 4, 5, 6]; // Tous les jours
+            }
+        }
+
+        // Basculer un jour de la semaine
+        function toggleDayOfWeek(day) {
+            const index = selectedDaysOfWeek.indexOf(day);
+            if (index > -1) {
+                // Ne pas permettre de désélectionner tous les jours
+                if (selectedDaysOfWeek.length > 1) {
+                    selectedDaysOfWeek.splice(index, 1);
+                }
+            } else {
+                selectedDaysOfWeek.push(day);
+            }
+            updateDaysOfWeekUI();
+        }
+
+        // Mettre à jour l'UI des jours de la semaine
+        function updateDaysOfWeekUI() {
+            document.querySelectorAll('.day-checkbox').forEach(checkbox => {
+                const day = parseInt(checkbox.dataset.day);
+                checkbox.classList.toggle('selected', selectedDaysOfWeek.includes(day));
+            });
+        }
+
         // Réinitialiser le formulaire d'ajout
         function resetAddHabitForm() {
             const section = document.getElementById('addHabitSection');
@@ -2275,6 +2775,7 @@
             form.classList.remove('active');
             section.classList.add('collapsed');
             document.getElementById('newHabitName').value = '';
+            document.getElementById('newHabitDescription').value = '';
 
             // Reset sélections
             document.querySelectorAll('#iconPicker .icon-option').forEach(opt => opt.classList.remove('selected'));
@@ -2282,6 +2783,18 @@
 
             selectedIcon = '🎯';
             selectedColor = '#F5F5F0';
+
+            // Reset planification
+            selectedScheduleType = 'daily';
+            selectedDaysOfWeek = [0, 1, 2, 3, 4, 5, 6];
+            document.querySelectorAll('.schedule-type-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.type === 'daily');
+            });
+            const daysOfWeekPicker = document.getElementById('daysOfWeekPicker');
+            if (daysOfWeekPicker) {
+                daysOfWeekPicker.style.display = 'none';
+            }
+            updateDaysOfWeekUI();
         }
 
         // Annuler l'ajout d'une habitude
@@ -2292,6 +2805,7 @@
         // Sauvegarder une nouvelle habitude
         function saveNewHabit() {
             const name = document.getElementById('newHabitName').value.trim().toUpperCase();
+            const description = document.getElementById('newHabitDescription').value.trim();
 
             if (!name) {
                 showPopup('Le nom de l\'habitude est requis', 'warning');
@@ -2305,8 +2819,11 @@
             const newHabit = {
                 id: habitId,
                 name: name,
+                description: description || '',
                 icon: selectedIcon,
-                color: selectedColor
+                color: selectedColor,
+                scheduleType: selectedScheduleType,
+                daysOfWeek: [...selectedDaysOfWeek]
             };
 
             habits.push(newHabit);
@@ -2341,29 +2858,65 @@
                 const disabledUp = index === 0 ? 'disabled' : '';
                 const disabledDown = index === habits.length - 1 ? 'disabled' : '';
                 const escapedName = (habit.name || '').replace(/"/g, '&quot;');
+                const escapedDesc = (habit.description || '').replace(/"/g, '&quot;');
                 const escapedId = habit.id.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+
+                // Planification - compatibilité avec les anciennes habitudes
+                const scheduleType = habit.scheduleType || 'daily';
+                const daysOfWeek = habit.daysOfWeek || [0, 1, 2, 3, 4, 5, 6];
+                const dayLabels = ['D', 'L', 'M', 'M', 'J', 'V', 'S'];
+
+                const scheduleDisplay = scheduleType === 'daily'
+                    ? '📅 Tous les jours'
+                    : '📆 ' + daysOfWeek.sort((a,b) => a-b).map(d => dayLabels[d]).join(', ');
+
                 return `
                     <div class="habit-management-item" data-habit-id="${habit.id}">
-                        <div class="move-buttons">
-                            <button class="move-btn" onclick="moveHabit('${escapedId}', -1)" ${disabledUp}>▲</button>
-                            <button class="move-btn" onclick="moveHabit('${escapedId}', 1)" ${disabledDown}>▼</button>
+                        <div class="habit-management-header">
+                            <div class="move-buttons">
+                                <button class="move-btn" onclick="moveHabit('${escapedId}', -1)" ${disabledUp}>▲</button>
+                                <button class="move-btn" onclick="moveHabit('${escapedId}', 1)" ${disabledDown}>▼</button>
+                            </div>
+                            <div class="habit-color-indicator" style="background: ${color};"></div>
+                            <div class="habit-icon-display">${habit.icon}</div>
+                            <input type="text" class="habit-name-input" id="name-${habit.id}" value="${escapedName}" placeholder="Nom de l'habitude">
+                            <div class="habit-actions">
+                                <button class="habit-action-btn" onclick="updateHabit('${escapedId}')">💾</button>
+                                <button class="habit-action-btn delete" onclick="deleteHabit('${escapedId}')">🗑️</button>
+                            </div>
                         </div>
-                        <div class="habit-color-indicator" style="background: ${color};"></div>
-                        <div class="habit-icon-display">${habit.icon}</div>
-                        <input type="text" class="habit-name-input" id="name-${habit.id}" value="${escapedName}" placeholder="Nom de l'habitude">
-                        <div class="habit-actions">
-                            <button class="habit-action-btn" onclick="updateHabitName('${escapedId}')">💾</button>
-                            <button class="habit-action-btn delete" onclick="deleteHabit('${escapedId}')">🗑️</button>
+                        <div class="habit-management-description">
+                            <input type="text" class="habit-desc-input" id="desc-${habit.id}" value="${escapedDesc}" placeholder="Description (optionnel)" maxlength="150">
+                        </div>
+                        <div class="habit-management-schedule">
+                            <div class="schedule-type-picker-mini" id="scheduleTypePicker-${habit.id}">
+                                <button type="button" class="schedule-type-btn-mini ${scheduleType === 'daily' ? 'active' : ''}"
+                                    data-type="daily" onclick="setHabitScheduleType('${escapedId}', 'daily')">
+                                    📅 Quotidien
+                                </button>
+                                <button type="button" class="schedule-type-btn-mini ${scheduleType === 'weekly' ? 'active' : ''}"
+                                    data-type="weekly" onclick="setHabitScheduleType('${escapedId}', 'weekly')">
+                                    📆 Hebdo
+                                </button>
+                            </div>
+                            <div class="days-of-week-picker-mini" id="daysOfWeekPicker-${habit.id}" style="display: ${scheduleType === 'weekly' ? 'flex' : 'none'};">
+                                ${[1, 2, 3, 4, 5, 6, 0].map(d => `
+                                    <div class="day-checkbox-mini ${daysOfWeek.includes(d) ? 'selected' : ''}"
+                                        data-day="${d}" onclick="toggleHabitDayOfWeek('${escapedId}', ${d})">${dayLabels[d]}</div>
+                                `).join('')}
+                            </div>
                         </div>
                     </div>
                 `;
             }).join('');
         }
 
-        // Mettre à jour le nom d'une habitude
-        function updateHabitName(habitId) {
-            const input = document.getElementById(`name-${habitId}`);
-            const newName = input.value.trim().toUpperCase();
+        // Mettre à jour une habitude (nom et description)
+        function updateHabit(habitId) {
+            const nameInput = document.getElementById(`name-${habitId}`);
+            const descInput = document.getElementById(`desc-${habitId}`);
+            const newName = nameInput.value.trim().toUpperCase();
+            const newDesc = descInput ? descInput.value.trim() : '';
 
             if (!newName) {
                 showPopup('Le nom ne peut pas être vide', 'warning');
@@ -2374,9 +2927,9 @@
             const habit = habits.find(h => h.id === habitId);
             if (!habit) return;
 
-            // Mettre à jour le nom
-            const originalName = habit.name;
+            // Mettre à jour le nom et la description
             habit.name = newName;
+            habit.description = newDesc;
 
             // Sauvegarder
             const data = getData();
@@ -2385,15 +2938,94 @@
             const customHabit = data.customHabits.find(h => h.id === habitId);
             if (customHabit) {
                 customHabit.name = newName;
+                customHabit.description = newDesc;
             }
 
             saveData(data);
 
             // Feedback
             if (navigator.vibrate) navigator.vibrate([30, 30, 30]);
+            showPopup('Habitude mise à jour !', 'success');
 
             renderHabitsManagementList();
             updateUI();
+        }
+
+        // Fonction de compatibilité (ancien nom)
+        function updateHabitName(habitId) {
+            updateHabit(habitId);
+        }
+
+        // Changer le type de planification d'une habitude existante
+        function setHabitScheduleType(habitId, type) {
+            const habit = habits.find(h => h.id === habitId);
+            if (!habit) return;
+
+            habit.scheduleType = type;
+            if (type === 'daily') {
+                habit.daysOfWeek = [0, 1, 2, 3, 4, 5, 6];
+            } else if (!habit.daysOfWeek || habit.daysOfWeek.length === 7) {
+                habit.daysOfWeek = [1, 2, 3, 4, 5]; // Jours de semaine par défaut
+            }
+
+            // Sauvegarder
+            saveHabitSchedule(habitId, habit.scheduleType, habit.daysOfWeek);
+
+            // Mettre à jour l'UI
+            const picker = document.getElementById(`daysOfWeekPicker-${habitId}`);
+            if (picker) {
+                picker.style.display = type === 'weekly' ? 'flex' : 'none';
+            }
+
+            // Mettre à jour les boutons
+            const container = document.getElementById(`scheduleTypePicker-${habitId}`);
+            if (container) {
+                container.querySelectorAll('.schedule-type-btn-mini').forEach(btn => {
+                    btn.classList.toggle('active', btn.dataset.type === type);
+                });
+            }
+
+            renderHabitsManagementList();
+        }
+
+        // Basculer un jour pour une habitude existante
+        function toggleHabitDayOfWeek(habitId, day) {
+            const habit = habits.find(h => h.id === habitId);
+            if (!habit) return;
+
+            if (!habit.daysOfWeek) habit.daysOfWeek = [0, 1, 2, 3, 4, 5, 6];
+
+            const index = habit.daysOfWeek.indexOf(day);
+            if (index > -1) {
+                if (habit.daysOfWeek.length > 1) {
+                    habit.daysOfWeek.splice(index, 1);
+                }
+            } else {
+                habit.daysOfWeek.push(day);
+            }
+
+            // Sauvegarder
+            saveHabitSchedule(habitId, habit.scheduleType, habit.daysOfWeek);
+
+            // Mettre à jour l'UI du checkbox
+            const checkbox = document.querySelector(`#daysOfWeekPicker-${habitId} .day-checkbox-mini[data-day="${day}"]`);
+            if (checkbox) {
+                checkbox.classList.toggle('selected', habit.daysOfWeek.includes(day));
+            }
+        }
+
+        // Sauvegarder la planification d'une habitude
+        function saveHabitSchedule(habitId, scheduleType, daysOfWeek) {
+            const data = getData();
+            if (!data.customHabits) data.customHabits = [];
+
+            const customHabit = data.customHabits.find(h => h.id === habitId);
+            if (customHabit) {
+                customHabit.scheduleType = scheduleType;
+                customHabit.daysOfWeek = [...daysOfWeek];
+            }
+
+            saveData(data);
         }
 
         // Supprimer une habitude
@@ -2617,7 +3249,7 @@
             const remaining = habits.length - completed;
             let title, body;
             if (remaining === 0) {
-                title = "🏆 LÉGENDE !"; body = "Tu as complété toutes tes habitudes. STAY HARD!";
+                title = "🏆 LÉGENDE !"; body = "Tu as complété toutes tes habitudes.";
             } else if (remaining <= 2) {
                 title = "⚔️ PRESQUE WARRIOR !"; body = `Plus que ${remaining} habitude${remaining > 1 ? 's' : ''} à valider. Tu peux le faire !`;
             } else {
@@ -3069,6 +3701,8 @@
 
             async function initializeApp() {
                 await loadCustomHabits();
+                loadRankSettings(); // Charger les paramètres de rangs
+                renderRanks(false); // Afficher les rangs
                 updateUI();
                 const savedData = getData();
                 if (savedData.notificationsEnabled && Notification.permission === 'granted') {
@@ -3107,18 +3741,23 @@
             // Gérer l'affichage initial
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
 
-            // Vérifier si c'est un nouvel utilisateur pour afficher le tutoriel
-            if (isFirstTimeUser()) {
-                console.log("🎓 Premier lancement détecté - Affichage du tutoriel");
-                showTutorial();
-            }
-
             if (!isFirebaseConfigured) {
+                // Mode localStorage seul - afficher le tutoriel si premier utilisateur
                 console.log("Mode localStorage seul activé.");
                 document.getElementById('logoutBtn').style.display = 'none';
+
+                // Vérifier si c'est un nouvel utilisateur pour afficher le tutoriel
+                if (isFirstTimeUser()) {
+                    console.log("🎓 Premier lancement détecté - Affichage du tutoriel");
+                    showTutorial();
+                }
+
                 showAppPage('today');
                 initializeApp();
             } else {
+                // Mode Firebase - afficher la page auth en attendant la vérification
+                showAppPage('auth');
+
                 auth.onAuthStateChanged(async (user) => {
                     if (user) {
                         appState.currentUser = user;
@@ -3140,6 +3779,12 @@
                         document.getElementById('deleteAccountBtn').style.display = 'block';
                         showAppPage('today');
                         await initializeApp();
+
+                        // Afficher le tutoriel uniquement si l'utilisateur est connecté et premier lancement
+                        if (isFirstTimeUser()) {
+                            console.log("🎓 Premier lancement détecté - Affichage du tutoriel");
+                            showTutorial();
+                        }
                     } else {
                         appState.currentUser = null;
                         console.log('⚠️ Utilisateur non connecté');
@@ -3200,7 +3845,7 @@
             if (nextBtn) {
                 // Désactiver le bouton "suivant" si on est au mois actuel
                 const isCurrentMonth = currentCalendarMonth.getFullYear() === now.getFullYear() &&
-                                       currentCalendarMonth.getMonth() === now.getMonth();
+                    currentCalendarMonth.getMonth() === now.getMonth();
                 nextBtn.disabled = isCurrentMonth;
                 nextBtn.style.opacity = isCurrentMonth ? '0.3' : '1';
                 nextBtn.style.cursor = isCurrentMonth ? 'not-allowed' : 'pointer';
@@ -3217,7 +3862,7 @@
 
             // Mettre à jour le titre
             const monthNames = ['JANVIER', 'FÉVRIER', 'MARS', 'AVRIL', 'MAI', 'JUIN',
-                               'JUILLET', 'AOÛT', 'SEPTEMBRE', 'OCTOBRE', 'NOVEMBRE', 'DÉCEMBRE'];
+                'JUILLET', 'AOÛT', 'SEPTEMBRE', 'OCTOBRE', 'NOVEMBRE', 'DÉCEMBRE'];
             titleEl.textContent = `📅 ${monthNames[month]} ${year}`;
 
             // Récupérer les données

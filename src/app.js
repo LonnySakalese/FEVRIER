@@ -1498,7 +1498,7 @@ function sendNotification() {
     const remaining = habits.length - completed;
     let title, body;
     if (remaining === 0) {
-        title = "🏆 LÉGENDE !"; body = "Tu as complété toutes tes habitudes. STAY HARD!";
+        title = "🏆 LÉGENDE !"; body = "Tu as complété toutes tes habitudes.";
     } else if (remaining <= 2) {
         title = "⚔️ PRESQUE WARRIOR !"; body = `Plus que ${remaining} habitude${remaining > 1 ? 's' : ''} à valider. Tu peux le faire !`;
     } else {
