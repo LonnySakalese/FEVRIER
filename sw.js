@@ -53,7 +53,12 @@ self.addEventListener('fetch', event => {
           return response;
         }
         // Si la ressource n'est pas dans le cache, effectuer la requête réseau.
-        return fetch(event.request);
+        return fetch(event.request).catch(error => {
+          // Gestion silencieuse des erreurs réseau (Firebase, API externes)
+          // Ces erreurs sont normales et ne doivent pas polluer la console
+          console.debug('Fetch failed for:', event.request.url);
+          return new Response('', { status: 503, statusText: 'Service Unavailable' });
+        });
       })
   );
 });

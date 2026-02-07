@@ -2,6 +2,7 @@
 
         /* Définition des variables de couleur pour le thème de l'application */
 :root {
+    /* Thème sombre par défaut */
     --black: #0A0A0A;
     --dark-gray: #141414;
     --charcoal: #1E1E1E;
@@ -12,6 +13,185 @@
     --steel: #3A3A3A;
     --success: #F5F5F0;
     --warning: #8A8A85;
+}
+
+/* Thème clair */
+[data-theme="light"] {
+    --black: #F8F9FA;          /* Fond principal : gris très clair au lieu de blanc pur */
+    --dark-gray: #FFFFFF;       /* Fond des cartes : blanc pur pour contraster */
+    --charcoal: #E9ECEF;        /* Fond alternatif : gris clair */
+    --accent: #212529;          /* Texte principal : noir profond */
+    --accent-dim: #495057;      /* Texte secondaire : gris foncé */
+    --accent-dark: #6C757D;     /* Texte tertiaire : gris moyen */
+    --accent-green: #198754;    /* Vert plus foncé pour meilleure visibilité */
+    --steel: #CED4DA;           /* Bordures : gris moyen-clair visible */
+    --success: #212529;         /* Succès : noir profond */
+    --warning: #6C757D;         /* Warning : gris moyen */
+}
+
+/* Ajustements spécifiques pour le thème clair */
+[data-theme="light"] .kpi-card,
+[data-theme="light"] .habit-item,
+[data-theme="light"] .stat-card,
+[data-theme="light"] .modal-content,
+[data-theme="light"] .settings-category,
+[data-theme="light"] .auth-container {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="light"] .header {
+    border-bottom: 2px solid var(--steel);
+}
+
+[data-theme="light"] .section-title {
+    border-bottom: 2px solid var(--steel);
+    font-weight: 800;
+}
+
+[data-theme="light"] .habit-item {
+    border-bottom: 2px solid var(--charcoal);
+}
+
+[data-theme="light"] .date-nav button {
+    font-weight: 600;
+}
+
+[data-theme="light"] .date-nav button:hover {
+    background: var(--steel);
+    border-color: var(--accent-dim);
+}
+
+/* Paramètres en thème clair */
+[data-theme="light"] .settings-category {
+    background: var(--dark-gray);
+    border: 2px solid var(--steel);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="light"] .settings-category-header {
+    background: var(--charcoal);
+    border-bottom: 2px solid var(--steel);
+}
+
+[data-theme="light"] .settings-category-title {
+    color: var(--accent);
+    font-weight: 800;
+}
+
+[data-theme="light"] .settings-item {
+    background: var(--charcoal);
+    border-left-color: var(--steel);
+}
+
+[data-theme="light"] .settings-item:hover {
+    background: var(--dark-gray);
+    border-left-color: var(--accent-green);
+}
+
+[data-theme="light"] .settings-item-label {
+    color: var(--accent);
+    font-weight: 600;
+}
+
+[data-theme="light"] .settings-item-desc {
+    color: var(--accent-dim);
+    opacity: 0.85;
+}
+
+[data-theme="light"] .settings-btn {
+    border: 2px solid var(--steel);
+    color: var(--accent);
+    font-weight: 700;
+}
+
+[data-theme="light"] .settings-btn:hover {
+    background: var(--accent);
+    color: var(--dark-gray);
+    border-color: var(--accent);
+}
+
+[data-theme="light"] .settings-btn.primary {
+    background: var(--accent);
+    color: var(--dark-gray);
+    border-color: var(--accent);
+}
+
+[data-theme="light"] .settings-btn.primary:hover {
+    background: var(--accent-dim);
+    border-color: var(--accent-dim);
+}
+
+[data-theme="light"] .settings-btn.danger {
+    color: #DC3545;
+    border-color: #DC3545;
+    background: transparent;
+}
+
+[data-theme="light"] .settings-btn.danger:hover {
+    background: #DC3545;
+    color: white;
+    border-color: #DC3545;
+}
+
+/* Input time en thème clair */
+[data-theme="light"] .time-input-wrapper {
+    background: var(--charcoal);
+    border: 2px solid var(--steel);
+}
+
+[data-theme="light"] .time-input-wrapper:hover {
+    border-color: var(--accent-dim);
+    background: var(--dark-gray);
+}
+
+[data-theme="light"] .time-input-wrapper:focus-within {
+    border-color: var(--accent-green);
+    box-shadow: 0 0 10px rgba(25, 135, 84, 0.3);
+}
+
+[data-theme="light"] .settings-time-input {
+    background: var(--dark-gray);
+    color: var(--accent);
+    border: 2px solid var(--steel);
+    text-shadow: none;
+    box-shadow: none;
+}
+
+[data-theme="light"] .settings-time-input:hover {
+    border-color: var(--accent-dim);
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+    text-shadow: none;
+}
+
+[data-theme="light"] .settings-time-input:focus {
+    background: var(--dark-gray);
+    border-color: var(--accent-green);
+    box-shadow: 0 0 12px rgba(25, 135, 84, 0.3);
+    text-shadow: none;
+}
+
+[data-theme="light"] .settings-time-input::-webkit-calendar-picker-indicator {
+    filter: invert(0);
+    opacity: 0.6;
+}
+
+[data-theme="light"] .settings-time-input::-webkit-calendar-picker-indicator:hover {
+    opacity: 1;
+}
+
+/* Transition fluide lors du changement de thème */
+body,
+.header,
+.date-nav,
+.date-nav button,
+.kpi-card,
+.habit-item,
+.stat-card,
+.modal-content,
+.settings-container,
+.settings-category,
+.auth-container {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
 /* Réinitialisation des styles de base pour tous les éléments */
@@ -27,7 +207,7 @@
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     background: var(--black);
-    color: white;
+    color: var(--accent);
     min-height: 100vh;
     min-height: -webkit-fill-available;
     /* Assure la hauteur pleine page sur les navigateurs mobiles */
@@ -97,7 +277,7 @@ html {
 .date-nav .current-date {
     font-size: 1rem;
     font-weight: bold;
-    color: white;
+    color: var(--accent);
     min-width: 150px;
     text-align: center;
 }
@@ -964,7 +1144,7 @@ canvas {
     right: 0;
     bottom: 0;
     background: rgba(0, 0, 0, 0.9);
-    z-index: 20000;
+    z-index: 25000 !important;
     display: none;
     /* Cachée par défaut */
     align-items: center;
@@ -1777,8 +1957,8 @@ canvas {
 }
 
 .color-option.selected {
-    border-color: white;
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    border-color: var(--accent);
+    box-shadow: 0 0 10px var(--accent-green);
 }
 
 /* Responsive adjustments for habit creation */
@@ -1889,7 +2069,7 @@ canvas {
     right: 0;
     bottom: 0;
     background: var(--black);
-    z-index: 10000;
+    z-index: 30000 !important;
     display: none;
     overflow-y: auto;
     overflow-x: hidden;
@@ -2504,9 +2684,9 @@ canvas {
 
 .demo-color.selected {
     opacity: 1;
-    border-color: white;
+    border-color: var(--accent);
     transform: scale(1.2);
-    box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+    box-shadow: 0 0 15px var(--accent-green);
 }
 
 .demo-result {
@@ -4176,4 +4356,225 @@ canvas {
         height: 28px;
         font-size: 0.65rem;
     }
+}
+
+/* ============================================================ */
+/* SYSTÈME DE BADGES D'ACHIEVEMENTS */
+/* ============================================================ */
+
+.badges-header {
+    padding: 15px;
+    background: var(--dark-gray);
+    border-bottom: 2px solid var(--steel);
+}
+
+.badges-title {
+    font-size: 1rem;
+    font-weight: 900;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+}
+
+.badges-progress {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.85rem;
+    color: var(--accent-dim);
+    font-weight: 600;
+}
+
+.progress-bar-small {
+    flex: 1;
+    height: 8px;
+    background: var(--charcoal);
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid var(--steel);
+}
+
+.progress-fill-small {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent-green), #27AE60);
+    transition: width 0.5s ease;
+    box-shadow: 0 0 10px rgba(25, 231, 57, 0.5);
+}
+
+.badges-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 12px;
+    padding: 15px;
+    background: var(--black);
+}
+
+.badge-card {
+    position: relative;
+    background: var(--dark-gray);
+    border: 2px solid;
+    border-radius: 12px;
+    padding: 15px 10px;
+    text-align: center;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.badge-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: currentColor;
+    opacity: 0.5;
+}
+
+.badge-card.unlocked {
+    transform: scale(1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.badge-card.unlocked:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+}
+
+.badge-card.locked {
+    opacity: 0.5;
+    border-color: var(--steel);
+}
+
+.badge-icon {
+    font-size: 2.5rem;
+    margin-bottom: 8px;
+    transition: transform 0.3s ease;
+}
+
+.badge-card.unlocked:hover .badge-icon {
+    transform: scale(1.2) rotate(5deg);
+}
+
+.badge-icon.grayscale {
+    filter: grayscale(100%);
+    opacity: 0.4;
+}
+
+.badge-name {
+    font-size: 0.75rem;
+    font-weight: bold;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+}
+
+.badge-desc {
+    font-size: 0.65rem;
+    color: var(--accent-dark);
+    line-height: 1.3;
+}
+
+.badge-lock {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    font-size: 1rem;
+    opacity: 0.6;
+}
+
+/* Animation de déblocage */
+@keyframes badgeUnlock {
+    0% {
+        transform: scale(0.5) rotate(-180deg);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1.2) rotate(10deg);
+    }
+    100% {
+        transform: scale(1) rotate(0deg);
+        opacity: 1;
+    }
+}
+
+.badge-card.newly-unlocked {
+    animation: badgeUnlock 0.6s ease-out;
+}
+
+/* Responsive badges */
+@media (max-width: 600px) {
+    .badges-grid {
+        grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+        gap: 10px;
+        padding: 10px;
+    }
+
+    .badge-card {
+        padding: 12px 8px;
+    }
+
+    .badge-icon {
+        font-size: 2rem;
+    }
+
+    .badge-name {
+        font-size: 0.7rem;
+    }
+
+    .badge-desc {
+        font-size: 0.6rem;
+    }
+}
+
+/* Thème clair pour badges */
+[data-theme="light"] .badges-header {
+    background: var(--dark-gray);
+    border-bottom: 2px solid var(--steel);
+}
+
+[data-theme="light"] .badges-grid {
+    background: var(--black);
+}
+
+[data-theme="light"] .badge-card {
+    background: var(--dark-gray);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="light"] .badge-card.unlocked {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+}
+
+[data-theme="light"] .badge-card.unlocked:hover {
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Modal de confirmation - Doit être au-dessus du tutoriel */
+#confirmModal {
+    z-index: 35000 !important;
+}
+
+/* Assurer que les modals restent visibles en thème clair */
+[data-theme="light"] .modal-overlay {
+    background: rgba(255, 255, 255, 0.95);
+    z-index: 25000 !important;
+}
+
+[data-theme="light"] #confirmModal {
+    z-index: 35000 !important;
+}
+
+[data-theme="light"] .tutorial-overlay {
+    background: var(--black);
+    z-index: 30000 !important;
+}
+
+[data-theme="light"] .modal-calendar {
+    background: var(--dark-gray);
+    border: 2px solid var(--steel);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
 }
