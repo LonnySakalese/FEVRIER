@@ -1,61 +1,26 @@
-const state = {
+// ============================================================
+// GLOBAL APPLICATION STATE
+// ============================================================
+
+// App state object (shared reference, mutate properties directly)
+export const appState = {
     currentUser: null,
     isOnline: navigator.onLine,
-    isFirebaseMode: false, // This will be updated based on Firebase config
-    habits: [],
-    completions: {}, // Store completions by date
-    currentDate: new Date(),
-    // Add other relevant state properties here
+    isFirebaseMode: false
 };
 
-const listeners = [];
+// Shared mutable habits array (all modules import the same reference)
+export const habits = [];
 
-export const subscribe = (listener) => {
-    listeners.push(listener);
-    return () => { // Unsubscribe function
-        const index = listeners.indexOf(listener);
-        if (index > -1) {
-            listeners.splice(index, 1);
-        }
-    };
-};
+// Current date (needs getter/setter since it's reassigned)
+let _currentDate = new Date();
+export function getCurrentDate() { return _currentDate; }
+export function setCurrentDate(date) { _currentDate = date; }
 
-const publish = () => {
-    for (const listener of listeners) {
-        listener(state);
-    }
-};
-
-// --- State Getters ---
-
-export const getState = () => {
-    return { ...state };
-};
-
-// --- State Setters ---
-// These functions will be the only way to modify the state.
-
-export const setCurrentUser = (user) => {
-    state.currentUser = user;
-    publish();
-};
-
-export const setHabits = (habits) => {
-    state.habits = habits;
-    publish();
-};
-
-export const setCompletions = (completions) => {
-    state.completions = completions;
-    publish();
-};
-
-export const setCurrentDate = (date) => {
-    state.currentDate = date;
-    publish();
-};
-
-export const setFirebaseMode = (isConfigured) => {
-    state.isFirebaseMode = isConfigured;
-    publish();
-};
+// Chart instances (needs getter/setter since they're reassigned)
+let _weeklyChart = null;
+let _habitsChart = null;
+export function getWeeklyChart() { return _weeklyChart; }
+export function setWeeklyChart(chart) { _weeklyChart = chart; }
+export function getHabitsChart() { return _habitsChart; }
+export function setHabitsChart(chart) { _habitsChart = chart; }
