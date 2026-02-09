@@ -40,7 +40,20 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* Fade-in animation */
+        /* ===== SCROLL PROGRESS BAR ===== */
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            width: 0%;
+            background: var(--accent-green);
+            z-index: 9999;
+            transition: width 0.1s linear;
+            box-shadow: 0 0 8px rgba(25, 230, 57, 0.4);
+        }
+
+        /* ===== FADE-IN ===== */
         .fade-in {
             opacity: 0;
             transform: translateY(30px);
@@ -62,6 +75,7 @@
             text-align: center;
             padding: 40px 20px;
             position: relative;
+            overflow: hidden;
         }
 
         .hero::after {
@@ -75,11 +89,57 @@
             pointer-events: none;
         }
 
+        /* ===== PARTICLES ===== */
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: var(--accent-green);
+            border-radius: 50%;
+            opacity: 0;
+            animation: particleFloat linear infinite;
+        }
+
+        .particle:nth-child(odd) {
+            background: var(--accent);
+            width: 2px;
+            height: 2px;
+        }
+
+        @keyframes particleFloat {
+            0% {
+                opacity: 0;
+                transform: translateY(0) translateX(0);
+            }
+            10% {
+                opacity: 0.4;
+            }
+            90% {
+                opacity: 0.4;
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-100vh) translateX(50px);
+            }
+        }
+
         .hero-logo {
             width: 80px;
             height: 80px;
             margin-bottom: 32px;
             animation: float 3s ease-in-out infinite;
+            position: relative;
+            z-index: 1;
         }
 
         @keyframes float {
@@ -96,6 +156,8 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            position: relative;
+            z-index: 1;
         }
 
         .hero-tagline {
@@ -103,6 +165,8 @@
             font-weight: 600;
             margin-bottom: 12px;
             color: var(--accent);
+            position: relative;
+            z-index: 1;
         }
 
         .hero-subtext {
@@ -111,6 +175,8 @@
             max-width: 480px;
             margin: 0 auto 40px;
             line-height: 1.7;
+            position: relative;
+            z-index: 1;
         }
 
         .cta-btn {
@@ -124,6 +190,8 @@
             text-decoration: none;
             border-radius: 8px;
             transition: transform 0.2s, box-shadow 0.2s;
+            position: relative;
+            z-index: 1;
         }
 
         .cta-btn:hover {
@@ -205,6 +273,41 @@
             line-height: 1.6;
         }
 
+        /* ===== STATS NUMBERS ===== */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-top: 48px;
+        }
+
+        @media (min-width: 600px) {
+            .stats-row {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 20px 10px;
+        }
+
+        .stat-number {
+            font-size: clamp(2rem, 5vw, 2.8rem);
+            font-weight: 800;
+            color: var(--accent-green);
+            letter-spacing: 2px;
+            line-height: 1;
+            margin-bottom: 6px;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--accent-dim);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
         /* ===== HOW IT WORKS ===== */
         .steps {
             display: flex;
@@ -239,6 +342,280 @@
             font-weight: 500;
         }
 
+        /* ===== DEMO SECTION ===== */
+        .demo-section {
+            max-width: 900px;
+            text-align: center;
+        }
+
+        .phone-frame {
+            display: inline-block;
+            width: 100%;
+            max-width: 340px;
+            background: #111;
+            border: 2px solid #333;
+            border-radius: 36px;
+            padding: 20px 16px 24px;
+            position: relative;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255,255,255,0.05);
+        }
+
+        .phone-notch {
+            width: 100px;
+            height: 6px;
+            background: #333;
+            border-radius: 3px;
+            margin: 0 auto 20px;
+        }
+
+        .phone-screen {
+            background: var(--black);
+            border-radius: 16px;
+            padding: 20px 16px;
+            text-align: left;
+        }
+
+        .demo-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .demo-date {
+            font-size: 0.75rem;
+            color: var(--accent-dim);
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .demo-score {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--accent);
+            transition: color 0.3s;
+        }
+
+        .demo-score.perfect {
+            color: var(--accent-green);
+        }
+
+        .demo-percentage {
+            font-size: 0.85rem;
+            color: var(--accent-dim);
+            margin-top: 2px;
+        }
+
+        .demo-rank {
+            display: inline-block;
+            margin-top: 8px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            border: 1px solid var(--border);
+            color: var(--accent-dim);
+            transition: all 0.4s ease;
+        }
+
+        .demo-rank.rank-apprenti {
+            border-color: #E6A519;
+            color: #E6A519;
+        }
+
+        .demo-rank.rank-confirme {
+            border-color: #19A3E6;
+            color: #19A3E6;
+        }
+
+        .demo-rank.rank-maitre {
+            border-color: var(--accent-green);
+            color: var(--accent-green);
+            box-shadow: 0 0 12px rgba(25, 230, 57, 0.3);
+        }
+
+        .demo-streak {
+            font-size: 0.85rem;
+            color: var(--accent-dim);
+            margin-top: 6px;
+            transition: color 0.3s;
+        }
+
+        .demo-streak.active {
+            color: #FF6B35;
+        }
+
+        .demo-habits {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .demo-habit {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 14px;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .demo-habit:active {
+            transform: scale(0.98);
+        }
+
+        .demo-habit.checked {
+            border-color: var(--accent-green);
+            background: rgba(25, 230, 57, 0.05);
+        }
+
+        .demo-checkbox {
+            width: 24px;
+            height: 24px;
+            border: 2px solid #444;
+            border-radius: 6px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .demo-habit.checked .demo-checkbox {
+            background: var(--accent-green);
+            border-color: var(--accent-green);
+            animation: checkPop 0.4s cubic-bezier(0.17, 0.67, 0.21, 1.3);
+        }
+
+        @keyframes checkPop {
+            0% { transform: scale(1); }
+            40% { transform: scale(1.3); }
+            100% { transform: scale(1); }
+        }
+
+        .demo-checkbox svg {
+            width: 14px;
+            height: 14px;
+            opacity: 0;
+            transform: scale(0);
+            transition: all 0.2s ease;
+        }
+
+        .demo-habit.checked .demo-checkbox svg {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .demo-habit-emoji {
+            font-size: 1.3rem;
+        }
+
+        .demo-habit-label {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--accent);
+            transition: opacity 0.3s;
+        }
+
+        .demo-habit.checked .demo-habit-label {
+            opacity: 0.6;
+        }
+
+        .demo-ripple {
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--accent-green);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .demo-ripple.animate {
+            animation: rippleOut 0.6s ease-out;
+        }
+
+        @keyframes rippleOut {
+            0% { transform: scale(0.5); opacity: 0.5; }
+            100% { transform: scale(3); opacity: 0; }
+        }
+
+        .demo-perfect-msg {
+            text-align: center;
+            margin-top: 16px;
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--accent-green);
+            opacity: 0;
+            transform: scale(0.8);
+            transition: all 0.5s cubic-bezier(0.17, 0.67, 0.21, 1.3);
+            letter-spacing: 1px;
+        }
+
+        .demo-perfect-msg.show {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .demo-reset {
+            display: block;
+            margin: 16px auto 0;
+            padding: 8px 20px;
+            background: none;
+            border: 1px solid var(--border);
+            color: var(--accent-dim);
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+
+        .demo-reset:hover {
+            border-color: var(--accent-dim);
+            color: var(--accent);
+        }
+
+        /* ===== CONFETTI ===== */
+        .confetti-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9998;
+            overflow: hidden;
+        }
+
+        .confetti-piece {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            top: -10px;
+            animation: confettiFall linear forwards;
+        }
+
+        @keyframes confettiFall {
+            0% {
+                transform: translateY(0) rotate(0deg) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(720deg) scale(0.3);
+                opacity: 0;
+            }
+        }
+
         /* ===== QUOTE ===== */
         .quote-section {
             text-align: center;
@@ -257,6 +634,32 @@
 
         .quote-author {
             font-size: 0.9rem;
+            color: var(--accent-dim);
+            letter-spacing: 1px;
+        }
+
+        /* ===== COMMUNITY STATS ===== */
+        .community-section {
+            text-align: center;
+            padding: 80px 20px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .community-section .section-heading {
+            margin-bottom: 32px;
+        }
+
+        .community-counter {
+            font-size: clamp(2.5rem, 7vw, 4rem);
+            font-weight: 800;
+            color: var(--accent-green);
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+
+        .community-label {
+            font-size: 1rem;
             color: var(--accent-dim);
             letter-spacing: 1px;
         }
@@ -287,8 +690,12 @@
 </head>
 <body>
 
+    <!-- SCROLL PROGRESS BAR -->
+    <div class="scroll-progress" id="scrollProgress"></div>
+
     <!-- HERO -->
     <section class="hero">
+        <div class="particles" id="particles"></div>
         <svg class="hero-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
             <rect fill="#0A0A0A" width="100" height="100" rx="20"/>
             <path d="M 23 74 Q 27 70 31 66 Q 39 58 47 54 Q 55 50 62 39 Q 68 29 74 19" fill="none" stroke="#F5F5F0" stroke-width="6" stroke-linecap="round"/>
@@ -325,6 +732,24 @@
                 <div class="feature-desc">Suis ta progression avec des graphiques détaillés.</div>
             </div>
         </div>
+        <div class="stats-row fade-in" id="statsRow">
+            <div class="stat-item">
+                <div class="stat-number" data-target="6" data-suffix="+">0</div>
+                <div class="stat-label">Habitudes</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" data-target="24" data-suffix="">0</div>
+                <div class="stat-label">Badges</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" data-target="5" data-suffix="">0</div>
+                <div class="stat-label">Rangs</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" data-target="0" data-suffix="" data-infinity="true">∞</div>
+                <div class="stat-label">Possibilités</div>
+            </div>
+        </div>
     </section>
 
     <!-- HOW IT WORKS -->
@@ -346,10 +771,75 @@
         </div>
     </section>
 
+    <!-- DEMO INTERACTIVE -->
+    <section class="demo-section fade-in">
+        <h2 class="section-heading">ESSAIE MAINTENANT</h2>
+        <p style="color: var(--accent-dim); margin-bottom: 32px; font-size: 0.95rem;">Coche tes habitudes. Ressens la satisfaction.</p>
+
+        <div class="phone-frame">
+            <div class="phone-notch"></div>
+            <div class="phone-screen">
+                <div class="demo-header">
+                    <div class="demo-date" id="demoDate"></div>
+                    <div class="demo-score" id="demoScore">0/4</div>
+                    <div class="demo-percentage" id="demoPercentage">0%</div>
+                    <div class="demo-rank" id="demoRank">DÉBUTANT</div>
+                    <div class="demo-streak" id="demoStreak">🔥 Série: 0 jours</div>
+                </div>
+
+                <ul class="demo-habits" id="demoHabits">
+                    <li class="demo-habit" data-index="0">
+                        <div class="demo-checkbox">
+                            <svg viewBox="0 0 14 14" fill="none"><path d="M2 7.5L5.5 11L12 3" stroke="#0A0A0A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            <div class="demo-ripple"></div>
+                        </div>
+                        <span class="demo-habit-emoji">🧊</span>
+                        <span class="demo-habit-label">Douche froide</span>
+                    </li>
+                    <li class="demo-habit" data-index="1">
+                        <div class="demo-checkbox">
+                            <svg viewBox="0 0 14 14" fill="none"><path d="M2 7.5L5.5 11L12 3" stroke="#0A0A0A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            <div class="demo-ripple"></div>
+                        </div>
+                        <span class="demo-habit-emoji">📚</span>
+                        <span class="demo-habit-label">30min de lecture</span>
+                    </li>
+                    <li class="demo-habit" data-index="2">
+                        <div class="demo-checkbox">
+                            <svg viewBox="0 0 14 14" fill="none"><path d="M2 7.5L5.5 11L12 3" stroke="#0A0A0A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            <div class="demo-ripple"></div>
+                        </div>
+                        <span class="demo-habit-emoji">💪</span>
+                        <span class="demo-habit-label">Entraînement</span>
+                    </li>
+                    <li class="demo-habit" data-index="3">
+                        <div class="demo-checkbox">
+                            <svg viewBox="0 0 14 14" fill="none"><path d="M2 7.5L5.5 11L12 3" stroke="#0A0A0A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            <div class="demo-ripple"></div>
+                        </div>
+                        <span class="demo-habit-emoji">🥗</span>
+                        <span class="demo-habit-label">Manger sain</span>
+                    </li>
+                </ul>
+
+                <div class="demo-perfect-msg" id="demoPerfect">JOURNÉE PARFAITE ! 🏆</div>
+                <button class="demo-reset" id="demoReset">↺ RÉESSAYER</button>
+            </div>
+        </div>
+    </section>
+
     <!-- MOTIVATION QUOTE -->
     <section class="quote-section fade-in">
         <p class="quote-text">"La discipline est le pont entre les objectifs et l'accomplissement"</p>
         <p class="quote-author">— Jim Rohn</p>
+    </section>
+
+    <!-- COMMUNITY STATS -->
+    <section class="community-section fade-in">
+        <h2 class="section-heading">REJOINS LES GUERRIERS</h2>
+        <p style="color: var(--accent-dim); margin-bottom: 40px; font-size: 0.95rem;">Qui deviennent meilleurs chaque jour</p>
+        <div class="community-counter" id="communityCounter">0</div>
+        <div class="community-label">habitudes validées</div>
     </section>
 
     <!-- FINAL CTA -->
@@ -363,16 +853,200 @@
         PROJET FEVRIER © 2025
     </footer>
 
+    <!-- CONFETTI CONTAINER -->
+    <div class="confetti-container" id="confettiContainer"></div>
+
     <script>
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
+    (function() {
+        'use strict';
+
+        // ===== SCROLL PROGRESS =====
+        const scrollBar = document.getElementById('scrollProgress');
+        window.addEventListener('scroll', function() {
+            const h = document.documentElement.scrollHeight - window.innerHeight;
+            scrollBar.style.width = h > 0 ? (window.scrollY / h * 100) + '%' : '0%';
+        }, { passive: true });
+
+        // ===== PARTICLES =====
+        const particlesEl = document.getElementById('particles');
+        const particleCount = window.innerWidth < 600 ? 15 : 30;
+        for (let i = 0; i < particleCount; i++) {
+            const p = document.createElement('div');
+            p.className = 'particle';
+            p.style.left = Math.random() * 100 + '%';
+            p.style.top = (60 + Math.random() * 40) + '%';
+            p.style.animationDuration = (8 + Math.random() * 12) + 's';
+            p.style.animationDelay = (Math.random() * 10) + 's';
+            particlesEl.appendChild(p);
+        }
+
+        // ===== FADE IN OBSERVER =====
+        const fadeObs = new IntersectionObserver(function(entries) {
+            entries.forEach(function(e) {
+                if (e.isIntersecting) e.target.classList.add('visible');
             });
         }, { threshold: 0.15 });
+        document.querySelectorAll('.fade-in').forEach(function(el) { fadeObs.observe(el); });
 
-        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+        // ===== ANIMATED COUNTERS =====
+        let statsAnimated = false;
+        const statsObs = new IntersectionObserver(function(entries) {
+            entries.forEach(function(e) {
+                if (e.isIntersecting && !statsAnimated) {
+                    statsAnimated = true;
+                    animateCounters();
+                }
+            });
+        }, { threshold: 0.3 });
+        const statsRow = document.getElementById('statsRow');
+        if (statsRow) statsObs.observe(statsRow);
+
+        function animateCounters() {
+            document.querySelectorAll('.stat-number').forEach(function(el) {
+                if (el.dataset.infinity === 'true') return; // already shows ∞
+                const target = parseInt(el.dataset.target);
+                const suffix = el.dataset.suffix || '';
+                const duration = 1500;
+                const start = performance.now();
+                function tick(now) {
+                    const progress = Math.min((now - start) / duration, 1);
+                    const eased = 1 - Math.pow(1 - progress, 3);
+                    el.textContent = Math.round(eased * target) + suffix;
+                    if (progress < 1) requestAnimationFrame(tick);
+                }
+                requestAnimationFrame(tick);
+            });
+        }
+
+        // ===== COMMUNITY COUNTER =====
+        let communityAnimated = false;
+        const communityEl = document.getElementById('communityCounter');
+        const communityObs = new IntersectionObserver(function(entries) {
+            entries.forEach(function(e) {
+                if (e.isIntersecting && !communityAnimated) {
+                    communityAnimated = true;
+                    animateCommunity();
+                }
+            });
+        }, { threshold: 0.3 });
+        if (communityEl) communityObs.observe(communityEl);
+
+        function animateCommunity() {
+            const target = 12847;
+            const duration = 2500;
+            const start = performance.now();
+            function tick(now) {
+                const progress = Math.min((now - start) / duration, 1);
+                const eased = 1 - Math.pow(1 - progress, 3);
+                const val = Math.round(eased * target);
+                communityEl.textContent = val.toLocaleString('fr-FR');
+                if (progress < 1) requestAnimationFrame(tick);
+            }
+            requestAnimationFrame(tick);
+        }
+
+        // ===== DEMO DATE =====
+        const dateEl = document.getElementById('demoDate');
+        const now = new Date();
+        const months = ['JANVIER','FÉVRIER','MARS','AVRIL','MAI','JUIN','JUILLET','AOÛT','SEPTEMBRE','OCTOBRE','NOVEMBRE','DÉCEMBRE'];
+        dateEl.textContent = now.getDate() + ' ' + months[now.getMonth()] + ' ' + now.getFullYear();
+
+        // ===== DEMO INTERACTIVE =====
+        const habits = [false, false, false, false];
+        const habitEls = document.querySelectorAll('.demo-habit');
+        const scoreEl = document.getElementById('demoScore');
+        const pctEl = document.getElementById('demoPercentage');
+        const rankEl = document.getElementById('demoRank');
+        const streakEl = document.getElementById('demoStreak');
+        const perfectEl = document.getElementById('demoPerfect');
+        const resetBtn = document.getElementById('demoReset');
+
+        function updateDemo() {
+            const checked = habits.filter(Boolean).length;
+            const pct = Math.round(checked / 4 * 100);
+
+            scoreEl.textContent = checked + '/4';
+            pctEl.textContent = pct + '%';
+
+            // Rank
+            rankEl.className = 'demo-rank';
+            if (pct === 100) {
+                rankEl.textContent = 'MAÎTRE';
+                rankEl.classList.add('rank-maitre');
+            } else if (pct >= 75) {
+                rankEl.textContent = 'CONFIRMÉ';
+                rankEl.classList.add('rank-confirme');
+            } else if (pct >= 50) {
+                rankEl.textContent = 'APPRENTI';
+                rankEl.classList.add('rank-apprenti');
+            } else {
+                rankEl.textContent = 'DÉBUTANT';
+            }
+
+            // Streak
+            if (checked === 4) {
+                streakEl.textContent = '🔥 Série: 1 jour';
+                streakEl.classList.add('active');
+                scoreEl.classList.add('perfect');
+            } else {
+                streakEl.textContent = '🔥 Série: 0 jours';
+                streakEl.classList.remove('active');
+                scoreEl.classList.remove('perfect');
+            }
+
+            // Perfect day
+            if (checked === 4) {
+                perfectEl.classList.add('show');
+                triggerConfetti();
+                if (navigator.vibrate) navigator.vibrate([50, 30, 80]);
+            } else {
+                perfectEl.classList.remove('show');
+            }
+        }
+
+        habitEls.forEach(function(el) {
+            el.addEventListener('click', function() {
+                const idx = parseInt(el.dataset.index);
+                habits[idx] = !habits[idx];
+                el.classList.toggle('checked', habits[idx]);
+
+                // Ripple effect
+                if (habits[idx]) {
+                    const ripple = el.querySelector('.demo-ripple');
+                    ripple.classList.remove('animate');
+                    void ripple.offsetWidth;
+                    ripple.classList.add('animate');
+                }
+
+                updateDemo();
+            });
+        });
+
+        resetBtn.addEventListener('click', function() {
+            habits.fill(false);
+            habitEls.forEach(function(el) { el.classList.remove('checked'); });
+            updateDemo();
+        });
+
+        // ===== CONFETTI =====
+        function triggerConfetti() {
+            const container = document.getElementById('confettiContainer');
+            const colors = ['#19E639', '#F5F5F0', '#FFD700', '#FF6B35', '#19A3E6', '#E6194B'];
+            for (let i = 0; i < 60; i++) {
+                const piece = document.createElement('div');
+                piece.className = 'confetti-piece';
+                piece.style.left = Math.random() * 100 + '%';
+                piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+                piece.style.width = (4 + Math.random() * 6) + 'px';
+                piece.style.height = (4 + Math.random() * 6) + 'px';
+                piece.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+                piece.style.animationDuration = (1.5 + Math.random() * 2) + 's';
+                piece.style.animationDelay = (Math.random() * 0.5) + 's';
+                container.appendChild(piece);
+            }
+            setTimeout(function() { container.innerHTML = ''; }, 4000);
+        }
+    })();
     </script>
 </body>
 </html>
