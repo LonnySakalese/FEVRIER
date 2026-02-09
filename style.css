@@ -3597,3 +3597,408 @@ canvas {
         grid-template-columns: repeat(6, 1fr);
     }
 }
+
+/* ============================================================
+   GROUPS STYLES
+   ============================================================ */
+
+.groups-container {
+    padding: 15px;
+    padding-bottom: 100px;
+}
+
+.groups-header {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.group-action-btn {
+    flex: 1;
+    padding: 12px 16px;
+    border: 1px solid var(--steel);
+    border-radius: 12px;
+    background: var(--dark-gray);
+    color: var(--accent);
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+}
+
+.group-action-btn:hover,
+.group-action-btn:active {
+    background: var(--charcoal);
+    border-color: var(--accent-dim);
+}
+
+.group-action-btn-secondary {
+    background: transparent;
+}
+
+/* Group cards */
+.group-card {
+    background: var(--dark-gray);
+    border: 1px solid var(--steel);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.group-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.group-card:active {
+    transform: translateY(0);
+}
+
+.group-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.group-card-name {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--accent);
+}
+
+.group-card-count {
+    font-size: 0.75rem;
+    color: var(--accent-dim);
+}
+
+.group-card-avatars {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 8px;
+}
+
+.group-card-avatar {
+    font-size: 1.3rem;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--charcoal);
+    border-radius: 50%;
+}
+
+.group-card-avatar-more {
+    font-size: 0.7rem;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--charcoal);
+    border-radius: 50%;
+    color: var(--accent-dim);
+}
+
+.group-card-desc {
+    font-size: 0.8rem;
+    color: var(--accent-dim);
+    line-height: 1.3;
+}
+
+/* Group empty state */
+.group-empty {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--accent-dim);
+}
+
+.group-empty-icon {
+    font-size: 2.5rem;
+    margin-bottom: 12px;
+}
+
+/* Group detail */
+.group-detail {
+    padding: 5px 0;
+}
+
+.group-detail-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.group-detail-name {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: var(--accent);
+    margin: 0 0 6px;
+}
+
+.group-detail-desc {
+    font-size: 0.85rem;
+    color: var(--accent-dim);
+    margin: 0 0 12px;
+}
+
+.group-code-section {
+    margin: 14px 0;
+}
+
+.group-code-label {
+    display: block;
+    font-size: 0.7rem;
+    color: var(--accent-dim);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+}
+
+.group-code {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--charcoal);
+    border: 1px solid var(--steel);
+    border-radius: 10px;
+    padding: 10px 18px;
+    cursor: pointer;
+    transition: border-color 0.2s;
+}
+
+.group-code:hover {
+    border-color: var(--accent-dim);
+}
+
+.group-code-value {
+    font-family: monospace;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: 4px;
+}
+
+.group-code-copy {
+    font-size: 1.1rem;
+}
+
+.group-detail-count {
+    font-size: 0.8rem;
+    color: var(--accent-dim);
+    margin-top: 10px;
+}
+
+/* Group habits */
+.group-detail-habits {
+    margin-bottom: 20px;
+    padding: 12px;
+    background: var(--charcoal);
+    border-radius: 10px;
+}
+
+.group-detail-habits-title {
+    font-size: 0.75rem;
+    color: var(--accent-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+}
+
+.group-detail-habits-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.group-habit-tag {
+    display: inline-block;
+    padding: 4px 10px;
+    background: var(--dark-gray);
+    border: 1px solid var(--steel);
+    border-radius: 20px;
+    font-size: 0.78rem;
+    color: var(--accent);
+}
+
+/* Group members list */
+.group-members-title {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 12px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--steel);
+}
+
+.group-members-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.group-member {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    background: var(--charcoal);
+    border-radius: 10px;
+    border: 1px solid transparent;
+    transition: border-color 0.2s;
+}
+
+.group-member-me {
+    border-color: var(--accent-dim);
+}
+
+.group-member-position {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--accent-dim);
+    min-width: 20px;
+    text-align: center;
+}
+
+.group-member-avatar {
+    font-size: 1.5rem;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.group-member-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.group-member-pseudo {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--accent);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.group-member-rank {
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.group-member-score {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--accent);
+    min-width: 40px;
+    text-align: right;
+}
+
+.group-detail-actions {
+    text-align: center;
+    padding-top: 10px;
+}
+
+.group-danger-btn {
+    padding: 10px 20px;
+    background: transparent;
+    border: 1px solid #8B0000;
+    border-radius: 10px;
+    color: #FF6B6B;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.group-danger-btn:hover {
+    background: rgba(139, 0, 0, 0.15);
+}
+
+/* Habits selection in create modal */
+.group-habits-select {
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1px solid var(--steel);
+    border-radius: 8px;
+    padding: 8px;
+    background: var(--charcoal);
+}
+
+.group-habit-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 6px;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: background 0.15s;
+}
+
+.group-habit-checkbox:hover {
+    background: var(--dark-gray);
+}
+
+.group-habit-checkbox input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--accent);
+    cursor: pointer;
+}
+
+.group-habit-icon {
+    font-size: 1.1rem;
+}
+
+.group-habit-name {
+    font-size: 0.85rem;
+    color: var(--accent);
+}
+
+/* Profile groups section */
+.profile-groups-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.profile-group-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 14px;
+    background: var(--dark-gray);
+    border: 1px solid var(--steel);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: border-color 0.2s;
+}
+
+.profile-group-item:hover {
+    border-color: var(--accent-dim);
+}
+
+.profile-group-name {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--accent);
+}
+
+.profile-group-count {
+    font-size: 0.8rem;
+    color: var(--accent-dim);
+}
+
+/* Nav label size for 5 items */
+.bottom-nav .nav-item .label {
+    font-size: 0.55rem;
+}

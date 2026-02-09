@@ -53,6 +53,12 @@ import {
     checkNeedsPseudo, showSetupPseudoModal, saveSetupPseudo,
     loadProfileFromFirestore
 } from './pages/profile.js';
+import {
+    renderGroups, openCreateGroupModal, closeCreateGroupModal, createGroup,
+    openJoinGroupModal, closeJoinGroupModal, joinGroup,
+    openGroupDetail, closeGroupDetail, leaveGroup, deleteGroup, copyGroupCode,
+    renderProfileGroups
+} from './pages/groups.js';
 
 // --- Auth functions (defined here because they use firebase globals) ---
 
@@ -490,6 +496,9 @@ function showPage(page, event) {
         displayRandomQuote();
     } else if (page === 'profile') {
         renderProfile();
+        renderProfileGroups();
+    } else if (page === 'groups') {
+        renderGroups();
     }
 }
 
@@ -583,7 +592,12 @@ Object.assign(window, {
     saveSetupPseudo,
 
     // Data
-    resetAllData
+    resetAllData,
+
+    // Groups
+    openCreateGroupModal, closeCreateGroupModal, createGroup,
+    openJoinGroupModal, closeJoinGroupModal, joinGroup,
+    openGroupDetail, closeGroupDetail, leaveGroup, deleteGroup, copyGroupCode
 });
 
 // --- INITIALIZATION ---

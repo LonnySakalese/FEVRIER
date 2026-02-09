@@ -697,6 +697,69 @@
         </div>
     </div>
 
+    <!-- Page "Groupes" -->
+    <div id="page-groups" class="page">
+        <div class="groups-container" id="groupsContainer">
+            <!-- Rendu dynamique par JavaScript -->
+        </div>
+    </div>
+
+    <!-- Modal Créer un groupe -->
+    <div class="modal-overlay" id="createGroupModal">
+        <div class="modal">
+            <h3>➕ CRÉER UN GROUPE</h3>
+            <div class="form-group">
+                <label>Nom du groupe</label>
+                <input type="text" id="createGroupName" placeholder="Ex: Team Morning" maxlength="30"
+                    style="width: 100%; padding: 12px; background: var(--charcoal); border: 1px solid var(--steel); border-radius: 8px; color: var(--accent); font-size: 1rem;">
+            </div>
+            <div class="form-group">
+                <label>Description <span class="optional-label">(optionnel)</span></label>
+                <textarea id="createGroupDesc" placeholder="Décris ton groupe en quelques mots" maxlength="100" rows="2"
+                    style="width: 100%; padding: 12px; background: var(--charcoal); border: 1px solid var(--steel); border-radius: 8px; color: var(--accent); font-size: 1rem; resize: none;"></textarea>
+            </div>
+            <div class="form-group">
+                <label>Habitudes du groupe</label>
+                <div class="group-habits-select" id="createGroupHabits">
+                    <!-- Rempli dynamiquement -->
+                </div>
+            </div>
+            <div class="modal-buttons">
+                <button class="modal-btn cancel" onclick="closeCreateGroupModal()">Annuler</button>
+                <button class="modal-btn save" onclick="createGroup()">Créer</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Rejoindre un groupe -->
+    <div class="modal-overlay" id="joinGroupModal">
+        <div class="modal">
+            <h3>🔗 REJOINDRE UN GROUPE</h3>
+            <p style="color: var(--accent-dim); text-align: center; margin-bottom: 15px;">
+                Entre le code d'invitation à 6 caractères
+            </p>
+            <input type="text" id="joinGroupCode" placeholder="EX: ABC123" maxlength="6"
+                style="width: 100%; padding: 14px; background: var(--charcoal); border: 1px solid var(--steel); border-radius: 8px; color: var(--accent); font-size: 1.4rem; text-align: center; text-transform: uppercase; letter-spacing: 6px; font-family: monospace;"
+                oninput="this.value = this.value.toUpperCase()">
+            <div class="modal-buttons" style="margin-top: 20px;">
+                <button class="modal-btn cancel" onclick="closeJoinGroupModal()">Annuler</button>
+                <button class="modal-btn save" onclick="joinGroup()">Rejoindre</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Détail groupe -->
+    <div class="modal-overlay" id="groupDetailModal">
+        <div class="modal modal-large">
+            <div id="groupDetailContent">
+                <!-- Rempli dynamiquement -->
+            </div>
+            <div class="modal-buttons">
+                <button class="modal-btn cancel" onclick="closeGroupDetail()" style="flex: 1;">Fermer</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Barre de navigation inférieure fixe -->
     <div class="bottom-nav">
         <div class="nav-item active" onclick="showPage('today', event)">
@@ -714,6 +777,10 @@
         <div class="nav-item" onclick="showPage('profile', event)">
             <div class="icon">👤</div>
             <div class="label">Profil</div>
+        </div>
+        <div class="nav-item" onclick="showPage('groups', event)">
+            <div class="icon">👥</div>
+            <div class="label">Groupes</div>
         </div>
     </div>
 
