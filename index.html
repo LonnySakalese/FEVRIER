@@ -888,6 +888,118 @@
         </div>
     </div>
 
+    <!-- Page "Profil" : profil utilisateur -->
+    <div id="page-profile" class="page">
+        <div class="profile-container">
+            <!-- Avatar -->
+            <div class="profile-avatar-section">
+                <div class="profile-avatar" id="profileAvatar">🦁</div>
+                <button class="profile-change-avatar-btn" onclick="openAvatarPicker()">Changer l'avatar</button>
+            </div>
+
+            <!-- Infos -->
+            <div class="profile-info-section">
+                <div class="profile-field">
+                    <label class="profile-label">Pseudo</label>
+                    <div class="profile-value" id="profilePseudo">-</div>
+                    <button class="profile-edit-btn" onclick="openEditPseudoModal()">✏️</button>
+                </div>
+                <div class="profile-field">
+                    <label class="profile-label">Bio</label>
+                    <div class="profile-value" id="profileBio" style="font-style: italic; color: var(--accent-dim);">Aucune bio</div>
+                    <button class="profile-edit-btn" onclick="openEditBioModal()">✏️</button>
+                </div>
+            </div>
+
+            <!-- Stats publiques -->
+            <div class="section-title">📊 MES STATS</div>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value" id="profileAvgScore">0%</div>
+                    <div class="stat-label">Score moyen</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="profileBestStreak">0</div>
+                    <div class="stat-label">Meilleur streak</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="profilePerfectDays">0</div>
+                    <div class="stat-label">Jours parfaits</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="profileRank">DÉBUTANT</div>
+                    <div class="stat-label">Rang</div>
+                </div>
+            </div>
+
+            <!-- Groupes -->
+            <div class="section-title">👥 MES GROUPES</div>
+            <div class="profile-groups-empty" id="profileGroups">
+                <div style="text-align: center; padding: 20px; color: var(--accent-dim);">
+                    <div style="font-size: 2rem; margin-bottom: 10px;">👥</div>
+                    <div>Aucun groupe pour le moment</div>
+                    <div style="font-size: 0.8rem; margin-top: 5px;">Bientôt disponible !</div>
+                </div>
+            </div>
+
+            <!-- Membre depuis -->
+            <div class="profile-member-since" id="profileMemberSince" style="text-align: center; color: var(--accent-dim); font-size: 0.8rem; margin-top: 20px; padding-bottom: 100px;">
+                Membre depuis -
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Avatar Picker -->
+    <div class="modal-overlay" id="avatarPickerModal">
+        <div class="modal">
+            <h3>🎨 CHOISIS TON AVATAR</h3>
+            <div class="avatar-picker-grid" id="avatarPickerGrid">
+                <!-- Rempli par JavaScript -->
+            </div>
+            <div class="modal-buttons">
+                <button class="modal-btn cancel" onclick="closeAvatarPicker()">Fermer</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Edit Pseudo -->
+    <div class="modal-overlay" id="editPseudoModal">
+        <div class="modal">
+            <h3>✏️ MODIFIER LE PSEUDO</h3>
+            <input type="text" id="editPseudoInput" placeholder="Ton pseudo" maxlength="20" style="width: 100%; padding: 12px; background: var(--charcoal); border: 1px solid var(--steel); border-radius: 8px; color: var(--accent); font-size: 1rem; text-align: center; margin-bottom: 15px;">
+            <div class="modal-buttons">
+                <button class="modal-btn cancel" onclick="closeEditPseudoModal()">Annuler</button>
+                <button class="modal-btn save" onclick="saveProfilePseudo()">Sauvegarder</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Edit Bio -->
+    <div class="modal-overlay" id="editBioModal">
+        <div class="modal">
+            <h3>✏️ MODIFIER LA BIO</h3>
+            <textarea id="editBioInput" placeholder="Ta bio (ex: Discipline = Liberté)" maxlength="100" rows="3" style="width: 100%; padding: 12px; background: var(--charcoal); border: 1px solid var(--steel); border-radius: 8px; color: var(--accent); font-size: 1rem; text-align: center; margin-bottom: 15px; resize: none;"></textarea>
+            <div class="modal-buttons">
+                <button class="modal-btn cancel" onclick="closeEditBioModal()">Annuler</button>
+                <button class="modal-btn save" onclick="saveProfileBio()">Sauvegarder</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Setup Pseudo (après inscription) -->
+    <div class="modal-overlay" id="setupPseudoModal">
+        <div class="modal">
+            <h3>👋 BIENVENUE, GUERRIER !</h3>
+            <p style="color: var(--accent-dim); text-align: center; margin-bottom: 15px;">
+                Comment on doit t'appeler ?
+            </p>
+            <input type="text" id="setupPseudoInput" placeholder="Ton pseudo" maxlength="20" style="width: 100%; padding: 12px; background: var(--charcoal); border: 1px solid var(--steel); border-radius: 8px; color: var(--accent); font-size: 1rem; text-align: center; margin-bottom: 15px;">
+            <div class="modal-buttons">
+                <button class="modal-btn save" onclick="saveSetupPseudo()" style="flex: 1;">C'EST PARTI 🔥</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Barre de navigation inférieure fixe -->
     <div class="bottom-nav">
         <div class="nav-item active" onclick="showPage('today', event)">
@@ -900,7 +1012,11 @@
         </div>
         <div class="nav-item" onclick="showPage('motivation', event)">
             <div class="icon">🔥</div>
-            <div class="label">Informations</div>
+            <div class="label">Infos</div>
+        </div>
+        <div class="nav-item" onclick="showPage('profile', event)">
+            <div class="icon">👤</div>
+            <div class="label">Profil</div>
         </div>
     </div>
 

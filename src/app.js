@@ -46,6 +46,13 @@ import {
 } from './pages/today.js';
 import { updateStats, toggleBadgesVisibility } from './pages/stats.js';
 import { quotes, displayRandomQuote, getGreeting } from './pages/motivation.js';
+import {
+    renderProfile, openAvatarPicker, closeAvatarPicker, selectAvatar,
+    openEditPseudoModal, closeEditPseudoModal, saveProfilePseudo,
+    openEditBioModal, closeEditBioModal, saveProfileBio,
+    checkNeedsPseudo, showSetupPseudoModal, saveSetupPseudo,
+    loadProfileFromFirestore
+} from './pages/profile.js';
 
 // --- Auth functions (defined here because they use firebase globals) ---
 
@@ -486,6 +493,8 @@ function showPage(page, event) {
         updateStats();
     } else if (page === 'motivation') {
         displayRandomQuote();
+    } else if (page === 'profile') {
+        renderProfile();
     }
 }
 
@@ -572,6 +581,12 @@ Object.assign(window, {
     // Badges
     toggleBadgesVisibility,
 
+    // Profile
+    openAvatarPicker, closeAvatarPicker, selectAvatar,
+    openEditPseudoModal, closeEditPseudoModal, saveProfilePseudo,
+    openEditBioModal, closeEditBioModal, saveProfileBio,
+    saveSetupPseudo,
+
     // Data
     resetAllData
 });
@@ -630,6 +645,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
 
                 await loadThemeFromFirestore(user.uid);
+                await loadProfileFromFirestore();
 
                 checkLocalStorageMigration(user);
 
@@ -641,6 +657,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (isFirstTimeUser()) {
                     console.log("🎓 Premier lancement détecté - Affichage du tutoriel");
                     showTutorial();
+                }
+
+                // Demander le pseudo si pas encore défini
+                if (checkNeedsPseudo()) {
+                    setTimeout(() => showSetupPseudoModal(), 500);
                 }
             } else {
                 appState.currentUser = null;
