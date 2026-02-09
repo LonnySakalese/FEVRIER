@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PROJET FEVRIER — Forge ta discipline</title>
+    <meta name="description" content="PROJET FEVRIER : l'application de suivi d'habitudes qui forge ta discipline. Crée tes habitudes, maintiens tes streaks, évolue chaque jour.">
+    <meta property="og:title" content="PROJET FEVRIER — Forge ta discipline">
+    <meta property="og:description" content="Suivi d'habitudes minimaliste. Streaks, rangs, badges et statistiques pour devenir meilleur chaque jour.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://lonnysakalese.github.io/FEVRIER/">
+    <meta name="theme-color" content="#0A0A0A">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%230A0A0A' width='100' height='100' rx='20'/><path d='M 23 74 Q 27 70 31 66 Q 39 58 47 54 Q 55 50 62 39 Q 68 29 74 19' fill='none' stroke='%23F5F5F0' stroke-width='6' stroke-linecap='round'/><path d='M 66 16 L 77 18 L 75 29' fill='none' stroke='%23F5F5F0' stroke-width='6' stroke-linecap='round'/></svg>">
+    <style>
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --black: #0A0A0A;
+            --accent: #F5F5F0;
+            --accent-dim: #8A8A85;
+            --accent-green: #19E639;
+            --card-bg: #141414;
+            --border: #222;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: var(--black);
+            color: var(--accent);
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Fade-in animation */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 40px 20px;
+            position: relative;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 120px;
+            background: linear-gradient(to bottom, transparent, var(--black));
+            pointer-events: none;
+        }
+
+        .hero-logo {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 32px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .hero h1 {
+            font-size: clamp(2rem, 6vw, 3.5rem);
+            font-weight: 800;
+            letter-spacing: 6px;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dim) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-tagline {
+            font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--accent);
+        }
+
+        .hero-subtext {
+            font-size: clamp(0.9rem, 2vw, 1.05rem);
+            color: var(--accent-dim);
+            max-width: 480px;
+            margin: 0 auto 40px;
+            line-height: 1.7;
+        }
+
+        .cta-btn {
+            display: inline-block;
+            padding: 16px 40px;
+            background: var(--accent);
+            color: var(--black);
+            font-size: 0.95rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .cta-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(245, 245, 240, 0.15);
+        }
+
+        .cta-btn:active {
+            transform: translateY(0);
+        }
+
+        .cta-btn--green {
+            background: var(--accent-green);
+            color: var(--black);
+        }
+
+        .cta-btn--green:hover {
+            box-shadow: 0 8px 30px rgba(25, 230, 57, 0.2);
+        }
+
+        /* ===== SECTION COMMON ===== */
+        section {
+            padding: 80px 20px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .section-heading {
+            font-size: clamp(1.4rem, 3.5vw, 1.8rem);
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        /* ===== FEATURES ===== */
+        .features-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        @media (min-width: 600px) {
+            .features-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 24px;
+            }
+        }
+
+        .feature-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 28px 24px;
+            transition: border-color 0.3s, transform 0.3s;
+        }
+
+        .feature-card:hover {
+            border-color: var(--accent-dim);
+            transform: translateY(-3px);
+        }
+
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 14px;
+            display: block;
+        }
+
+        .feature-title {
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .feature-desc {
+            font-size: 0.9rem;
+            color: var(--accent-dim);
+            line-height: 1.6;
+        }
+
+        /* ===== HOW IT WORKS ===== */
+        .steps {
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .step-number {
+            flex-shrink: 0;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: 2px solid var(--accent-green);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--accent-green);
+        }
+
+        .step-text {
+            font-size: 1.05rem;
+            font-weight: 500;
+        }
+
+        /* ===== QUOTE ===== */
+        .quote-section {
+            text-align: center;
+            padding: 100px 20px;
+        }
+
+        .quote-text {
+            font-size: clamp(1.2rem, 3vw, 1.6rem);
+            font-style: italic;
+            font-weight: 300;
+            line-height: 1.8;
+            max-width: 650px;
+            margin: 0 auto 16px;
+            color: var(--accent);
+        }
+
+        .quote-author {
+            font-size: 0.9rem;
+            color: var(--accent-dim);
+            letter-spacing: 1px;
+        }
+
+        /* ===== FINAL CTA ===== */
+        .final-cta {
+            text-align: center;
+            padding: 80px 20px 100px;
+        }
+
+        .final-cta h2 {
+            font-size: clamp(1.3rem, 3.5vw, 1.8rem);
+            font-weight: 700;
+            margin-bottom: 32px;
+            letter-spacing: 2px;
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            text-align: center;
+            padding: 30px 20px;
+            color: var(--accent-dim);
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+            border-top: 1px solid var(--border);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HERO -->
+    <section class="hero">
+        <svg class="hero-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+            <rect fill="#0A0A0A" width="100" height="100" rx="20"/>
+            <path d="M 23 74 Q 27 70 31 66 Q 39 58 47 54 Q 55 50 62 39 Q 68 29 74 19" fill="none" stroke="#F5F5F0" stroke-width="6" stroke-linecap="round"/>
+            <path d="M 66 16 L 77 18 L 75 29" fill="none" stroke="#F5F5F0" stroke-width="6" stroke-linecap="round"/>
+        </svg>
+        <h1>PROJET FEVRIER</h1>
+        <p class="hero-tagline">Forge ta discipline. Deviens meilleur chaque jour.</p>
+        <p class="hero-subtext">Une application minimaliste de suivi d'habitudes conçue pour bâtir ta discipline quotidienne, suivre ta progression et ne jamais lâcher.</p>
+        <a href="index.html" class="cta-btn">COMMENCER MAINTENANT</a>
+    </section>
+
+    <!-- FEATURES -->
+    <section class="fade-in">
+        <h2 class="section-heading">CE QUE TU OBTIENS</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <span class="feature-icon">🎯</span>
+                <div class="feature-title">Habitudes quotidiennes</div>
+                <div class="feature-desc">Crée et personnalise tes habitudes. Valide-les chaque jour.</div>
+            </div>
+            <div class="feature-card">
+                <span class="feature-icon">🔥</span>
+                <div class="feature-title">Streaks &amp; Scores</div>
+                <div class="feature-desc">Maintiens ta série. Ne brise jamais la chaîne.</div>
+            </div>
+            <div class="feature-card">
+                <span class="feature-icon">🏆</span>
+                <div class="feature-title">Rangs &amp; Badges</div>
+                <div class="feature-desc">Évolue de Débutant à Maître. Débloque 24 badges.</div>
+            </div>
+            <div class="feature-card">
+                <span class="feature-icon">📊</span>
+                <div class="feature-title">Statistiques</div>
+                <div class="feature-desc">Suis ta progression avec des graphiques détaillés.</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section class="fade-in">
+        <h2 class="section-heading">COMMENT ÇA MARCHE</h2>
+        <div class="steps">
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-text">Crée ton compte</div>
+            </div>
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-text">Définis tes habitudes</div>
+            </div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-text">Valide chaque jour et progresse</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MOTIVATION QUOTE -->
+    <section class="quote-section fade-in">
+        <p class="quote-text">"La discipline est le pont entre les objectifs et l'accomplissement"</p>
+        <p class="quote-author">— Jim Rohn</p>
+    </section>
+
+    <!-- FINAL CTA -->
+    <section class="final-cta fade-in">
+        <h2>Prêt à devenir meilleur ?</h2>
+        <a href="index.html" class="cta-btn cta-btn--green">REJOINDRE PROJET FEVRIER</a>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        PROJET FEVRIER © 2025
+    </footer>
+
+    <script>
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.15 });
+
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>

@@ -115,11 +115,6 @@ async function handleSignup() {
         await createUserProfile(userCredential.user);
         checkLocalStorageMigration(userCredential.user);
 
-        localStorage.removeItem('warriorTutorialCompleted');
-        setCurrentTutorialStep(1);
-        goToTutorialStep(1);
-        showTutorial();
-
     } catch (error) {
         console.error('❌ Erreur inscription:', error);
         errorEl.textContent = getAuthErrorMessage(error.code);
@@ -596,9 +591,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Charger le thème immédiatement pour éviter un flash
     loadTheme();
 
-    // Initialize tutorial system
-    initTutorial();
-
     async function initializeApp() {
         await loadCustomHabits();
         loadRankSettings();
@@ -620,11 +612,6 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log("Mode localStorage seul activé.");
         document.getElementById('logoutItem').style.display = 'none';
         document.getElementById('deleteItem').style.display = 'none';
-
-        if (isFirstTimeUser()) {
-            console.log("🎓 Premier lancement détecté - Affichage du tutoriel");
-            showTutorial();
-        }
 
         showAppPage('today');
         initializeApp();
@@ -653,11 +640,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.getElementById('deleteItem').style.display = 'block';
                 showAppPage('today');
                 await initializeApp();
-
-                if (isFirstTimeUser()) {
-                    console.log("🎓 Premier lancement détecté - Affichage du tutoriel");
-                    showTutorial();
-                }
 
                 // Demander le pseudo si pas encore défini
                 if (checkNeedsPseudo()) {
