@@ -4,10 +4,12 @@
 
 import { getAvgScore, getMonthScore, getBestStreak, getTotalWins } from '../core/scores.js';
 import { getRank } from '../core/ranks.js';
-import { checkAndUnlockBadges, renderBadges } from '../core/badges.js';
+import { checkAndUnlockBadges, renderBadges, toggleBadgesVisibility } from '../core/badges.js';
 import { renderWeeklyGrid, renderCharts } from '../ui/charts.js';
 
 // Met à jour tous les éléments de la page "Stats"
+export { toggleBadgesVisibility };
+
 export function updateStats() {
     const avgScore = getAvgScore();
     const rank = getRank(avgScore);

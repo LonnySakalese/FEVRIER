@@ -180,6 +180,17 @@ export function showBadgeUnlockNotification(badge) {
     console.log(`🏆 Badge débloqué: ${badge.name}`);
 }
 
+// Toggle badges visibility (for mobile)
+export function toggleBadgesVisibility() {
+    const grid = document.getElementById('badgesGridWrapper');
+    const btn = document.getElementById('toggleBadgesBtn');
+    if (!grid || !btn) return;
+
+    const isHidden = grid.style.display === 'none';
+    grid.style.display = isHidden ? 'block' : 'none';
+    btn.textContent = isHidden ? '🏆 MASQUER LES BADGES' : '🏆 VOIR LES BADGES';
+}
+
 // Affiche les badges dans la page Stats
 export function renderBadges() {
     try {
@@ -192,13 +203,13 @@ export function renderBadges() {
         const unlockedBadges = loadBadges();
         console.log('🏆 Rendering badges:', unlockedBadges.length, 'unlocked');
 
-        let html = '<div class="badges-grid">';
+        let gridHtml = '<div class="badges-grid">';
 
         BADGES.forEach(badge => {
             const isUnlocked = unlockedBadges.includes(badge.id);
             const rarityColor = RARITY_COLORS[badge.rarity];
 
-            html += `
+            gridHtml += `
                 <div class="badge-card ${isUnlocked ? 'unlocked' : 'locked'}"
                      style="border-color: ${rarityColor};"
                      title="${badge.desc}">
@@ -210,10 +221,12 @@ export function renderBadges() {
             `;
         });
 
-        html += '</div>';
+        gridHtml += '</div>';
 
         const progress = Math.round((unlockedBadges.length / BADGES.length) * 100);
-        html = `
+        const isMobile = window.innerWidth <= 768;
+
+        let html = `
             <div class="badges-header">
                 <div class="badges-title">🏆 ACHIEVEMENTS</div>
                 <div class="badges-progress">
@@ -223,7 +236,13 @@ export function renderBadges() {
                     </div>
                 </div>
             </div>
-        ` + html;
+            <button id="toggleBadgesBtn" class="calendar-view-btn" onclick="toggleBadgesVisibility()" style="width: 100%; margin-bottom: 10px; display: ${isMobile ? 'block' : 'none'};">
+                🏆 VOIR LES BADGES
+            </button>
+            <div id="badgesGridWrapper" style="display: ${isMobile ? 'none' : 'block'};">
+                ${gridHtml}
+            </div>
+        `;
 
         container.innerHTML = html;
         console.log('✅ Badges rendered successfully');

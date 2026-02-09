@@ -44,7 +44,7 @@ import {
     renderHabits, updateKPIs, toggleHabit, changeDate, updateUI,
     showValidateDayModal, closeValidateDayModal, confirmValidateDay, updateValidateButton
 } from './pages/today.js';
-import { updateStats } from './pages/stats.js';
+import { updateStats, toggleBadgesVisibility } from './pages/stats.js';
 import { quotes, displayRandomQuote, getGreeting } from './pages/motivation.js';
 
 // --- Auth functions (defined here because they use firebase globals) ---
@@ -568,6 +568,9 @@ Object.assign(window, {
     // Tutorial
     nextTutorialStep, prevTutorialStep, skipTutorial,
     completeTutorial, toggleDemoCheckbox, restartTutorial,
+
+    // Badges
+    toggleBadgesVisibility,
 
     // Data
     resetAllData
