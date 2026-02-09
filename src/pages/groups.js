@@ -199,8 +199,10 @@ export async function createGroup() {
     const habitNames = Array.from(checkboxes).map(cb => cb.dataset.name);
 
     try {
+        showPopup('Création en cours...', 'info');
         const code = await generateUniqueCode();
         const userId = appState.currentUser.uid;
+        console.log('📝 Création groupe:', { name, habitNames, userId });
 
         // Get user profile
         const userDoc = await db.collection('users').doc(userId).get();
@@ -216,6 +218,7 @@ export async function createGroup() {
             habitNames,
             memberCount: 1
         });
+        console.log('✅ Groupe créé:', groupRef.id);
 
         // Add creator as member
         await db.collection('groups').doc(groupRef.id).collection('members').doc(userId).set({
@@ -230,12 +233,12 @@ export async function createGroup() {
         });
 
         closeCreateGroupModal();
-        showPopup(`Groupe créé ! Code : ${code}`, 'success');
+        showPopup(`Groupe créé ! Code : ${code}`, 'success', 5000);
         renderGroups();
 
     } catch (err) {
-        console.error('Erreur createGroup:', err);
-        showPopup('Erreur lors de la création du groupe', 'error');
+        console.error('❌ Erreur createGroup:', err);
+        showPopup(`Erreur : ${err.message || err.code || 'Inconnue'}`, 'error', 6000);
     }
 }
 
