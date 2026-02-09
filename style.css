@@ -194,6 +194,15 @@ body,
     transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
+/* Scroll behavior & scrollbar hiding */
+html {
+    scroll-behavior: smooth;
+    height: -webkit-fill-available;
+}
+
+::-webkit-scrollbar { width: 0; height: 0; }
+body { -ms-overflow-style: none; scrollbar-width: none; }
+
 /* Réinitialisation des styles de base pour tous les éléments */
 * {
     margin: 0;
@@ -223,13 +232,11 @@ body {
     /* Empêche le défilement de "rebondir" en haut et en bas */
 }
 
-html {
-    height: -webkit-fill-available;
-}
-
-/* En-tête de l'application */
+/* En-tête de l'application - Glass effect */
 .header {
-    background: var(--black);
+    background: rgba(10, 10, 10, 0.85);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     padding: 20px 15px;
     text-align: center;
     position: sticky;
@@ -237,6 +244,12 @@ html {
     top: 0;
     z-index: 100;
     border-bottom: 1px solid var(--steel);
+}
+
+[data-theme="light"] .header {
+    background: rgba(248, 249, 250, 0.85);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
 }
 
 .header h1 {
@@ -347,8 +360,44 @@ html {
     background: var(--dark-gray);
     border-bottom: 1px solid var(--charcoal);
     gap: 15px;
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     border-left: 3px solid transparent;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Ripple effect on habit tap */
+.habit-item::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(245, 245, 240, 0.08);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.5s ease, height 0.5s ease, opacity 0.5s ease;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.habit-item:active::after {
+    width: 300px;
+    height: 300px;
+    opacity: 1;
+    transition: width 0s, height 0s, opacity 0s;
+}
+
+/* Check pulse animation */
+@keyframes checkPulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.03); }
+    100% { transform: scale(1); }
+}
+
+.habit-item.completed {
+    animation: checkPulse 0.4s ease;
 }
 
 /* Style quand l'habitude est complétée - EFFET VERT SATISFAISANT */
@@ -562,34 +611,66 @@ canvas {
     padding: 12px 5px;
     text-align: center;
     cursor: pointer;
-    transition: background 0.2s;
+    transition: color 0.2s ease, transform 0.2s ease, background 0.2s ease;
+    position: relative;
+    color: var(--accent-dark);
 }
 
 .nav-item.active {
     background: var(--charcoal);
-    /* Style de l'onglet actif */
+    color: var(--accent);
+    transform: translateY(-2px);
+}
+
+.nav-item.active::after {
+    content: '';
+    position: absolute;
+    bottom: 4px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 20px;
+    height: 3px;
+    background: var(--accent-green);
+    border-radius: 2px;
+    animation: navIndicatorIn 0.3s ease;
+}
+
+@keyframes navIndicatorIn {
+    from { width: 0; opacity: 0; }
+    to { width: 20px; opacity: 1; }
 }
 
 .nav-item .icon {
     font-size: 1.3rem;
     margin-bottom: 3px;
+    transition: transform 0.2s ease;
+}
+
+.nav-item.active .icon {
+    transform: scale(1.1);
 }
 
 .nav-item .label {
     font-size: 0.6rem;
     color: var(--accent);
     text-transform: uppercase;
+    transition: color 0.2s ease;
 }
 
-/* Système de pages/onglets */
+/* Système de pages/onglets avec transitions */
 .page {
     display: none;
     /* Les pages sont masquées par défaut */
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
 .page.active {
     display: block;
     /* La page active est affichée */
+    opacity: 1;
+    transform: translateY(0);
 }
 
 /* Affichage du rang */
@@ -1150,10 +1231,13 @@ canvas {
     align-items: center;
     justify-content: center;
     padding: 20px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
 }
 
 .modal-overlay.active {
     display: flex;
+    opacity: 1;
     /* Affichée quand la classe 'active' est ajoutée */
 }
 
@@ -1164,8 +1248,13 @@ canvas {
     width: 100%;
     max-width: 400px;
     border: 1px solid var(--steel);
-    animation: scaleIn 0.3s ease-out;
+    animation: modalIn 0.3s ease-out;
     /* Animation d'apparition */
+}
+
+@keyframes modalIn {
+    from { opacity: 0; transform: scale(0.95) translateY(10px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
 }
 
 .modal h3 {
@@ -1479,9 +1568,7 @@ canvas {
     transition: all 0.3s ease;
 }
 
-.page {
-    animation: fadeIn 0.3s ease-out;
-}
+/* Page transition handled by .page.active opacity/transform */
 
 /* AUTH PAGE STYLES */
 .auth-container {
@@ -4001,4 +4088,259 @@ canvas {
 /* Nav label size for 5 items */
 .bottom-nav .nav-item .label {
     font-size: 0.55rem;
+}
+
+/* ============================================================ */
+/* MICRO-INTERACTIONS & POLISH                                  */
+/* ============================================================ */
+
+/* Buttons - micro-interactions */
+button, .modal-btn, .auth-btn, .settings-btn, .form-btn, .validate-day-btn {
+    transition: transform 0.15s ease, background 0.2s ease, box-shadow 0.2s ease;
+}
+
+button:active, .modal-btn:active, .auth-btn:active, .settings-btn:active, .form-btn:active {
+    transform: scale(0.97);
+}
+
+/* Cards - hover lift */
+.stat-card, .kpi-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.stat-card:hover, .kpi-card:hover {
+    transform: translateY(-2px);
+}
+
+/* Chart wrapper improvements */
+.chart-wrapper {
+    background: var(--charcoal);
+    border: 1px solid var(--steel);
+    border-radius: 12px;
+    padding: 18px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* ============================================================ */
+/* SKELETON LOADER                                              */
+/* ============================================================ */
+
+.skeleton {
+    background: linear-gradient(90deg, var(--charcoal) 25%, var(--steel) 50%, var(--charcoal) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    border-radius: 8px;
+}
+
+.skeleton-habit {
+    height: 65px;
+    margin-bottom: 1px;
+}
+
+.skeleton-kpi {
+    height: 80px;
+    border-radius: 10px;
+}
+
+@keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+/* ============================================================ */
+/* PULL-TO-REFRESH VISUAL INDICATOR                             */
+/* ============================================================ */
+
+.pull-indicator {
+    text-align: center;
+    padding: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease, padding 0.3s ease, opacity 0.3s ease;
+    opacity: 0;
+    color: var(--accent-dark);
+    font-size: 0.75rem;
+}
+
+.pull-indicator.visible {
+    max-height: 40px;
+    padding: 10px 0;
+    opacity: 1;
+}
+
+.pull-indicator .pull-icon {
+    display: inline-block;
+    animation: pullSpin 1s linear infinite;
+}
+
+@keyframes pullSpin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* ============================================================ */
+/* LIGHT THEME - COMPREHENSIVE IMPROVEMENTS                     */
+/* ============================================================ */
+
+/* Bottom nav in light mode */
+[data-theme="light"] .bottom-nav {
+    background: var(--black);
+    border-top: 1px solid var(--steel);
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="light"] .nav-item.active {
+    background: var(--charcoal);
+}
+
+/* Inputs in light mode */
+[data-theme="light"] .auth-form input,
+[data-theme="light"] .form-group input[type="text"],
+[data-theme="light"] .form-group textarea,
+[data-theme="light"] .habit-name-input,
+[data-theme="light"] .habit-desc-input,
+[data-theme="light"] #editPseudoInput,
+[data-theme="light"] #editBioInput,
+[data-theme="light"] #setupPseudoInput,
+[data-theme="light"] #deleteAccountInput,
+[data-theme="light"] #joinGroupCode,
+[data-theme="light"] #createGroupName,
+[data-theme="light"] #createGroupDesc {
+    background: var(--dark-gray);
+    border-color: var(--steel);
+    color: var(--accent);
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+[data-theme="light"] .auth-form input:focus,
+[data-theme="light"] .form-group input[type="text"]:focus,
+[data-theme="light"] .form-group textarea:focus,
+[data-theme="light"] .habit-name-input:focus,
+[data-theme="light"] .habit-desc-input:focus {
+    border-color: var(--accent-green);
+    box-shadow: 0 0 0 3px rgba(25, 135, 84, 0.15);
+}
+
+/* Buttons in light mode */
+[data-theme="light"] .auth-btn {
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="light"] .modal-btn.save {
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="light"] .modal-btn.cancel {
+    background: var(--charcoal);
+    border: 1px solid var(--steel);
+}
+
+[data-theme="light"] .validate-day-btn {
+    box-shadow: 0 4px 15px rgba(25, 135, 84, 0.3);
+}
+
+/* Cards depth in light mode */
+[data-theme="light"] .kpi-card {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+[data-theme="light"] .stat-card {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+[data-theme="light"] .rank-display {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+[data-theme="light"] .motivation-card {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+/* Chart wrapper light mode */
+[data-theme="light"] .chart-wrapper {
+    background: var(--dark-gray);
+    border-color: var(--steel);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+/* Date nav light mode */
+[data-theme="light"] .date-nav {
+    background: var(--dark-gray);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+/* Group cards light mode */
+[data-theme="light"] .group-card {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+[data-theme="light"] .group-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Profile in light mode */
+[data-theme="light"] .profile-avatar {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="light"] .profile-field {
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+}
+
+/* Calendar light mode */
+[data-theme="light"] .calendar-view-btn {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+/* Weekly grid light mode */
+[data-theme="light"] .weekly-day {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+/* Toast in light mode */
+[data-theme="light"] .toast {
+    background: var(--dark-gray);
+    border-color: var(--steel);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+}
+
+/* Skeleton in light mode */
+[data-theme="light"] .skeleton {
+    background: linear-gradient(90deg, var(--charcoal) 25%, var(--dark-gray) 50%, var(--charcoal) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+}
+
+/* Ripple effect in light mode */
+[data-theme="light"] .habit-item::after {
+    background: rgba(0, 0, 0, 0.06);
+}
+
+/* Badge cards in light mode */
+[data-theme="light"] .badge-card {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+/* Settings in light mode - additional contrast */
+[data-theme="light"] .settings-category {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    border-image: none;
+    border: 1px solid var(--steel);
+    border-radius: 8px;
+    clip-path: none;
+}
+
+[data-theme="light"] .settings-btn {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+/* Add habit section in light mode */
+[data-theme="light"] .add-habit-section {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+/* Group habit select in light mode */
+[data-theme="light"] .group-habits-select {
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.06);
 }

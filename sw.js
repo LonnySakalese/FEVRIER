@@ -3,14 +3,38 @@
 // --- CONFIGURATION DU CACHE ---
 
 // Nom du cache. Changer cette valeur invalidera le cache existant et en créera un nouveau.
-const CACHE_NAME = 'warrior-tracker-v2';
+const CACHE_NAME = 'warrior-tracker-v3';
 
 // Liste des fichiers essentiels à mettre en cache pour que l'application fonctionne hors ligne.
 const urlsToCache = [
   './',             // La racine de l'application (souvent index.html)
   './index.html',
+  './style.css',
   './favicon.svg',
   './manifest.json', // Le manifeste de la PWA
+  // Modules JS
+  './src/app.js',
+  './src/config/firebase.js',
+  './src/core/badges.js',
+  './src/core/habits.js',
+  './src/core/ranks.js',
+  './src/core/scores.js',
+  './src/pages/groups.js',
+  './src/pages/motivation.js',
+  './src/pages/profile.js',
+  './src/pages/stats.js',
+  './src/pages/today.js',
+  './src/services/notifications.js',
+  './src/services/state.js',
+  './src/services/storage.js',
+  './src/ui/calendar.js',
+  './src/ui/charts.js',
+  './src/ui/confetti.js',
+  './src/ui/modals.js',
+  './src/ui/sounds.js',
+  './src/ui/theme.js',
+  './src/ui/toast.js',
+  './src/ui/tutorial.js',
   // Firebase SDK
   'https://www.gstatic.com/firebasejs/9.17.1/firebase-app-compat.js',
   'https://www.gstatic.com/firebasejs/9.17.1/firebase-auth-compat.js',

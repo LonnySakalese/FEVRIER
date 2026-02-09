@@ -97,6 +97,10 @@
 
     <!-- Page "Aujourd'hui" : affiche les habitudes du jour -->
     <div id="page-today" class="page active">
+        <!-- Pull-to-refresh visual indicator -->
+        <div class="pull-indicator" id="pullIndicator">
+            <span class="pull-icon">↻</span> Mise à jour...
+        </div>
         <!-- Navigation pour changer de date -->
         <div class="date-nav">
             <button onclick="changeDate(-1)">◀</button>

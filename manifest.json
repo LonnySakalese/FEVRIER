@@ -15,5 +15,21 @@
       "purpose": "any maskable"
     }
   ],
-  "categories": ["lifestyle", "health", "productivity"]
+  "categories": ["lifestyle", "health", "productivity"],
+  "shortcuts": [
+    {
+      "name": "Habitudes du jour",
+      "short_name": "Aujourd'hui",
+      "description": "Voir les missions du jour",
+      "url": "./index.html#today",
+      "icons": [{ "src": "favicon.svg", "sizes": "any" }]
+    },
+    {
+      "name": "Statistiques",
+      "short_name": "Stats",
+      "description": "Voir mes statistiques",
+      "url": "./index.html#stats",
+      "icons": [{ "src": "favicon.svg", "sizes": "any" }]
+    }
+  ]
 }
