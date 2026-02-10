@@ -5128,3 +5128,227 @@ button:active, .modal-btn:active, .auth-btn:active, .settings-btn:active, .form-
 [data-theme="light"] .analytics-card {
     box-shadow: 0 2px 8px rgba(0,0,0,0.06);
 }
+
+/* ============================================================ */
+/* RESPONSIVE STATS PAGE                                        */
+/* ============================================================ */
+
+/* --- Small phones (≤360px) --- */
+@media (max-width: 360px) {
+    /* Rank display */
+    .rank-display {
+        margin: 10px 8px;
+        padding: 14px 10px;
+    }
+    .rank-display .rank-name {
+        font-size: 1.3rem;
+    }
+    .rank-display .rank-title {
+        font-size: 0.6rem;
+        letter-spacing: 1px;
+    }
+
+    /* KPI cards — stack 1 column */
+    .kpi-container {
+        grid-template-columns: 1fr;
+        gap: 8px;
+        padding: 10px 8px;
+    }
+    .kpi-card {
+        padding: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        text-align: left;
+    }
+    .kpi-card .value {
+        font-size: 1.3rem;
+        margin: 0;
+    }
+    .kpi-card .label {
+        font-size: 0.55rem;
+    }
+    .kpi-card .sub {
+        display: none;
+    }
+
+    /* Weekly grid — keep 7 cols but reduce */
+    .weekly-grid {
+        gap: 3px;
+        padding: 10px 8px;
+    }
+    .weekly-day {
+        padding: 6px 2px;
+        border-radius: 6px;
+    }
+    .weekly-day .day-name {
+        font-size: 0.5rem;
+    }
+    .weekly-day .day-score {
+        font-size: 0.7rem;
+    }
+
+    /* Stats grid — 1 column */
+    .stats-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        padding: 10px 8px;
+    }
+    .stat-card {
+        padding: 10px;
+    }
+    .stat-card .stat-value {
+        font-size: 1.3rem;
+    }
+    .stat-card .stat-label {
+        font-size: 0.55rem;
+    }
+
+    /* Charts */
+    .chart-container {
+        padding: 10px 8px;
+    }
+    .chart-wrapper {
+        padding: 10px;
+        margin-bottom: 10px;
+    }
+    .chart-title {
+        font-size: 0.7rem;
+    }
+    canvas {
+        max-height: 160px;
+    }
+
+    /* Calendar button */
+    .calendar-view-btn {
+        width: calc(100% - 16px);
+        margin: 10px 8px;
+        padding: 12px 16px;
+        font-size: 0.75rem;
+    }
+
+    /* Section titles */
+    #page-stats .section-title {
+        padding: 10px 8px;
+        font-size: 0.75rem;
+        letter-spacing: 1px;
+    }
+
+    /* Analytics */
+    .analytics-container {
+        padding: 0 8px 15px;
+    }
+    .analytics-card {
+        padding: 12px;
+    }
+    .analytics-card-title {
+        font-size: 0.7rem;
+    }
+    .analytics-highlight-label {
+        font-size: 0.7rem;
+    }
+    .analytics-highlight-value {
+        font-size: 0.85rem;
+    }
+}
+
+/* --- Medium phones (361px - 480px) --- */
+@media (min-width: 361px) and (max-width: 480px) {
+    /* Rank display */
+    .rank-display {
+        margin: 12px 10px;
+        padding: 16px 12px;
+    }
+    .rank-display .rank-name {
+        font-size: 1.6rem;
+    }
+
+    /* KPI — 3 cols tighter */
+    .kpi-container {
+        gap: 8px;
+        padding: 12px 10px;
+    }
+    .kpi-card {
+        padding: 10px 6px;
+    }
+    .kpi-card .value {
+        font-size: 1.2rem;
+    }
+    .kpi-card .label {
+        font-size: 0.55rem;
+        letter-spacing: 0.5px;
+    }
+    .kpi-card .sub {
+        font-size: 0.5rem;
+    }
+
+    /* Weekly grid */
+    .weekly-grid {
+        gap: 4px;
+        padding: 12px 10px;
+    }
+    .weekly-day {
+        padding: 8px 3px;
+    }
+    .weekly-day .day-name {
+        font-size: 0.55rem;
+    }
+    .weekly-day .day-score {
+        font-size: 0.85rem;
+    }
+
+    /* Stats grid */
+    .stats-grid {
+        gap: 8px;
+        padding: 12px 10px;
+    }
+    .stat-card {
+        padding: 12px;
+    }
+    .stat-card .stat-value {
+        font-size: 1.5rem;
+    }
+    .stat-card .stat-label {
+        font-size: 0.6rem;
+    }
+
+    /* Charts */
+    .chart-container {
+        padding: 12px 10px;
+    }
+    .chart-wrapper {
+        padding: 12px;
+    }
+    canvas {
+        max-height: 180px;
+    }
+
+    /* Calendar button */
+    .calendar-view-btn {
+        width: calc(100% - 20px);
+        margin: 12px 10px;
+        padding: 12px 20px;
+        font-size: 0.8rem;
+    }
+
+    /* Analytics */
+    .analytics-container {
+        padding: 0 10px 15px;
+    }
+    .analytics-card {
+        padding: 14px;
+    }
+}
+
+/* --- Ensure charts don't overflow on any mobile --- */
+@media (max-width: 600px) {
+    .chart-wrapper canvas {
+        width: 100% !important;
+        height: auto !important;
+    }
+
+    /* Badges dans stats */
+    #badgesContainer {
+        padding: 0 10px;
+    }
+}
