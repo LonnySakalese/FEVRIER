@@ -94,29 +94,29 @@
             </div>
 
             <div class="auth-tabs">
-                <button class="auth-tab active" onclick="showAuthTab('login')">CONNEXION</button>
-                <button class="auth-tab" onclick="showAuthTab('signup')">INSCRIPTION</button>
+                <button class="auth-tab active" onclick="showAuthTab('login')" data-i18n="auth.login">CONNEXION</button>
+                <button class="auth-tab" onclick="showAuthTab('signup')" data-i18n="auth.signup">INSCRIPTION</button>
             </div>
 
             <!-- Formulaire de connexion -->
             <div id="auth-login" class="auth-form active">
-                <input type="email" id="login-email" placeholder="Email" autocomplete="email" required>
-                <input type="password" id="login-password" placeholder="Mot de passe (min 8 caractères)"
+                <input type="email" id="login-email" placeholder="Email" data-i18n="auth.email" autocomplete="email" required>
+                <input type="password" id="login-password" placeholder="Mot de passe (min 8 caractères)" data-i18n="auth.password"
                     autocomplete="current-password" required>
-                <button class="auth-btn" onclick="handleLogin()">Se connecter</button>
+                <button class="auth-btn" onclick="handleLogin()" data-i18n="auth.loginBtn">Se connecter</button>
                 <div class="auth-error" id="login-error"></div>
-                <a href="#" class="forgot-password-link" onclick="handleForgotPassword(); return false;">Mot de passe
+                <a href="#" class="forgot-password-link" onclick="handleForgotPassword(); return false;" data-i18n="auth.forgotPassword">Mot de passe
                     oublié ?</a>
             </div>
 
             <!-- Formulaire d'inscription -->
             <div id="auth-signup" class="auth-form">
-                <input type="email" id="signup-email" placeholder="Email" autocomplete="email" required>
-                <input type="password" id="signup-password" placeholder="Mot de passe (min 8 caractères)"
+                <input type="email" id="signup-email" placeholder="Email" data-i18n="auth.email" autocomplete="email" required>
+                <input type="password" id="signup-password" placeholder="Mot de passe (min 8 caractères)" data-i18n="auth.password"
                     autocomplete="new-password" required>
-                <input type="password" id="signup-confirm" placeholder="Confirmer le mot de passe"
+                <input type="password" id="signup-confirm" placeholder="Confirmer le mot de passe" data-i18n="auth.confirmPassword"
                     autocomplete="new-password" required>
-                <button class="auth-btn" onclick="handleSignup()">S'inscrire</button>
+                <button class="auth-btn" onclick="handleSignup()" data-i18n="auth.signupBtn">S'inscrire</button>
                 <div class="auth-error" id="signup-error"></div>
             </div>
         </div>
@@ -144,25 +144,37 @@
         <!-- Indicateurs clés de performance (KPIs) -->
         <div class="kpi-container">
             <div class="kpi-card">
-                <div class="label">Score</div>
+                <div class="label" data-i18n="today.score">Score</div>
                 <div class="value" id="dailyScore" aria-live="polite">0%</div>
-                <div class="sub">Aujourd'hui</div>
+                <div class="sub" data-i18n="today.today">Aujourd'hui</div>
             </div>
             <div class="kpi-card">
-                <div class="label">Streak</div>
+                <div class="label" data-i18n="today.streak">Streak</div>
                 <div class="value" id="currentStreak" aria-live="polite">0</div>
-                <div class="sub">Jours</div>
+                <div class="sub" data-i18n="today.days">Jours</div>
             </div>
             <div class="kpi-card">
-                <div class="label">Perfect</div>
+                <div class="label" data-i18n="today.perfect">Perfect</div>
                 <div class="value" id="perfectDays" aria-live="polite">0</div>
-                <div class="sub">Jours 100%</div>
+                <div class="sub" data-i18n="today.perfectDays">Jours 100%</div>
             </div>
+        </div>
+
+        <!-- Barre XP -->
+        <div class="xp-bar-container" id="xpBarContainer">
+            <div class="xp-bar-header">
+                <span class="xp-level" id="xpLevel">LVL 1</span>
+                <span class="xp-amount" id="xpAmount">0 / 100 XP</span>
+            </div>
+            <div class="xp-bar">
+                <div class="xp-bar-fill" id="xpBarFill" style="width: 0%"></div>
+            </div>
+            <div class="xp-today" id="xpToday">+0 XP aujourd'hui</div>
         </div>
 
         <!-- Titre de la section des habitudes -->
         <div class="section-title">
-            <span>🎯 MISSIONS DU JOUR</span>
+            <span data-i18n="today.missions">🎯 MISSIONS DU JOUR</span>
             <span id="completedCount">0/10</span>
         </div>
 
@@ -175,12 +187,12 @@
         <div class="habits-list" id="habitsList"></div>
 
         <!-- Bouton pour valider la journée -->
-        <button id="validateDayBtn" class="validate-day-btn" onclick="showValidateDayModal()" style="display: none;">
+        <button id="validateDayBtn" class="validate-day-btn" onclick="showValidateDayModal()" style="display: none;" data-i18n="today.validateDay">
             ✅ VALIDER LA JOURNÉE
         </button>
 
         <!-- Bouton partager ma journée -->
-        <button class="share-day-btn" onclick="shareDay()">
+        <button class="share-day-btn" onclick="shareDay()" data-i18n="today.shareDay">
             📤 PARTAGER MA JOURNÉE
         </button>
     </div>
@@ -189,7 +201,7 @@
     <div id="page-stats" class="page" role="main">
         <!-- Affichage du rang de l'utilisateur -->
         <div class="rank-display">
-            <div class="rank-title">Ton Rang Actuel</div>
+            <div class="rank-title" data-i18n="stats.currentRank">Ton Rang Actuel</div>
             <div class="rank-name" id="rankName">DÉBUTANT</div>
             <div class="rank-progress">
                 <div class="rank-progress-bar" id="rankProgress" style="width: 0%"></div>
@@ -200,10 +212,10 @@
         <div id="badgesContainer"></div>
 
         <!-- Performance du mois -->
-        <div class="section-title">⏳​ CE MOIS-CI</div>
+        <div class="section-title" data-i18n="stats.thisMonth">⏳ CE MOIS-CI</div>
         <!-- Bouton calendrier visuel -->
         <div class="calendar-btn-container">
-            <button class="calendar-view-btn" onclick="openCalendarModal()">
+            <button class="calendar-view-btn" onclick="openCalendarModal()" data-i18n="stats.viewCalendar">
                 📅 VOIR LE CALENDRIER DU MOIS
             </button>
         </div>
@@ -211,18 +223,18 @@
         <!-- Heatmap 90 jours -->
 
         <!-- Grille de performance de la semaine -->
-        <div class="section-title">📊 CETTE SEMAINE</div>
+        <div class="section-title" data-i18n="stats.thisWeek">📊 CETTE SEMAINE</div>
         <div class="weekly-grid" id="weeklyGrid"></div>
 
         <!-- Section des graphiques de progression -->
-        <div class="section-title">📈 PROGRESSION</div>
+        <div class="section-title" data-i18n="stats.progression">📈 PROGRESSION</div>
         <div class="chart-container">
             <div class="chart-wrapper">
-                <div class="chart-title">Score des 7 derniers jours</div>
+                <div class="chart-title" data-i18n="stats.last7days">Score des 7 derniers jours</div>
                 <canvas id="weeklyChart"></canvas>
             </div>
             <div class="chart-wrapper">
-                <div class="chart-title">Performance par habitude</div>
+                <div class="chart-title" data-i18n="stats.byHabit">Performance par habitude</div>
                 <canvas id="habitsChart"></canvas>
             </div>
         </div>
@@ -231,26 +243,32 @@
         <div class="stats-grid">
             <div class="stat-card">
                 <div class="stat-value" id="monthScore">0%</div>
-                <div class="stat-label">Score du mois</div>
+                <div class="stat-label" data-i18n="stats.monthScore">Score du mois</div>
             </div>
             <div class="stat-card">
                 <div class="stat-value" id="bestStreak">0</div>
-                <div class="stat-label">Meilleure série</div>
+                <div class="stat-label" data-i18n="stats.bestStreak">Meilleure série</div>
             </div>
             <div class="stat-card">
                 <div class="stat-value" id="totalWins">0</div>
-                <div class="stat-label">Victoires totales</div>
+                <div class="stat-label" data-i18n="stats.totalWins">Victoires totales</div>
             </div>
             <div class="stat-card">
                 <div class="stat-value" id="avgScore">0%</div>
-                <div class="stat-label">Moyenne globale</div>
+                <div class="stat-label" data-i18n="stats.avgScore">Moyenne globale</div>
             </div>
+        </div>
+
+        <!-- Analyses avancées -->
+        <div class="section-title">🔬 ANALYSES AVANCÉES</div>
+        <div class="analytics-container" id="analyticsContainer">
+            <!-- Rendu dynamique -->
         </div>
     </div>
 
     <!-- Page "Motivation" : citations, règles et informations -->
     <div id="page-motivation" class="page" role="main">
-        <div class="section-title">🔥 MENTAL</div>
+        <div class="section-title" data-i18n="motivation.mental">🔥 MENTAL</div>
         <div class="motivation-card">
             <div class="quote-text" id="dailyQuote">"I don't count my sit-ups. I only start counting when it hurts."
             </div>
@@ -259,7 +277,7 @@
 
         <!-- Système de rangs dans la page informations -->
         <div class="section-title" style="display: flex; justify-content: space-between; align-items: center;">
-            <span>🏆RANG À ATTEINDRE</span>
+            <span data-i18n="motivation.ranksTitle">🏆 RANG À ATTEINDRE</span>
             <button id="editRanksBtn" class="edit-ranks-btn" onclick="toggleRankEditMode()">✏️</button>
         </div>
         <div id="ranksContainer" style="padding: 15px;">
@@ -272,23 +290,23 @@
         </div>
 
         <!-- Section des paramètres -->
-        <div class="section-title">⚙️ PARAMÈTRES</div>
+        <div class="section-title" data-i18n="settings.title">⚙️ PARAMÈTRES</div>
 
         <div class="settings-container">
             <!-- Catégorie : Habitudes -->
             <div class="settings-category">
                 <div class="settings-category-header">
                     <span class="settings-category-icon">📝</span>
-                    <span class="settings-category-title">Habitudes</span>
+                    <span class="settings-category-title" data-i18n="settings.habits">Habitudes</span>
                 </div>
                 <div class="settings-category-content">
                     <div class="settings-item">
                         <div class="settings-item-info">
-                            <div class="settings-item-label">Gestion des habitudes</div>
-                            <div class="settings-item-desc">Ajouter, modifier ou supprimer</div>
+                            <div class="settings-item-label" data-i18n="settings.manageHabits">Gestion des habitudes</div>
+                            <div class="settings-item-desc" data-i18n="settings.manageHabitsDesc">Ajouter, modifier ou supprimer</div>
                         </div>
                         <div class="settings-item-action">
-                            <button class="settings-btn primary" onclick="openManageHabitsModal()">Modifier</button>
+                            <button class="settings-btn primary" onclick="openManageHabitsModal()" data-i18n="settings.modify">Modifier</button>
                         </div>
                     </div>
                 </div>
@@ -298,13 +316,13 @@
             <div class="settings-category">
                 <div class="settings-category-header">
                     <span class="settings-category-icon">🎨</span>
-                    <span class="settings-category-title">Apparence</span>
+                    <span class="settings-category-title" data-i18n="settings.appearance">Apparence</span>
                 </div>
                 <div class="settings-category-content">
                     <div class="settings-item">
                         <div class="settings-item-info">
-                            <div class="settings-item-label">Thème de l'application</div>
-                            <div class="settings-item-desc">Sombre, clair ou automatique</div>
+                            <div class="settings-item-label" data-i18n="settings.theme">Thème de l'application</div>
+                            <div class="settings-item-desc" data-i18n="settings.themeDesc">Sombre, clair ou automatique</div>
                         </div>
                         <div class="settings-item-action">
                             <button id="themeToggleBtn" class="settings-btn" onclick="toggleTheme()">
@@ -320,13 +338,13 @@
             <div class="settings-category">
                 <div class="settings-category-header">
                     <span class="settings-category-icon">🔔</span>
-                    <span class="settings-category-title">Notifications</span>
+                    <span class="settings-category-title" data-i18n="settings.notifications">Notifications</span>
                 </div>
                 <div class="settings-category-content">
                     <div class="settings-item">
                         <div class="settings-item-info">
-                            <div class="settings-item-label">Heure de rappel</div>
-                            <div class="settings-item-desc">Rappel quotidien</div>
+                            <div class="settings-item-label" data-i18n="settings.reminderTime">Heure de rappel</div>
+                            <div class="settings-item-desc" data-i18n="settings.dailyReminder">Rappel quotidien</div>
                         </div>
                         <div class="settings-item-action">
                             <div class="time-input-wrapper">
@@ -338,8 +356,8 @@
                     </div>
                     <div class="settings-item">
                         <div class="settings-item-info">
-                            <div class="settings-item-label">Activer les notifications</div>
-                            <div class="settings-item-desc">Recevoir des rappels</div>
+                            <div class="settings-item-label" data-i18n="settings.enableNotifs">Activer les notifications</div>
+                            <div class="settings-item-desc" data-i18n="settings.receiveReminders">Recevoir des rappels</div>
                         </div>
                         <div class="settings-item-action">
                             <button id="notifBtn" class="settings-btn" onclick="toggleNotifications()">OFF</button>
@@ -352,26 +370,26 @@
             <div class="settings-category">
                 <div class="settings-category-header">
                     <span class="settings-category-icon">👤</span>
-                    <span class="settings-category-title">Compte</span>
+                    <span class="settings-category-title" data-i18n="settings.account">Compte</span>
                 </div>
                 <div class="settings-category-content">
                     <div class="settings-item" id="logoutItem" style="display: none;">
                         <div class="settings-item-info">
-                            <div class="settings-item-label">Déconnexion</div>
-                            <div class="settings-item-desc">Se déconnecter de l'application</div>
+                            <div class="settings-item-label" data-i18n="settings.logout">Déconnexion</div>
+                            <div class="settings-item-desc" data-i18n="settings.logoutDesc">Se déconnecter de l'application</div>
                         </div>
                         <div class="settings-item-action">
-                            <button id="logoutBtn" class="settings-btn" onclick="handleLogout()">Sortir</button>
+                            <button id="logoutBtn" class="settings-btn" onclick="handleLogout()" data-i18n="settings.logoutBtn">Sortir</button>
                         </div>
                     </div>
                     <div class="settings-item" id="deleteItem" style="display: none;">
                         <div class="settings-item-info">
-                            <div class="settings-item-label">Supprimer le compte</div>
-                            <div class="settings-item-desc">Action irréversible</div>
+                            <div class="settings-item-label" data-i18n="settings.deleteAccount">Supprimer le compte</div>
+                            <div class="settings-item-desc" data-i18n="settings.deleteDesc">Action irréversible</div>
                         </div>
                         <div class="settings-item-action">
                             <button id="deleteAccountBtn" class="settings-btn danger"
-                                onclick="handleDeleteAccount()">Supprimer</button>
+                                onclick="handleDeleteAccount()" data-i18n="settings.deleteBtn">Supprimer</button>
                         </div>
                     </div>
                 </div>
@@ -381,13 +399,13 @@
             <div class="settings-category">
                 <div class="settings-category-header">
                     <span class="settings-category-icon">💾</span>
-                    <span class="settings-category-title">Données</span>
+                    <span class="settings-category-title" data-i18n="settings.data">Données</span>
                 </div>
                 <div class="settings-category-content">
                     <div class="settings-item">
                         <div class="settings-item-info">
-                            <div class="settings-item-label">Exporter les données</div>
-                            <div class="settings-item-desc">Télécharger en CSV</div>
+                            <div class="settings-item-label" data-i18n="settings.export">Exporter les données</div>
+                            <div class="settings-item-desc" data-i18n="settings.exportDesc">Télécharger en CSV</div>
                         </div>
                         <div class="settings-item-action">
                             <button class="settings-btn" onclick="exportDataCSV()">📤 Export</button>
@@ -395,11 +413,30 @@
                     </div>
                     <div class="settings-item">
                         <div class="settings-item-info">
-                            <div class="settings-item-label">Réinitialiser</div>
-                            <div class="settings-item-desc">Effacer toutes les données</div>
+                            <div class="settings-item-label" data-i18n="settings.reset">Réinitialiser</div>
+                            <div class="settings-item-desc" data-i18n="settings.resetDesc">Effacer toutes les données</div>
                         </div>
                         <div class="settings-item-action">
-                            <button class="settings-btn danger" onclick="resetAllData()">Effacer</button>
+                            <button class="settings-btn danger" onclick="resetAllData()" data-i18n="settings.resetBtn">Effacer</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Catégorie : Langue -->
+            <div class="settings-category">
+                <div class="settings-category-header">
+                    <span class="settings-category-icon">🌍</span>
+                    <span class="settings-category-title" data-i18n="settings.language">Langue</span>
+                </div>
+                <div class="settings-category-content">
+                    <div class="settings-item">
+                        <div class="settings-item-info">
+                            <div class="settings-item-label" data-i18n="settings.language">Langue</div>
+                            <div class="settings-item-desc" data-i18n="settings.languageDesc">Changer la langue</div>
+                        </div>
+                        <div class="settings-item-action">
+                            <button class="settings-btn" id="langToggleBtn" onclick="cycleLang()">🇫🇷 FR</button>
                         </div>
                     </div>
                 </div>
@@ -669,40 +706,40 @@
             <!-- Infos -->
             <div class="profile-info-section">
                 <div class="profile-field">
-                    <label class="profile-label">Pseudo</label>
+                    <label class="profile-label" data-i18n="profile.pseudo">Pseudo</label>
                     <div class="profile-value" id="profilePseudo">-</div>
                     <button class="profile-edit-btn" onclick="openEditPseudoModal()">✏️</button>
                 </div>
                 <div class="profile-field">
-                    <label class="profile-label">Bio</label>
+                    <label class="profile-label" data-i18n="profile.bio">Bio</label>
                     <div class="profile-value" id="profileBio" style="font-style: italic; color: var(--accent-dim);">Aucune bio</div>
                     <button class="profile-edit-btn" onclick="openEditBioModal()">✏️</button>
                 </div>
             </div>
 
             <!-- Stats publiques -->
-            <div class="section-title">📊 MES STATS</div>
+            <div class="section-title" data-i18n="profile.myStats">📊 MES STATS</div>
             <div class="stats-grid">
                 <div class="stat-card">
                     <div class="stat-value" id="profileAvgScore">0%</div>
-                    <div class="stat-label">Score moyen</div>
+                    <div class="stat-label" data-i18n="profile.avgScore">Score moyen</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-value" id="profileBestStreak">0</div>
-                    <div class="stat-label">Meilleur streak</div>
+                    <div class="stat-label" data-i18n="profile.bestStreak">Meilleur streak</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-value" id="profilePerfectDays">0</div>
-                    <div class="stat-label">Jours parfaits</div>
+                    <div class="stat-label" data-i18n="profile.perfectDays">Jours parfaits</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-value" id="profileRank">DÉBUTANT</div>
-                    <div class="stat-label">Rang</div>
+                    <div class="stat-label" data-i18n="profile.rank">Rang</div>
                 </div>
             </div>
 
             <!-- Groupes -->
-            <div class="section-title">👥 MES GROUPES</div>
+            <div class="section-title" data-i18n="profile.myGroups">👥 MES GROUPES</div>
             <div class="profile-groups-empty" id="profileGroups">
                 <div style="text-align: center; padding: 20px; color: var(--accent-dim);">
                     <div style="font-size: 2rem; margin-bottom: 10px;">👥</div>
@@ -832,6 +869,21 @@
         </div>
     </div>
 
+    <!-- Modal QR Code d'invitation -->
+    <div class="modal-overlay" id="qrCodeModal">
+        <div class="modal">
+            <h3>📱 QR CODE D'INVITATION</h3>
+            <div style="text-align: center; padding: 20px 0;">
+                <canvas id="qrCanvas" style="border-radius: 12px; margin: 0 auto; display: block;"></canvas>
+                <div class="qr-code-text" id="qrCodeTitle" style="font-family: monospace; font-size: 1.5rem; letter-spacing: 6px; margin-top: 15px; color: var(--accent);">CODE</div>
+            </div>
+            <div class="modal-buttons">
+                <button class="modal-btn cancel" onclick="closeQRModal()" data-i18n="general.close">Fermer</button>
+                <button class="modal-btn save" onclick="downloadQR()">📥 Télécharger</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Bannière PWA Install -->
     <div class="install-banner" id="installBanner" style="display: none;">
         <div class="install-banner-content">
@@ -860,23 +912,23 @@
     <div class="bottom-nav" role="navigation" aria-label="Navigation principale">
         <div class="nav-item active" onclick="showPage('today', event)" tabindex="0" role="button" aria-label="Habitudes">
             <div class="icon">⚔️</div>
-            <div class="label">Habitudes</div>
+            <div class="label" data-i18n="nav.habits">Habitudes</div>
         </div>
         <div class="nav-item" onclick="showPage('stats', event)" tabindex="0" role="button" aria-label="Statistiques">
             <div class="icon">📊</div>
-            <div class="label">Stats</div>
+            <div class="label" data-i18n="nav.stats">Stats</div>
         </div>
         <div class="nav-item" onclick="showPage('motivation', event)" tabindex="0" role="button" aria-label="Informations et motivation">
             <div class="icon">🔥</div>
-            <div class="label">Infos</div>
+            <div class="label" data-i18n="nav.info">Infos</div>
         </div>
         <div class="nav-item" onclick="showPage('profile', event)" tabindex="0" role="button" aria-label="Profil">
             <div class="icon">👤</div>
-            <div class="label">Profil</div>
+            <div class="label" data-i18n="nav.profile">Profil</div>
         </div>
         <div class="nav-item" onclick="showPage('groups', event)" tabindex="0" role="button" aria-label="Groupes">
             <div class="icon">👥</div>
-            <div class="label">Groupes</div>
+            <div class="label" data-i18n="nav.groups">Groupes</div>
         </div>
     </div>
 

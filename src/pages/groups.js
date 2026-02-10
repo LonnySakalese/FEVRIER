@@ -426,9 +426,12 @@ export async function openGroupDetail(groupId) {
                     ${g.description ? `<p class="group-detail-desc">${escapeHtml(g.description)}</p>` : ''}
                     <div class="group-code-section">
                         <span class="group-code-label">Code d'invitation</span>
-                        <div class="group-code" onclick="copyGroupCode('${g.code}')">
-                            <span class="group-code-value">${g.code}</span>
-                            <span class="group-code-copy">📋</span>
+                        <div style="display: flex; align-items: center; gap: 8px; justify-content: center;">
+                            <div class="group-code" onclick="copyGroupCode('${g.code}')">
+                                <span class="group-code-value">${g.code}</span>
+                                <span class="group-code-copy">📋</span>
+                            </div>
+                            <button class="group-qr-btn" onclick="showQRModal('${g.code}')" style="background: var(--charcoal); border: 1px solid var(--steel); border-radius: 8px; padding: 8px 12px; color: var(--accent); font-size: 1.1rem; cursor: pointer;">📱 QR</button>
                         </div>
                     </div>
                     <div class="group-detail-count">${g.memberCount || members.length} membre${(g.memberCount || members.length) > 1 ? 's' : ''}</div>

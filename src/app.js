@@ -7,6 +7,9 @@ import { auth, db, isFirebaseConfigured } from './config/firebase.js';
 import { appState, habits } from './services/state.js';
 import { getData, saveData, getDateKey } from './services/storage.js';
 
+// --- i18n ---
+import { t, getCurrentLang, setLang, getAvailableLangs, applyTranslations, cycleLang as cycleLangFromModule } from './services/i18n.js';
+
 // --- Services ---
 import { scheduleNotification, toggleNotifications, updateNotificationButton, updateNotificationTime, loadNotificationTime, setShowValidateDayModal } from './services/notifications.js';
 
@@ -28,6 +31,9 @@ import {
     onPaletteChange, setOnRanksChanged
 } from './core/ranks.js';
 
+// --- Core (XP) ---
+import { getXPData, addXP, awardHabitXP, awardDayValidatedXP, awardStreakXP, resetDailyXP } from './core/xp.js';
+
 // --- UI ---
 import { showPopup } from './ui/toast.js';
 import { ConfirmModal } from './ui/modals.js';
@@ -37,6 +43,8 @@ import { openCalendarModal, closeCalendarModal, changeCalendarMonth } from './ui
 import { initInstallBanner, dismissInstallBanner, installApp } from './ui/install.js';
 import { shareDay } from './ui/share.js';
 import { exportDataCSV } from './ui/export.js';
+import { showQRModal, closeQRModal, downloadQR } from './ui/qrcode.js';
+import { renderAnalytics } from './ui/analytics.js';
 // import { renderHeatmap } from './ui/heatmap.js';
 import { showCelebration, celebrateNewRank, celebrateNewBadge } from './ui/celebration.js';
 import {
@@ -482,6 +490,21 @@ async function resetAllData() {
     }
 }
 
+// --- XP Display ---
+
+function updateXPDisplay() {
+    const xpData = getXPData();
+    const xpLevelEl = document.getElementById('xpLevel');
+    const xpAmountEl = document.getElementById('xpAmount');
+    const xpBarFillEl = document.getElementById('xpBarFill');
+    const xpTodayEl = document.getElementById('xpToday');
+
+    if (xpLevelEl) xpLevelEl.textContent = `LVL ${xpData.level}`;
+    if (xpAmountEl) xpAmountEl.textContent = `${xpData.xpInLevel} / ${xpData.xpNeeded} XP`;
+    if (xpBarFillEl) xpBarFillEl.style.width = `${xpData.xpProgress}%`;
+    if (xpTodayEl) xpTodayEl.textContent = `+${xpData.todayXP} XP aujourd'hui`;
+}
+
 // --- Page Navigation ---
 
 function showPage(page, event) {
@@ -499,6 +522,7 @@ function showPage(page, event) {
 
     if (page === 'stats') {
         updateStats();
+        renderAnalytics('analyticsContainer');
         // renderHeatmap('heatmapContainer');
     } else if (page === 'motivation') {
         displayRandomQuote();
@@ -610,6 +634,9 @@ Object.assign(window, {
     // Share
     shareDay,
 
+    // XP
+    updateXPDisplay,
+
     // Export
     exportDataCSV,
 
@@ -619,8 +646,19 @@ Object.assign(window, {
     // Groups
     openCreateGroupModal, closeCreateGroupModal, createGroup,
     openJoinGroupModal, closeJoinGroupModal, joinGroup,
-    openGroupDetail, closeGroupDetail, leaveGroup, deleteGroup, copyGroupCode
+    openGroupDetail, closeGroupDetail, leaveGroup, deleteGroup, copyGroupCode,
+
+    // QR Code
+    showQRModal, closeQRModal, downloadQR
 });
+
+// --- Language cycling (exposed on window) ---
+window.cycleLang = function() {
+    const lang = cycleLangFromModule();
+    const btn = document.getElementById('langToggleBtn');
+    const flags = { fr: '🇫🇷 FR', en: '🇬🇧 EN', es: '🇪🇸 ES' };
+    if (btn) btn.textContent = flags[lang] || lang;
+};
 
 // --- SPLASH SCREEN ---
 function hideSplash() {
@@ -635,6 +673,14 @@ function hideSplash() {
 document.addEventListener('DOMContentLoaded', () => {
     // Charger le thème immédiatement pour éviter un flash
     loadTheme();
+
+    // Apply i18n translations and set lang button
+    applyTranslations();
+    const langBtn = document.getElementById('langToggleBtn');
+    if (langBtn) {
+        const flags = { fr: '🇫🇷 FR', en: '🇬🇧 EN', es: '🇪🇸 ES' };
+        langBtn.textContent = flags[getCurrentLang()] || getCurrentLang();
+    }
 
     async function initializeApp() {
         await loadCustomHabits();

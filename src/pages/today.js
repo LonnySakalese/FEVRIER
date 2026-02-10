@@ -10,6 +10,7 @@ import { playSuccessSound, playUndoSound } from '../ui/sounds.js';
 import { triggerConfetti } from '../ui/confetti.js';
 import { showPopup } from '../ui/toast.js';
 import { checkAndUnlockBadges } from '../core/badges.js';
+import { awardHabitXP, awardDayValidatedXP } from '../core/xp.js';
 
 // Met à jour le statut (coché/décoché) d'une habitude pour aujourd'hui
 function setHabitStatus(habitId, checked) {
@@ -160,6 +161,8 @@ export function toggleHabit(habitId) {
 
     if (newStatus) {
         playSuccessSound();
+        awardHabitXP();
+        if (window.updateXPDisplay) window.updateXPDisplay();
     } else {
         playUndoSound();
     }
@@ -233,6 +236,14 @@ export function confirmValidateDay() {
     saveData(data);
 
     closeValidateDayModal();
+
+    // Award XP for day validation
+    const dayDataToday2 = getDayData(new Date());
+    const scheduledCount = habits.filter(h => isHabitScheduledForDate(h, new Date())).length;
+    const completedForXP = habits.filter(h => isHabitScheduledForDate(h, new Date()) && dayDataToday2[h.id]).length;
+    const score = scheduledCount > 0 ? Math.round((completedForXP / scheduledCount) * 100) : 0;
+    awardDayValidatedXP(score);
+    if (window.updateXPDisplay) window.updateXPDisplay();
 
     if (navigator.vibrate) navigator.vibrate([100, 50, 100, 50, 100]);
     showPopup('✅ Journée validée !', 'success');
@@ -311,4 +322,5 @@ export function updateUI() {
     renderHabits();
     updateKPIs();
     updateValidateButton();
+    if (window.updateXPDisplay) window.updateXPDisplay();
 }
