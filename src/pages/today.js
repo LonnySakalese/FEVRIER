@@ -161,8 +161,7 @@ export function toggleHabit(habitId) {
 
     if (newStatus) {
         playSuccessSound();
-        awardHabitXP(habitId);
-        if (window.updateXPDisplay) window.updateXPDisplay();
+        // XP awarded only at day validation (within 24h rule)
     } else {
         playUndoSound();
     }
@@ -242,11 +241,15 @@ export function confirmValidateDay() {
 
     closeValidateDayModal();
 
-    // Award XP for day validation
+    // Award XP — only at validation (within 24h rule)
     const dayDataToday2 = getDayData(new Date());
-    const scheduledCount = habits.filter(h => isHabitScheduledForDate(h, new Date())).length;
-    const completedForXP = habits.filter(h => isHabitScheduledForDate(h, new Date()) && dayDataToday2[h.id]).length;
-    const score = scheduledCount > 0 ? Math.round((completedForXP / scheduledCount) * 100) : 0;
+    const scheduledForXP = habits.filter(h => isHabitScheduledForDate(h, new Date()));
+    const completedForXP = scheduledForXP.filter(h => dayDataToday2[h.id]);
+    const score = scheduledForXP.length > 0 ? Math.round((completedForXP.length / scheduledForXP.length) * 100) : 0;
+
+    // +10 XP per completed habit (only those actually done)
+    completedForXP.forEach(h => awardHabitXP(h.id));
+    // +50 XP day validated + bonus 100 XP if perfect
     awardDayValidatedXP(score);
     if (window.updateXPDisplay) window.updateXPDisplay();
 

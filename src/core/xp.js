@@ -100,7 +100,8 @@ export function getXPProgress() {
     return xpData.xpProgress;
 }
 
-// +10 XP pour avoir coché une habitude (1 seule fois par habitude par jour)
+// +10 XP pour une habitude complétée ET validée dans les 24h
+// Appelé uniquement lors de la validation de journée (pas au coche)
 export function awardHabitXP(habitId) {
     const data = getData();
     if (!data.xp) {
@@ -125,7 +126,7 @@ export function awardHabitXP(habitId) {
         saveData(data);
     }
     
-    return addXP(10, 'habit_checked');
+    return addXP(10, 'habit_validated');
 }
 
 // Bonus XP selon le score de la journée validée (1 fois par jour)
