@@ -96,33 +96,33 @@
     </div>
 
     <!-- Page "Aujourd'hui" : affiche les habitudes du jour -->
-    <div id="page-today" class="page active">
+    <div id="page-today" class="page active" role="main">
         <!-- Pull-to-refresh visual indicator -->
         <div class="pull-indicator" id="pullIndicator">
             <span class="pull-icon">↻</span> Mise à jour...
         </div>
         <!-- Navigation pour changer de date -->
         <div class="date-nav">
-            <button onclick="changeDate(-1)">◀</button>
+            <button onclick="changeDate(-1)" aria-label="Jour précédent">◀</button>
             <div class="current-date" id="currentDate"></div>
-            <button onclick="changeDate(1)">▶</button>
+            <button onclick="changeDate(1)" aria-label="Jour suivant">▶</button>
         </div>
 
         <!-- Indicateurs clés de performance (KPIs) -->
         <div class="kpi-container">
             <div class="kpi-card">
                 <div class="label">Score</div>
-                <div class="value" id="dailyScore">0%</div>
+                <div class="value" id="dailyScore" aria-live="polite">0%</div>
                 <div class="sub">Aujourd'hui</div>
             </div>
             <div class="kpi-card">
                 <div class="label">Streak</div>
-                <div class="value" id="currentStreak">0</div>
+                <div class="value" id="currentStreak" aria-live="polite">0</div>
                 <div class="sub">Jours</div>
             </div>
             <div class="kpi-card">
                 <div class="label">Perfect</div>
-                <div class="value" id="perfectDays">0</div>
+                <div class="value" id="perfectDays" aria-live="polite">0</div>
                 <div class="sub">Jours 100%</div>
             </div>
         </div>
@@ -148,7 +148,7 @@
     </div>
 
     <!-- Page "Stats" : affiche les statistiques et graphiques -->
-    <div id="page-stats" class="page">
+    <div id="page-stats" class="page" role="main">
         <!-- Affichage du rang de l'utilisateur -->
         <div class="rank-display">
             <div class="rank-title">Ton Rang Actuel</div>
@@ -169,6 +169,10 @@
                 📅 VOIR LE CALENDRIER DU MOIS
             </button>
         </div>
+
+        <!-- Heatmap 90 jours -->
+        <div class="section-title">🟩 ACTIVITÉ (90 JOURS)</div>
+        <div class="heatmap-container" id="heatmapContainer"></div>
 
         <!-- Grille de performance de la semaine -->
         <div class="section-title">📊 CETTE SEMAINE</div>
@@ -209,7 +213,7 @@
     </div>
 
     <!-- Page "Motivation" : citations, règles et informations -->
-    <div id="page-motivation" class="page">
+    <div id="page-motivation" class="page" role="main">
         <div class="section-title">🔥 MENTAL</div>
         <div class="motivation-card">
             <div class="quote-text" id="dailyQuote">"I don't count my sit-ups. I only start counting when it hurts."
@@ -264,7 +268,7 @@
                     <div class="settings-item">
                         <div class="settings-item-info">
                             <div class="settings-item-label">Thème de l'application</div>
-                            <div class="settings-item-desc">Clair ou sombre</div>
+                            <div class="settings-item-desc">Sombre, clair ou automatique</div>
                         </div>
                         <div class="settings-item-action">
                             <button id="themeToggleBtn" class="settings-btn" onclick="toggleTheme()">
@@ -344,6 +348,15 @@
                     <span class="settings-category-title">Données</span>
                 </div>
                 <div class="settings-category-content">
+                    <div class="settings-item">
+                        <div class="settings-item-info">
+                            <div class="settings-item-label">Exporter les données</div>
+                            <div class="settings-item-desc">Télécharger en CSV</div>
+                        </div>
+                        <div class="settings-item-action">
+                            <button class="settings-btn" onclick="exportDataCSV()">📤 Export</button>
+                        </div>
+                    </div>
                     <div class="settings-item">
                         <div class="settings-item-info">
                             <div class="settings-item-label">Réinitialiser</div>
@@ -556,9 +569,9 @@
     <div class="modal-overlay" id="calendarModal">
         <div class="modal modal-calendar">
             <div class="calendar-header">
-                <button class="calendar-nav-btn" onclick="changeCalendarMonth(-1)">◀</button>
+                <button class="calendar-nav-btn" onclick="changeCalendarMonth(-1)" aria-label="Mois précédent">◀</button>
                 <h3 id="calendarTitle">📅 JANVIER 2025</h3>
-                <button class="calendar-nav-btn" onclick="changeCalendarMonth(1)">▶</button>
+                <button class="calendar-nav-btn" onclick="changeCalendarMonth(1)" aria-label="Mois suivant">▶</button>
             </div>
             <p class="calendar-subtitle">Visualise tes victoires et tes échecs d'un seul regard</p>
 
@@ -595,7 +608,7 @@
     </div>
 
     <!-- Page "Profil" : profil utilisateur -->
-    <div id="page-profile" class="page">
+    <div id="page-profile" class="page" role="main">
         <div class="profile-container">
             <!-- Avatar -->
             <div class="profile-avatar-section">
@@ -707,7 +720,7 @@
     </div>
 
     <!-- Page "Groupes" -->
-    <div id="page-groups" class="page">
+    <div id="page-groups" class="page" role="main">
         <div class="groups-container" id="groupsContainer">
             <!-- Rendu dynamique par JavaScript -->
         </div>
@@ -784,25 +797,34 @@
         </div>
     </div>
 
+    <!-- Overlay de célébration -->
+    <div class="celebration-overlay" id="celebrationOverlay">
+        <div class="celebration-content">
+            <div class="celebration-icon" id="celebrationIcon">🏆</div>
+            <div class="celebration-title" id="celebrationTitle">FÉLICITATIONS !</div>
+            <div class="celebration-subtitle" id="celebrationSubtitle"></div>
+        </div>
+    </div>
+
     <!-- Barre de navigation inférieure fixe -->
-    <div class="bottom-nav">
-        <div class="nav-item active" onclick="showPage('today', event)">
+    <div class="bottom-nav" role="navigation" aria-label="Navigation principale">
+        <div class="nav-item active" onclick="showPage('today', event)" tabindex="0" role="button" aria-label="Habitudes">
             <div class="icon">⚔️</div>
             <div class="label">Habitudes</div>
         </div>
-        <div class="nav-item" onclick="showPage('stats', event)">
+        <div class="nav-item" onclick="showPage('stats', event)" tabindex="0" role="button" aria-label="Statistiques">
             <div class="icon">📊</div>
             <div class="label">Stats</div>
         </div>
-        <div class="nav-item" onclick="showPage('motivation', event)">
+        <div class="nav-item" onclick="showPage('motivation', event)" tabindex="0" role="button" aria-label="Informations et motivation">
             <div class="icon">🔥</div>
             <div class="label">Infos</div>
         </div>
-        <div class="nav-item" onclick="showPage('profile', event)">
+        <div class="nav-item" onclick="showPage('profile', event)" tabindex="0" role="button" aria-label="Profil">
             <div class="icon">👤</div>
             <div class="label">Profil</div>
         </div>
-        <div class="nav-item" onclick="showPage('groups', event)">
+        <div class="nav-item" onclick="showPage('groups', event)" tabindex="0" role="button" aria-label="Groupes">
             <div class="icon">👥</div>
             <div class="label">Groupes</div>
         </div>

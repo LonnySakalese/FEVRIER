@@ -7,11 +7,20 @@ import { auth, db, isFirebaseConfigured } from '../config/firebase.js';
 import { appState } from '../services/state.js';
 import { showPopup } from './toast.js';
 
+// Listener pour le mode auto
+let autoThemeListener = null;
+
 // Charge le thème sauvegardé et l'applique
 export function loadTheme() {
-    const data = getData();
-    const theme = data.theme || 'dark';
-    applyTheme(theme, false);
+    const mode = localStorage.getItem('warriorThemeMode') || null;
+    if (mode === 'auto') {
+        applyAutoTheme(false);
+        setupAutoListener();
+    } else {
+        const data = getData();
+        const theme = data.theme || 'dark';
+        applyTheme(theme, false);
+    }
 }
 
 // Applique un thème spécifique
@@ -32,12 +41,20 @@ export function applyTheme(theme, shouldSave = true) {
         data.theme = theme;
         saveData(data);
 
+        // Save mode if not already set
+        const currentMode = localStorage.getItem('warriorThemeMode');
+        if (!currentMode || (currentMode !== 'auto')) {
+            localStorage.setItem('warriorThemeMode', theme);
+        }
+
         if (isFirebaseConfigured && appState.currentUser) {
             syncThemeToFirestore(theme);
         }
     }
 
-    updateThemeButton(theme);
+    // Don't override 'auto' label
+    const mode = localStorage.getItem('warriorThemeMode');
+    updateThemeButton(mode === 'auto' ? 'auto' : theme);
 }
 
 // Synchronise le thème avec Firestore
@@ -73,16 +90,63 @@ export async function loadThemeFromFirestore(userId) {
     }
 }
 
-// Bascule entre les thèmes clair et sombre
+// Bascule entre les thèmes : Sombre → Clair → Auto
 export function toggleTheme() {
-    const data = getData();
-    const currentTheme = data.theme || 'dark';
-    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    const currentMode = localStorage.getItem('warriorThemeMode') || 'dark';
+    let newMode;
 
-    applyTheme(newTheme, true);
+    if (currentMode === 'dark') {
+        newMode = 'light';
+    } else if (currentMode === 'light') {
+        newMode = 'auto';
+    } else {
+        newMode = 'dark';
+    }
 
-    const themeName = newTheme === 'light' ? 'clair' : 'sombre';
-    showPopup(`🎨 Thème ${themeName} activé`, 'success');
+    localStorage.setItem('warriorThemeMode', newMode);
+
+    // Remove old auto listener
+    removeAutoListener();
+
+    if (newMode === 'auto') {
+        applyAutoTheme(true);
+        setupAutoListener();
+        showPopup('🎨 Thème automatique activé', 'success');
+    } else {
+        applyTheme(newMode, true);
+        const themeName = newMode === 'light' ? 'clair' : 'sombre';
+        showPopup(`🎨 Thème ${themeName} activé`, 'success');
+    }
+}
+
+// Applique le thème selon les préférences système
+function applyAutoTheme(shouldSave) {
+    const preferLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+    const theme = preferLight ? 'light' : 'dark';
+    applyTheme(theme, shouldSave);
+    updateThemeButton('auto');
+}
+
+// Écoute les changements de préférence système
+function setupAutoListener() {
+    removeAutoListener();
+    const mq = window.matchMedia('(prefers-color-scheme: light)');
+    autoThemeListener = (e) => {
+        const mode = localStorage.getItem('warriorThemeMode');
+        if (mode === 'auto') {
+            const theme = e.matches ? 'light' : 'dark';
+            applyTheme(theme, true);
+            updateThemeButton('auto');
+        }
+    };
+    mq.addEventListener('change', autoThemeListener);
+}
+
+function removeAutoListener() {
+    if (autoThemeListener) {
+        window.matchMedia('(prefers-color-scheme: light)').removeEventListener('change', autoThemeListener);
+        autoThemeListener = null;
+    }
 }
 
 // Met à jour le bouton de thème
@@ -92,7 +156,10 @@ export function updateThemeButton(theme) {
     const text = document.getElementById('themeToggleText');
 
     if (btn && icon && text) {
-        if (theme === 'light') {
+        if (theme === 'auto') {
+            icon.textContent = '🔄';
+            text.textContent = 'Auto';
+        } else if (theme === 'light') {
             icon.textContent = '☀️';
             text.textContent = 'Clair';
         } else {

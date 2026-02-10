@@ -3,7 +3,7 @@
 // --- CONFIGURATION DU CACHE ---
 
 // Nom du cache. Changer cette valeur invalidera le cache existant et en créera un nouveau.
-const CACHE_NAME = 'warrior-tracker-v3';
+const CACHE_NAME = 'warrior-tracker-v4';
 
 // Liste des fichiers essentiels à mettre en cache pour que l'application fonctionne hors ligne.
 const urlsToCache = [
@@ -35,6 +35,10 @@ const urlsToCache = [
   './src/ui/theme.js',
   './src/ui/toast.js',
   './src/ui/tutorial.js',
+  './src/ui/export.js',
+  './src/ui/heatmap.js',
+  './src/ui/celebration.js',
+  './offline.html',
   // Firebase SDK
   'https://www.gstatic.com/firebasejs/9.17.1/firebase-app-compat.js',
   'https://www.gstatic.com/firebasejs/9.17.1/firebase-auth-compat.js',
@@ -66,21 +70,18 @@ self.addEventListener('install', event => {
  * Ici, on implémente une stratégie "Cache First" (cache d\'abord).
  */
 self.addEventListener('fetch', event => {
-  // respondWith intercepte la requête et fournit sa propre réponse.
   event.respondWith(
-    // Tente de trouver une correspondance pour la requête dans le cache.
     caches.match(event.request)
       .then(response => {
-        // Si une réponse est trouvée dans le cache...
         if (response) {
-          // ...la retourner directement sans passer par le réseau.
           return response;
         }
-        // Si la ressource n'est pas dans le cache, effectuer la requête réseau.
         return fetch(event.request).catch(error => {
-          // Gestion silencieuse des erreurs réseau (Firebase, API externes)
-          // Ces erreurs sont normales et ne doivent pas polluer la console
           console.debug('Fetch failed for:', event.request.url);
+          // Si c'est une requête de navigation (page HTML), servir offline.html
+          if (event.request.mode === 'navigate') {
+            return caches.match('./offline.html');
+          }
           return new Response('', { status: 503, statusText: 'Service Unavailable' });
         });
       })

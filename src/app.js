@@ -34,6 +34,9 @@ import { triggerConfetti } from './ui/confetti.js';
 import { openCalendarModal, closeCalendarModal, changeCalendarMonth } from './ui/calendar.js';
 import { initInstallBanner, dismissInstallBanner, installApp } from './ui/install.js';
 import { shareDay } from './ui/share.js';
+import { exportDataCSV } from './ui/export.js';
+import { renderHeatmap } from './ui/heatmap.js';
+import { showCelebration, celebrateNewRank, celebrateNewBadge } from './ui/celebration.js';
 import {
     isFirstTimeUser, showTutorial, hideTutorial, initTutorial,
     nextTutorialStep, prevTutorialStep, skipTutorial,
@@ -494,6 +497,7 @@ function showPage(page, event) {
 
     if (page === 'stats') {
         updateStats();
+        renderHeatmap('heatmapContainer');
     } else if (page === 'motivation') {
         displayRandomQuote();
     } else if (page === 'profile') {
@@ -601,6 +605,12 @@ Object.assign(window, {
 
     // Share
     shareDay,
+
+    // Export
+    exportDataCSV,
+
+    // Celebration
+    showCelebration, celebrateNewRank, celebrateNewBadge,
 
     // Groups
     openCreateGroupModal, closeCreateGroupModal, createGroup,
