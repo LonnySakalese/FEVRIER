@@ -165,11 +165,33 @@
             <div class="xp-bar-header">
                 <span class="xp-level" id="xpLevel">LVL 1</span>
                 <span class="xp-amount" id="xpAmount">0 / 100 XP</span>
+                <span class="xp-info-btn" id="xpInfoBtn" onclick="toggleXPInfo()">ℹ️</span>
             </div>
             <div class="xp-bar">
                 <div class="xp-bar-fill" id="xpBarFill" style="width: 0%"></div>
             </div>
-            <div class="xp-today" id="xpToday">+0 XP aujourd'hui</div>
+            <div class="xp-status" id="xpStatus">
+                <span class="xp-today" id="xpToday">+0 XP aujourd'hui</span>
+                <span class="xp-fatigue-badge" id="xpFatigueBadge" style="display: none;">😴 FATIGUE</span>
+            </div>
+            <!-- Panel d'explication XP -->
+            <div class="xp-info-panel" id="xpInfoPanel" style="display: none;">
+                <div class="xp-info-title">⚡ COMMENT ÇA MARCHE</div>
+                <div class="xp-info-rules">
+                    <div class="xp-info-rule">✅ Cocher une habitude <strong>+10 XP</strong></div>
+                    <div class="xp-info-rule">📋 Valider la journée <strong>+50 XP</strong></div>
+                    <div class="xp-info-rule">🏆 Journée parfaite (100%) <strong>+100 XP</strong></div>
+                    <div class="xp-info-rule">🔥 Streak 7 jours <strong>+200 XP</strong></div>
+                    <div class="xp-info-rule">🔥 Streak 30 jours <strong>+500 XP</strong></div>
+                </div>
+                <div class="xp-info-divider"></div>
+                <div class="xp-info-title">😴 FATIGUE</div>
+                <div class="xp-info-rules">
+                    <div class="xp-info-rule">Si ton score de la veille est <strong>< 70%</strong>, la fatigue s'active</div>
+                    <div class="xp-info-rule">En fatigue, tu gagnes <strong>2× moins d'XP</strong></div>
+                    <div class="xp-info-rule">Pour la lever → atteins <strong>100% aujourd'hui</strong></div>
+                </div>
+            </div>
         </div>
 
         <!-- Titre de la section des habitudes -->

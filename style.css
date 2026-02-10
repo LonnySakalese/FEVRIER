@@ -4938,8 +4938,83 @@ button:active, .modal-btn:active, .auth-btn:active, .settings-btn:active, .form-
     margin-top: 6px;
 }
 
+.xp-bar-header {
+    position: relative;
+}
+.xp-info-btn {
+    cursor: pointer;
+    font-size: 0.75rem;
+    opacity: 0.6;
+    transition: opacity 0.2s;
+    padding: 2px 4px;
+}
+.xp-info-btn:hover {
+    opacity: 1;
+}
+.xp-status {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 6px;
+}
+.xp-fatigue-badge {
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: #FF6B6B;
+    background: rgba(255, 107, 107, 0.1);
+    padding: 2px 8px;
+    border-radius: 10px;
+    letter-spacing: 1px;
+    animation: fatiguePulse 2s ease-in-out infinite;
+}
+@keyframes fatiguePulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+.xp-info-panel {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--steel);
+    animation: slideDown 0.2s ease;
+}
+@keyframes slideDown {
+    from { opacity: 0; max-height: 0; }
+    to { opacity: 1; max-height: 500px; }
+}
+.xp-info-title {
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    color: var(--accent);
+    margin-bottom: 8px;
+}
+.xp-info-rules {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.xp-info-rule {
+    font-size: 0.72rem;
+    color: var(--accent-dim);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.xp-info-rule strong {
+    color: var(--accent-green);
+    font-weight: 700;
+}
+.xp-info-divider {
+    height: 1px;
+    background: var(--steel);
+    margin: 10px 0;
+}
+
 [data-theme="light"] .xp-bar-container {
     box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+[data-theme="light"] .xp-fatigue-badge {
+    background: rgba(255, 107, 107, 0.08);
 }
 
 /* Fatigue mode */

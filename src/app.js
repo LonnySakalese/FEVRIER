@@ -500,20 +500,30 @@ function updateXPDisplay() {
     const xpBarFillEl = document.getElementById('xpBarFill');
     const xpTodayEl = document.getElementById('xpToday');
     const xpContainer = document.getElementById('xpBarContainer');
+    const fatigueBadge = document.getElementById('xpFatigueBadge');
 
     if (xpLevelEl) xpLevelEl.textContent = `LVL ${xpData.level}`;
     if (xpAmountEl) xpAmountEl.textContent = `${xpData.xpInLevel} / ${xpData.xpNeeded} XP`;
     if (xpBarFillEl) xpBarFillEl.style.width = `${xpData.xpProgress}%`;
+    if (xpTodayEl) xpTodayEl.textContent = `+${xpData.todayXP} XP aujourd'hui`;
     
-    // Fatigue : barre grise + message
+    // Fatigue : barre grise + badge
     if (xpContainer) {
         if (fatigueData.isFatigued) {
             xpContainer.classList.add('fatigued');
-            if (xpTodayEl) xpTodayEl.textContent = `😴 FATIGUE — XP ×0.5 | +${xpData.todayXP} XP`;
+            if (fatigueBadge) fatigueBadge.style.display = 'inline-block';
+            if (xpTodayEl) xpTodayEl.textContent = `+${xpData.todayXP} XP (×0.5)`;
         } else {
             xpContainer.classList.remove('fatigued');
-            if (xpTodayEl) xpTodayEl.textContent = `+${xpData.todayXP} XP aujourd'hui`;
+            if (fatigueBadge) fatigueBadge.style.display = 'none';
         }
+    }
+}
+
+function toggleXPInfo() {
+    const panel = document.getElementById('xpInfoPanel');
+    if (panel) {
+        panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
     }
 }
 
@@ -648,6 +658,7 @@ Object.assign(window, {
 
     // XP
     updateXPDisplay,
+    toggleXPInfo,
 
     // Export
     exportDataCSV,
