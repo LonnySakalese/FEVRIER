@@ -95,7 +95,7 @@ export function addXP(amount, reason) {
 
     const leveledUp = newLevel > oldLevel;
     if (leveledUp) {
-        showPopup(`🎉 LEVEL UP ! Niveau ${newLevel}`, 'success');
+        showLevelUp(oldLevel, newLevel);
         if (_onLevelUp) _onLevelUp(newLevel);
     }
 

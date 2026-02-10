@@ -47,6 +47,7 @@ import { showQRModal, closeQRModal, downloadQR } from './ui/qrcode.js';
 import { renderAnalytics } from './ui/analytics.js';
 // import { renderHeatmap } from './ui/heatmap.js';
 import { showCelebration, celebrateNewRank, celebrateNewBadge } from './ui/celebration.js';
+import { showLevelUp } from './ui/levelup.js';
 import { initRewards, renderThemeSelector, checkNewThemeUnlocks, selectTheme } from './ui/rewards.js';
 import {
     isFirstTimeUser, showTutorial, hideTutorial, initTutorial,
@@ -667,7 +668,7 @@ Object.assign(window, {
     exportDataCSV,
 
     // Celebration
-    showCelebration, celebrateNewRank, celebrateNewBadge,
+    showCelebration, celebrateNewRank, celebrateNewBadge, showLevelUp,
 
     // Groups
     openCreateGroupModal, closeCreateGroupModal, createGroup,
