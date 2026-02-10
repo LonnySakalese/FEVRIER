@@ -93,17 +93,53 @@ export function getXPProgress() {
     return xpData.xpProgress;
 }
 
-// +10 XP pour avoir coché une habitude
-export function awardHabitXP() {
+// +10 XP pour avoir coché une habitude (1 seule fois par habitude par jour)
+export function awardHabitXP(habitId) {
+    const data = getData();
+    if (!data.xp) {
+        data.xp = { total: 0, level: 1, todayXP: 0, lastDate: '', awardedHabits: [] };
+    }
+    const today = getDateKey(new Date());
+    
+    // Reset les habitudes récompensées si changement de jour
+    if (data.xp.lastDate !== today) {
+        data.xp.awardedHabits = [];
+    }
+    
+    // Ne pas donner de XP si déjà récompensé aujourd'hui
+    if (!data.xp.awardedHabits) data.xp.awardedHabits = [];
+    if (habitId && data.xp.awardedHabits.includes(habitId)) {
+        return null; // Déjà récompensé
+    }
+    
+    // Marquer comme récompensé
+    if (habitId) {
+        data.xp.awardedHabits.push(habitId);
+        saveData(data);
+    }
+    
     return addXP(10, 'habit_checked');
 }
 
-// Bonus XP selon le score de la journée validée
+// Bonus XP selon le score de la journée validée (1 fois par jour)
 export function awardDayValidatedXP(score) {
+    const data = getData();
+    if (!data.xp) {
+        data.xp = { total: 0, level: 1, todayXP: 0, lastDate: '', awardedHabits: [], dayValidated: '' };
+    }
+    const today = getDateKey(new Date());
+    
+    // Ne pas donner de XP si déjà validé aujourd'hui
+    if (data.xp.dayValidated === today) {
+        return 0;
+    }
+    data.xp.dayValidated = today;
+    saveData(data);
+    
     let totalAwarded = 0;
 
     // Journée validée = +50 XP bonus
-    const result1 = addXP(50, 'day_validated');
+    addXP(50, 'day_validated');
     totalAwarded += 50;
 
     // Journée parfaite (100%) = +100 XP bonus supplémentaire
@@ -129,9 +165,10 @@ export function awardStreakXP(streak) {
 export function resetDailyXP() {
     const data = getData();
     if (!data.xp) {
-        data.xp = { total: 0, level: 1, todayXP: 0, lastDate: '' };
+        data.xp = { total: 0, level: 1, todayXP: 0, lastDate: '', awardedHabits: [] };
     }
     data.xp.todayXP = 0;
+    data.xp.awardedHabits = [];
     data.xp.lastDate = getDateKey(new Date());
     saveData(data);
 }

@@ -161,7 +161,7 @@ export function toggleHabit(habitId) {
 
     if (newStatus) {
         playSuccessSound();
-        awardHabitXP();
+        awardHabitXP(habitId);
         if (window.updateXPDisplay) window.updateXPDisplay();
     } else {
         playUndoSound();
