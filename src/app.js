@@ -44,6 +44,7 @@ import { initInstallBanner, dismissInstallBanner, installApp } from './ui/instal
 import { shareDay } from './ui/share.js';
 import { exportDataCSV } from './ui/export.js';
 import { showQRModal, closeQRModal, downloadQR } from './ui/qrcode.js';
+import { sendChatMessage, toggleRecording, cancelRecording, playAudio } from './ui/chat.js';
 import { renderAnalytics } from './ui/analytics.js';
 // import { renderHeatmap } from './ui/heatmap.js';
 import { showCelebration, celebrateNewRank, celebrateNewBadge } from './ui/celebration.js';
@@ -676,7 +677,10 @@ Object.assign(window, {
     openGroupDetail, closeGroupDetail, leaveGroup, deleteGroup, copyGroupCode,
 
     // QR Code
-    showQRModal, closeQRModal, downloadQR
+    showQRModal, closeQRModal, downloadQR,
+
+    // Chat
+    sendChatMessage, toggleRecording, cancelRecording, playAudio
 });
 
 // --- Language cycling (exposed on window) ---

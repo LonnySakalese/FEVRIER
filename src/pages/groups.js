@@ -7,6 +7,7 @@ import { appState, habits } from '../services/state.js';
 import { showPopup } from '../ui/toast.js';
 import { ConfirmModal } from '../ui/modals.js';
 import { getRank } from '../core/ranks.js';
+import { renderChatSection, startChatListener, stopChatListener } from '../ui/chat.js';
 
 // ============================================================
 // HELPERS
@@ -459,6 +460,8 @@ export async function openGroupDetail(groupId) {
                     `).join('')}
                 </div>
 
+                ${renderChatSection(groupId)}
+
                 <div class="group-detail-actions">
                     ${isCreator ? `
                         <button class="group-danger-btn" onclick="deleteGroup('${groupId}')">🗑️ Supprimer le groupe</button>
@@ -468,6 +471,9 @@ export async function openGroupDetail(groupId) {
                 </div>
             </div>`;
 
+        // Start real-time chat listener
+        startChatListener(groupId);
+
     } catch (err) {
         console.error('Erreur openGroupDetail:', err);
         content.innerHTML = '<div style="text-align:center; padding: 30px; color: var(--accent-dim);">Erreur de chargement</div>';
@@ -475,6 +481,7 @@ export async function openGroupDetail(groupId) {
 }
 
 export function closeGroupDetail() {
+    stopChatListener();
     const modal = document.getElementById('groupDetailModal');
     if (modal) modal.classList.remove('active');
 }
