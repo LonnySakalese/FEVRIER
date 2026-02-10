@@ -40,19 +40,6 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* ===== SCROLL PROGRESS BAR ===== */
-        .scroll-progress {
-            position: fixed;
-            top: 0;
-            left: 0;
-            height: 3px;
-            width: 0%;
-            background: var(--accent-green);
-            z-index: 9999;
-            transition: width 0.1s linear;
-            box-shadow: 0 0 8px rgba(25, 230, 57, 0.4);
-        }
-
         /* ===== FADE-IN ===== */
         .fade-in {
             opacity: 0;
@@ -816,7 +803,6 @@
 <body>
 
     <!-- SCROLL PROGRESS BAR -->
-    <div class="scroll-progress" id="scrollProgress"></div>
 
     <!-- HERO -->
     <section class="hero">
@@ -1021,14 +1007,9 @@
     (function() {
         'use strict';
 
-        // ===== SCROLL PROGRESS + PARALLAX =====
-        const scrollBar = document.getElementById('scrollProgress');
+        // ===== PARALLAX =====
         const heroLogo = document.querySelector('.hero-logo');
         window.addEventListener('scroll', function() {
-            const h = document.documentElement.scrollHeight - window.innerHeight;
-            scrollBar.style.width = h > 0 ? (window.scrollY / h * 100) + '%' : '0%';
-
-            // Parallax: logo moves slower than scroll
             if (heroLogo && window.scrollY < window.innerHeight) {
                 heroLogo.style.transform = 'translateY(' + (window.scrollY * 0.3) + 'px)';
             }
