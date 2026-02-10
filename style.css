@@ -1194,27 +1194,44 @@ canvas {
 /* Bouton de validation de journée */
 .validate-day-btn {
     width: calc(100% - 30px);
-    margin: 30px 15px 20px 15px;
-    padding: 18px;
-    background: linear-gradient(135deg, #2ECC71, #27AE60);
-    color: white;
+    margin: 30px 15px 10px 15px;
+    padding: 16px 24px;
+    background: linear-gradient(135deg, #19E639 0%, #0DBF2F 50%, #0A9925 100%);
+    color: #0A0A0A;
     border: none;
-    border-radius: 12px;
-    font-size: 1rem;
-    font-weight: bold;
-    letter-spacing: 1px;
+    border-radius: 14px;
+    font-size: 0.95rem;
+    font-weight: 800;
+    letter-spacing: 2px;
     cursor: pointer;
-    box-shadow: 0 6px 20px rgba(46, 204, 113, 0.3);
-    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(25, 230, 57, 0.25), inset 0 1px 0 rgba(255,255,255,0.2);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    text-transform: uppercase;
+}
+
+.validate-day-btn::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+    transition: left 0.5s ease;
+}
+
+.validate-day-btn:hover::before {
+    left: 100%;
 }
 
 .validate-day-btn:hover {
     transform: translateY(-3px);
-    box-shadow: 0 8px 25px rgba(46, 204, 113, 0.4);
+    box-shadow: 0 8px 25px rgba(25, 230, 57, 0.35), inset 0 1px 0 rgba(255,255,255,0.2);
 }
 
 .validate-day-btn:active {
-    transform: translateY(-1px);
+    transform: translateY(-1px) scale(0.98);
+    box-shadow: 0 2px 10px rgba(25, 230, 57, 0.3);
 }
 
 /* Fenêtre modale (pour l'édition des habitudes) */
@@ -2312,32 +2329,47 @@ canvas {
 .calendar-view-btn {
     width: calc(100% - 30px);
     margin: 15px;
-    padding: 16px;
-    background: linear-gradient(135deg, var(--charcoal), var(--dark-gray));
-    border: 2px solid var(--accent-dark);
+    padding: 14px 24px;
+    background: linear-gradient(135deg, rgba(30,30,30,0.9), rgba(20,20,20,0.9));
+    border: 1.5px solid var(--steel);
     color: var(--accent);
-    border-radius: 12px;
-    font-size: 0.9rem;
-    font-weight: bold;
+    border-radius: 14px;
+    font-size: 0.85rem;
+    font-weight: 700;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 1.5px;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 10px;
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(4px);
+}
+
+.calendar-view-btn::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(245,245,240,0.06), transparent);
+    transition: left 0.5s ease;
+}
+
+.calendar-view-btn:hover::before {
+    left: 100%;
 }
 
 .calendar-view-btn:hover {
-    background: var(--steel);
-    border-color: var(--accent);
+    border-color: var(--accent-dim);
     transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(245, 245, 240, 0.15);
+    box-shadow: 0 6px 20px rgba(245, 245, 240, 0.08);
 }
 
 .calendar-view-btn:active {
-    transform: scale(0.98);
+    transform: scale(0.97);
 }
 
 /* Modal calendrier */
@@ -4237,7 +4269,31 @@ button:active, .modal-btn:active, .auth-btn:active, .settings-btn:active, .form-
 }
 
 [data-theme="light"] .validate-day-btn {
-    box-shadow: 0 4px 15px rgba(25, 135, 84, 0.3);
+    box-shadow: 0 4px 15px rgba(25, 150, 57, 0.3), inset 0 1px 0 rgba(255,255,255,0.3);
+}
+
+[data-theme="light"] .validate-day-btn:hover {
+    box-shadow: 0 8px 25px rgba(25, 150, 57, 0.35), inset 0 1px 0 rgba(255,255,255,0.3);
+}
+
+[data-theme="light"] .calendar-view-btn {
+    background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(245,245,245,0.9));
+    border-color: var(--steel);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+[data-theme="light"] .calendar-view-btn:hover {
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+}
+
+[data-theme="light"] .share-day-btn {
+    background: rgba(0,0,0,0.02);
+    border-color: var(--steel);
+}
+
+[data-theme="light"] .share-day-btn:hover {
+    background: rgba(0,0,0,0.04);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
 }
 
 /* Cards depth in light mode */
@@ -4286,11 +4342,6 @@ button:active, .modal-btn:active, .auth-btn:active, .settings-btn:active, .form-
 
 [data-theme="light"] .profile-field {
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
-}
-
-/* Calendar light mode */
-[data-theme="light"] .calendar-view-btn {
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
 /* Weekly grid light mode */
@@ -4446,46 +4497,55 @@ button:active, .modal-btn:active, .auth-btn:active, .settings-btn:active, .form-
 
 .share-day-btn {
     width: calc(100% - 30px);
-    margin: 10px 15px 20px 15px;
-    padding: 14px;
-    background: transparent;
+    margin: 8px 15px 20px 15px;
+    padding: 14px 24px;
+    background: rgba(245, 245, 240, 0.05);
     color: var(--accent);
-    border: 2px solid var(--accent-dim);
-    border-radius: 12px;
-    font-size: 0.9rem;
-    font-weight: bold;
-    letter-spacing: 1px;
+    border: 1.5px solid var(--steel);
+    border-radius: 14px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    backdrop-filter: blur(4px);
+    position: relative;
+    overflow: hidden;
+}
+
+.share-day-btn::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 14px;
+    background: linear-gradient(135deg, rgba(245,245,240,0.08), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
 }
 
 .share-day-btn:hover {
     border-color: var(--accent);
-    background: rgba(245, 245, 240, 0.05);
     transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(245, 245, 240, 0.1);
+    box-shadow: 0 6px 20px rgba(245, 245, 240, 0.08);
+}
+
+.share-day-btn:hover::after {
+    opacity: 1;
 }
 
 .share-day-btn:active {
-    transform: translateY(0);
-    transform: scale(0.98);
+    transform: scale(0.97);
 }
 
 /* Light theme */
 [data-theme="light"] .install-banner {
     background: var(--dark-gray);
     box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
-}
-
-[data-theme="light"] .share-day-btn {
-    border-color: var(--accent-dim);
-    color: var(--accent);
-}
-
-[data-theme="light"] .share-day-btn:hover {
-    border-color: var(--accent);
-    background: rgba(0, 0, 0, 0.03);
 }
 
 /* ============================================================ */
