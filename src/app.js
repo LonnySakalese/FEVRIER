@@ -32,7 +32,7 @@ import {
 } from './core/ranks.js';
 
 // --- Core (XP) ---
-import { getXPData, addXP, awardHabitXP, awardDayValidatedXP, awardStreakXP, resetDailyXP, getFatigueData, checkClearFatigue } from './core/xp.js';
+import { getXPData, addXP, awardHabitXP, awardDayValidatedXP, awardStreakXP, resetDailyXP, getFatigueData, checkClearFatigue, setOnLevelUp } from './core/xp.js';
 
 // --- UI ---
 import { showPopup } from './ui/toast.js';
@@ -47,6 +47,7 @@ import { showQRModal, closeQRModal, downloadQR } from './ui/qrcode.js';
 import { renderAnalytics } from './ui/analytics.js';
 // import { renderHeatmap } from './ui/heatmap.js';
 import { showCelebration, celebrateNewRank, celebrateNewBadge } from './ui/celebration.js';
+import { initRewards, renderThemeSelector, checkNewThemeUnlocks, selectTheme } from './ui/rewards.js';
 import {
     isFirstTimeUser, showTutorial, hideTutorial, initTutorial,
     nextTutorialStep, prevTutorialStep, skipTutorial,
@@ -551,6 +552,7 @@ function showPage(page, event) {
     } else if (page === 'profile') {
         renderProfile();
         renderProfileGroups();
+        renderThemeSelector();
     } else if (page === 'groups') {
         renderGroups();
     }
@@ -583,6 +585,7 @@ function showAppPage(pageName) {
 // --- Wire up callbacks ---
 setOnHabitsChanged(() => updateUI());
 setOnRanksChanged(() => updateStats());
+setOnLevelUp((newLevel) => checkNewThemeUnlocks(newLevel));
 setShowValidateDayModal(() => showValidateDayModal());
 window._onFilterChange = () => updateUI();
 
@@ -696,6 +699,8 @@ function hideSplash() {
 document.addEventListener('DOMContentLoaded', () => {
     // Charger le thème immédiatement pour éviter un flash
     loadTheme();
+    // Initialiser le système de récompenses (thèmes visuels)
+    initRewards();
 
     // Apply i18n translations and set lang button
     applyTranslations();
@@ -775,6 +780,40 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+    // --- Handle hash-based deep links (for manifest shortcuts & Siri) ---
+    function handleHashNavigation() {
+        const hash = window.location.hash;
+        if (!hash) return;
+
+        switch (hash) {
+            case '#today':
+                showPage('today');
+                break;
+            case '#stats':
+                showPage('stats');
+                break;
+            case '#validate':
+                showPage('today');
+                // Small delay to let the page render before showing modal
+                setTimeout(() => {
+                    if (typeof showValidateDayModal === 'function') {
+                        showValidateDayModal();
+                    }
+                }, 600);
+                break;
+        }
+        // Clean hash from URL without triggering navigation
+        if (window.history && window.history.replaceState) {
+            window.history.replaceState(null, '', window.location.pathname);
+        }
+    }
+
+    // Listen for hash changes (in case user navigates while app is open)
+    window.addEventListener('hashchange', handleHashNavigation);
+
+    // Run on first load (deferred so app is initialized first)
+    setTimeout(handleHashNavigation, 800);
 
     // Initialize PWA install banner
     initInstallBanner();

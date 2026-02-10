@@ -4,8 +4,15 @@
 
 import { getData, saveData, getDateKey, getDayData } from '../services/storage.js';
 import { showPopup } from '../ui/toast.js';
+import { showLevelUp } from '../ui/levelup.js';
 import { habits } from '../services/state.js';
 import { isHabitScheduledForDate } from './habits.js';
+
+// Callback pour le level up (utilisé par rewards)
+let _onLevelUp = null;
+export function setOnLevelUp(callback) {
+    _onLevelUp = callback;
+}
 
 const MAX_LEVEL = 50;
 const FATIGUE_THRESHOLD = 70; // Score minimum de la veille pour éviter la fatigue
@@ -89,6 +96,7 @@ export function addXP(amount, reason) {
     const leveledUp = newLevel > oldLevel;
     if (leveledUp) {
         showPopup(`🎉 LEVEL UP ! Niveau ${newLevel}`, 'success');
+        if (_onLevelUp) _onLevelUp(newLevel);
     }
 
     return { newTotal: data.xp.total, leveledUp, newLevel };

@@ -30,7 +30,10 @@
         href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%230A0A0A' width='100' height='100' rx='20'/><path d='M 23 74 Q 27 70 31 66 Q 39 58 47 54 Q 55 50 62 39 Q 68 29 74 19' fill='none' stroke='%23F5F5F0' stroke-width='6' stroke-linecap='round'/><path d='M 66 16 L 77 18 L 75 29' fill='none' stroke='%23F5F5F0' stroke-width='6' stroke-linecap='round'/></svg>">
     <!-- Favicon SVG intégré directement dans le HTML -->
     <link rel="apple-touch-icon" href="favicon.svg">
-    <!-- Icône pour l'écran d'accueil sur les appareils Apple -->
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon.svg">
+    <link rel="apple-touch-icon" sizes="152x152" href="favicon.svg">
+    <link rel="apple-touch-icon" sizes="120x120" href="favicon.svg">
+    <!-- Icônes pour l'écran d'accueil sur les appareils Apple -->
     <title>PROJET FEVRIER</title>
     <!-- Titre de la page qui s'affiche dans l'onglet du navigateur -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -760,6 +763,12 @@
                 </div>
             </div>
 
+            <!-- Thèmes débloquables -->
+            <div class="section-title">🎨 THÈMES DÉBLOQUÉS</div>
+            <div class="reward-themes-grid" id="themeRewardsContainer">
+                <!-- Rendu dynamique par rewards.js -->
+            </div>
+
             <!-- Groupes -->
             <div class="section-title" data-i18n="profile.myGroups">👥 MES GROUPES</div>
             <div class="profile-groups-empty" id="profileGroups">
@@ -771,8 +780,15 @@
             </div>
 
             <!-- Membre depuis -->
-            <div class="profile-member-since" id="profileMemberSince" style="text-align: center; color: var(--accent-dim); font-size: 0.8rem; margin-top: 20px; padding-bottom: 100px;">
+            <div class="profile-member-since" id="profileMemberSince" style="text-align: center; color: var(--accent-dim); font-size: 0.8rem; margin-top: 20px;">
                 Membre depuis -
+            </div>
+
+            <!-- Raccourci iOS -->
+            <div style="text-align: center; margin-top: 20px; padding-bottom: 100px;">
+                <a href="apple-shortcut.html" style="display: inline-flex; align-items: center; gap: 8px; padding: 12px 20px; background: var(--charcoal, #1a1a1a); border: 1px solid var(--steel, #333); border-radius: 12px; color: var(--accent, #F5F5F0); text-decoration: none; font-size: 0.9rem;">
+                    📱 Raccourci iOS & Siri
+                </a>
             </div>
         </div>
     </div>
@@ -918,6 +934,23 @@
         <div class="install-banner-actions">
             <button class="install-banner-btn dismiss" onclick="dismissInstallBanner()">Plus tard</button>
             <button class="install-banner-btn install" onclick="installApp()">Installer</button>
+        </div>
+    </div>
+
+    <!-- Overlay Level Up -->
+    <div class="levelup-overlay" id="levelUpOverlay">
+        <canvas class="levelup-canvas" id="levelUpCanvas"></canvas>
+        <div class="levelup-content">
+            <div class="levelup-flash"></div>
+            <div class="levelup-title">LEVEL UP!</div>
+            <div class="levelup-level-container">
+                <div class="levelup-label">NIVEAU</div>
+                <div class="levelup-number" id="levelUpNumber">1</div>
+            </div>
+            <div class="levelup-xp-bar">
+                <div class="levelup-xp-bar-fill" id="levelUpXPBarFill"></div>
+            </div>
+            <div class="levelup-tap">TAP POUR CONTINUER</div>
         </div>
     </div>
 

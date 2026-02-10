@@ -18,7 +18,7 @@
   "categories": ["lifestyle", "health", "productivity"],
   "shortcuts": [
     {
-      "name": "Habitudes du jour",
+      "name": "Mes habitudes",
       "short_name": "Aujourd'hui",
       "description": "Voir les missions du jour",
       "url": "./index.html#today",
@@ -29,6 +29,13 @@
       "short_name": "Stats",
       "description": "Voir mes statistiques",
       "url": "./index.html#stats",
+      "icons": [{ "src": "favicon.svg", "sizes": "any" }]
+    },
+    {
+      "name": "Valider ma journée",
+      "short_name": "Valider",
+      "description": "Valider la journée en cours",
+      "url": "./index.html#validate",
       "icons": [{ "src": "favicon.svg", "sizes": "any" }]
     }
   ]
