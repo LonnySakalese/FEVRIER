@@ -17,7 +17,9 @@ import {
     setScheduleType, toggleDayOfWeek,
     updateHabit, updateHabitName, deleteHabit, moveHabit,
     setHabitScheduleType, toggleHabitDayOfWeek,
-    setOnHabitsChanged
+    setOnHabitsChanged,
+    setHabitCategory, filterByCategory, getActiveFilter, getSelectedCategory,
+    HABIT_CATEGORIES
 } from './core/habits.js';
 import { getRank } from './core/ranks.js';
 import {
@@ -536,6 +538,7 @@ function showAppPage(pageName) {
 setOnHabitsChanged(() => updateUI());
 setOnRanksChanged(() => updateStats());
 setShowValidateDayModal(() => showValidateDayModal());
+window._onFilterChange = () => updateUI();
 
 // --- Close modal on overlay click ---
 document.getElementById('manageHabitsModal')?.addEventListener('click', function (e) {
@@ -564,6 +567,7 @@ Object.assign(window, {
     updateHabit, updateHabitName, deleteHabit, moveHabit,
     setHabitScheduleType, toggleHabitDayOfWeek,
     toggleHabit,
+    setHabitCategory, filterByCategory,
 
     // Date navigation
     changeDate,
@@ -618,6 +622,15 @@ Object.assign(window, {
     openGroupDetail, closeGroupDetail, leaveGroup, deleteGroup, copyGroupCode
 });
 
+// --- SPLASH SCREEN ---
+function hideSplash() {
+    const splash = document.getElementById('splashScreen');
+    if (splash) {
+        splash.classList.add('hidden');
+        setTimeout(() => splash.remove(), 500);
+    }
+}
+
 // --- INITIALIZATION ---
 document.addEventListener('DOMContentLoaded', () => {
     // Charger le thème immédiatement pour éviter un flash
@@ -640,6 +653,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Gérer l'affichage initial
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
 
+    // Safety timeout: never stay stuck on splash
+    setTimeout(hideSplash, 3000);
+
     if (!isFirebaseConfigured) {
         console.log("Mode localStorage seul activé.");
         document.getElementById('logoutItem').style.display = 'none';
@@ -647,6 +663,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         showAppPage('today');
         initializeApp();
+        hideSplash();
+        if (isFirstTimeUser()) { showTutorial(); }
     } else {
         showAppPage('auth');
 
@@ -672,6 +690,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.getElementById('deleteItem').style.display = 'block';
                 showAppPage('today');
                 await initializeApp();
+                hideSplash();
+                if (isFirstTimeUser()) { showTutorial(); }
 
                 // Demander le pseudo si pas encore défini
                 if (checkNeedsPseudo()) {

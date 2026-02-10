@@ -5,7 +5,7 @@
 import { habits, getCurrentDate, setCurrentDate } from '../services/state.js';
 import { getData, saveData, getDayData, getDateKey } from '../services/storage.js';
 import { getDayScore, getStreak, getPerfectDays, getHabitStreak, getHabitMonthProgress, formatDate, isToday, canEditDate, isDayValidated } from '../core/scores.js';
-import { isHabitScheduledForDate, getHabitDisplayName, openManageHabitsModal } from '../core/habits.js';
+import { isHabitScheduledForDate, getHabitDisplayName, openManageHabitsModal, getActiveFilter, HABIT_CATEGORIES } from '../core/habits.js';
 import { playSuccessSound, playUndoSound } from '../ui/sounds.js';
 import { triggerConfetti } from '../ui/confetti.js';
 import { showPopup } from '../ui/toast.js';
@@ -66,6 +66,15 @@ export function renderHabits() {
 
     const scheduledHabits = habits.filter(habit => isHabitScheduledForDate(habit, currentDate));
 
+    // Render category filter buttons dynamically
+    renderCategoryFilters(scheduledHabits);
+
+    // Apply category filter
+    const filter = getActiveFilter();
+    const filteredHabits = filter === 'all'
+        ? scheduledHabits
+        : scheduledHabits.filter(h => (h.category || 'autre') === filter);
+
     if (scheduledHabits.length === 0) {
         const dayNames = ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
         const dayName = dayNames[currentDate.getDay()];
@@ -83,9 +92,19 @@ export function renderHabits() {
         return;
     }
 
+    if (filteredHabits.length === 0 && scheduledHabits.length > 0) {
+        container.innerHTML = `
+            <div style="text-align: center; padding: 30px 20px; color: var(--accent-dim);">
+                <div style="font-size: 2rem; margin-bottom: 10px;">🔍</div>
+                <div style="font-size: 0.9rem;">Aucune habitude dans cette catégorie</div>
+            </div>
+        `;
+        return;
+    }
+
     const isPastDay = !isToday(currentDate);
 
-    container.innerHTML = scheduledHabits.map(habit => {
+    container.innerHTML = filteredHabits.map(habit => {
         const checked = dayData[habit.id] || false;
         const streak = getHabitStreak(habit.id);
         const monthData = getHabitMonthProgress(habit.id);
@@ -256,6 +275,35 @@ export function updateValidateButton() {
     } else {
         btn.style.display = 'block';
     }
+}
+
+// Render category filter buttons based on which categories the user's habits have
+function renderCategoryFilters(scheduledHabits) {
+    const filtersContainer = document.getElementById('categoryFilters');
+    if (!filtersContainer) return;
+
+    // Collect unique categories from scheduled habits
+    const usedCategories = new Set();
+    scheduledHabits.forEach(h => usedCategories.add(h.category || 'autre'));
+
+    // Only show filters if there are 2+ categories
+    if (usedCategories.size < 2) {
+        filtersContainer.style.display = 'none';
+        return;
+    }
+
+    filtersContainer.style.display = 'flex';
+    const filter = getActiveFilter();
+
+    let html = `<button class="category-filter ${filter === 'all' ? 'active' : ''}" data-category="all" onclick="filterByCategory('all')">Tout</button>`;
+    
+    HABIT_CATEGORIES.forEach(cat => {
+        if (usedCategories.has(cat.id)) {
+            html += `<button class="category-filter ${filter === cat.id ? 'active' : ''}" data-category="${cat.id}" onclick="filterByCategory('${cat.id}')">${cat.icon} ${cat.label}</button>`;
+        }
+    });
+
+    filtersContainer.innerHTML = html;
 }
 
 // Fonction principale de mise à jour de l'UI

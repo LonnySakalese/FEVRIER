@@ -8,11 +8,49 @@ import { auth, db, isFirebaseConfigured } from '../config/firebase.js';
 import { showPopup } from '../ui/toast.js';
 import { ConfirmModal } from '../ui/modals.js';
 
+// --- Habit Categories ---
+export const HABIT_CATEGORIES = [
+    { id: 'autre', icon: '⭐', label: 'Autre' },
+    { id: 'sport', icon: '💪', label: 'Sport' },
+    { id: 'mental', icon: '🧠', label: 'Mental' },
+    { id: 'sante', icon: '🥗', label: 'Santé' },
+    { id: 'apprentissage', icon: '📚', label: 'Apprentissage' },
+    { id: 'productivite', icon: '💰', label: 'Productivité' },
+    { id: 'creativite', icon: '🎨', label: 'Créativité' },
+    { id: 'relations', icon: '❤️', label: 'Relations' }
+];
+
 // --- Habit Management State (module-local) ---
 let selectedIcon = '🎯';
 let selectedColor = '#F5F5F0';
 let selectedScheduleType = 'daily';
 let selectedDaysOfWeek = [0, 1, 2, 3, 4, 5, 6];
+let selectedCategory = 'autre';
+let activeFilter = 'all';
+
+export function setHabitCategory(cat) {
+    selectedCategory = cat;
+    document.querySelectorAll('.category-option').forEach(el => {
+        el.classList.toggle('active', el.dataset.category === cat);
+    });
+}
+
+export function filterByCategory(cat) {
+    activeFilter = cat;
+    document.querySelectorAll('.category-filter').forEach(el => {
+        el.classList.toggle('active', el.dataset.category === cat);
+    });
+    // Trigger re-render of habits list
+    if (typeof window._onFilterChange === 'function') window._onFilterChange();
+}
+
+export function getActiveFilter() {
+    return activeFilter;
+}
+
+export function getSelectedCategory() {
+    return selectedCategory;
+}
 
 // Callback for when habits change (set by app.js to trigger updateUI)
 let _onHabitsChanged = null;
@@ -248,6 +286,12 @@ export function resetAddHabitForm() {
 
     selectedIcon = '🎯';
     selectedColor = '#F5F5F0';
+    selectedCategory = 'autre';
+
+    // Reset category picker UI
+    document.querySelectorAll('.category-option').forEach(el => {
+        el.classList.toggle('active', el.dataset.category === 'autre');
+    });
 
     selectedScheduleType = 'daily';
     selectedDaysOfWeek = [0, 1, 2, 3, 4, 5, 6];
@@ -283,7 +327,8 @@ export function saveNewHabit() {
         icon: selectedIcon,
         color: selectedColor,
         scheduleType: selectedScheduleType,
-        daysOfWeek: [...selectedDaysOfWeek]
+        daysOfWeek: [...selectedDaysOfWeek],
+        category: selectedCategory
     };
 
     habits.push(newHabit);

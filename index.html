@@ -46,6 +46,39 @@
 </head>
 
 <body>
+    <!-- Splash Screen -->
+    <div class="splash-screen" id="splashScreen">
+        <div class="splash-content">
+            <svg class="splash-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+                <rect fill="#0A0A0A" width="100" height="100" rx="20"/>
+                <path d="M 23 74 Q 27 70 31 66 Q 39 58 47 54 Q 55 50 62 39 Q 68 29 74 19" fill="none" stroke="#F5F5F0" stroke-width="6" stroke-linecap="round" class="splash-arrow"/>
+                <path d="M 66 16 L 77 18 L 75 29" fill="none" stroke="#F5F5F0" stroke-width="6" stroke-linecap="round" class="splash-arrowhead"/>
+            </svg>
+            <div class="splash-title">PROJET FEVRIER</div>
+            <div class="splash-tagline">Forge ta discipline</div>
+            <div class="splash-loader"></div>
+        </div>
+    </div>
+
+    <!-- Onboarding Overlay -->
+    <div class="onboarding-overlay" id="onboardingOverlay">
+        <div class="onboarding-card">
+            <button class="onboarding-skip" onclick="skipTutorial()">Passer</button>
+            <div class="onboarding-icon" id="onboardingIcon">🎯</div>
+            <h2 class="onboarding-title" id="onboardingTitle">DÉFINIS TES HABITUDES</h2>
+            <p class="onboarding-text" id="onboardingText"></p>
+            <div class="onboarding-dots">
+                <span class="onboarding-dot active"></span>
+                <span class="onboarding-dot"></span>
+                <span class="onboarding-dot"></span>
+            </div>
+            <div class="onboarding-buttons">
+                <button class="onboarding-btn secondary" id="onboardingPrev" onclick="prevTutorialStep()">← RETOUR</button>
+                <button class="onboarding-btn primary" id="onboardingNext" onclick="nextTutorialStep()">SUIVANT →</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Page d'authentification (affichée si non connecté) -->
     <div id="page-auth" class="page">
         <div class="auth-container">
@@ -131,6 +164,11 @@
         <div class="section-title">
             <span>🎯 MISSIONS DU JOUR</span>
             <span id="completedCount">0/10</span>
+        </div>
+
+        <!-- Filtres de catégorie -->
+        <div class="category-filters" id="categoryFilters">
+            <button class="category-filter active" data-category="all" onclick="filterByCategory('all')">Tout</button>
         </div>
 
         <!-- Liste des habitudes (générée par JavaScript) -->
@@ -449,6 +487,20 @@
                             <div class="day-checkbox" data-day="5" onclick="toggleDayOfWeek(5)">V</div>
                             <div class="day-checkbox" data-day="6" onclick="toggleDayOfWeek(6)">S</div>
                             <div class="day-checkbox" data-day="0" onclick="toggleDayOfWeek(0)">D</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Catégorie</label>
+                        <div class="category-picker" id="categoryPicker">
+                            <div class="category-option active" data-category="autre" onclick="setHabitCategory('autre')">⭐ Autre</div>
+                            <div class="category-option" data-category="sport" onclick="setHabitCategory('sport')">💪 Sport</div>
+                            <div class="category-option" data-category="mental" onclick="setHabitCategory('mental')">🧠 Mental</div>
+                            <div class="category-option" data-category="sante" onclick="setHabitCategory('sante')">🥗 Santé</div>
+                            <div class="category-option" data-category="apprentissage" onclick="setHabitCategory('apprentissage')">📚 Apprentissage</div>
+                            <div class="category-option" data-category="productivite" onclick="setHabitCategory('productivite')">💰 Productivité</div>
+                            <div class="category-option" data-category="creativite" onclick="setHabitCategory('creativite')">🎨 Créativité</div>
+                            <div class="category-option" data-category="relations" onclick="setHabitCategory('relations')">❤️ Relations</div>
                         </div>
                     </div>
 

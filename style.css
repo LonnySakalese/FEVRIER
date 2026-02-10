@@ -4561,6 +4561,268 @@ button:active, .modal-btn:active, .auth-btn:active, .settings-btn:active, .form-
 }
 
 /* ============================================================ */
+/* SPLASH SCREEN                                                */
+/* ============================================================ */
+
+.splash-screen {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: #0A0A0A;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+.splash-screen.hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+.splash-content {
+    text-align: center;
+}
+.splash-logo {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 20px;
+    animation: splashPulse 1.5s ease-in-out infinite;
+}
+.splash-arrow {
+    stroke-dasharray: 200;
+    stroke-dashoffset: 200;
+    animation: splashDraw 1.2s ease-out forwards;
+}
+.splash-arrowhead {
+    stroke-dasharray: 50;
+    stroke-dashoffset: 50;
+    animation: splashDraw 0.8s ease-out 0.5s forwards;
+}
+@keyframes splashDraw {
+    to { stroke-dashoffset: 0; }
+}
+@keyframes splashPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+.splash-title {
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: 4px;
+    color: #F5F5F0;
+    margin-bottom: 8px;
+}
+.splash-tagline {
+    font-size: 0.85rem;
+    color: #8A8A85;
+    letter-spacing: 2px;
+    margin-bottom: 30px;
+}
+.splash-loader {
+    width: 40px;
+    height: 3px;
+    background: #1E1E1E;
+    border-radius: 3px;
+    margin: 0 auto;
+    overflow: hidden;
+    position: relative;
+}
+.splash-loader::after {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 60%;
+    background: #19E639;
+    border-radius: 3px;
+    animation: splashLoad 1.2s ease-in-out infinite;
+}
+@keyframes splashLoad {
+    0% { left: -60%; }
+    100% { left: 100%; }
+}
+
+/* ============================================================ */
+/* ONBOARDING OVERLAY                                           */
+/* ============================================================ */
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.onboarding-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.9);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 9000;
+    padding: 20px;
+}
+.onboarding-overlay.active {
+    display: flex;
+}
+.onboarding-card {
+    background: var(--dark-gray);
+    border: 1px solid var(--steel);
+    border-radius: 16px;
+    padding: 40px 30px;
+    max-width: 380px;
+    width: 100%;
+    text-align: center;
+    position: relative;
+    animation: modalIn 0.3s ease;
+}
+.onboarding-skip {
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    background: none;
+    border: none;
+    color: var(--accent-dim);
+    font-size: 0.8rem;
+    cursor: pointer;
+    padding: 4px 8px;
+}
+.onboarding-icon {
+    font-size: 3.5rem;
+    margin-bottom: 20px;
+    animation: float 3s ease-in-out infinite;
+}
+.onboarding-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--accent);
+    margin-bottom: 12px;
+}
+.onboarding-text {
+    font-size: 0.9rem;
+    color: var(--accent-dim);
+    line-height: 1.6;
+    margin-bottom: 24px;
+}
+.onboarding-dots {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 24px;
+}
+.onboarding-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--steel);
+    transition: background 0.3s, transform 0.3s;
+}
+.onboarding-dot.active {
+    background: var(--accent-green);
+    transform: scale(1.3);
+}
+.onboarding-buttons {
+    display: flex;
+    gap: 10px;
+}
+.onboarding-btn {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: transform 0.15s, background 0.2s;
+}
+.onboarding-btn:active { transform: scale(0.97); }
+.onboarding-btn.primary {
+    background: var(--accent);
+    color: var(--black);
+}
+.onboarding-btn.secondary {
+    background: var(--charcoal);
+    color: var(--accent-dim);
+}
+
+/* ============================================================ */
+/* CATEGORY PICKER & FILTERS                                    */
+/* ============================================================ */
+
+.category-picker {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+.category-option {
+    padding: 6px 12px;
+    border-radius: 20px;
+    background: var(--charcoal);
+    border: 1px solid var(--steel);
+    color: var(--accent-dim);
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.category-option.active {
+    background: var(--accent);
+    color: var(--black);
+    border-color: var(--accent);
+}
+.category-filters {
+    display: flex;
+    gap: 6px;
+    padding: 0 15px 10px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+.category-filter {
+    padding: 5px 12px;
+    border-radius: 16px;
+    background: var(--charcoal);
+    border: 1px solid var(--steel);
+    color: var(--accent-dim);
+    font-size: 0.75rem;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s;
+}
+.category-filter.active {
+    background: var(--accent-green);
+    color: var(--black);
+    border-color: var(--accent-green);
+}
+.category-filters::-webkit-scrollbar { display: none; }
+
+/* Light theme variants for categories & onboarding */
+[data-theme="light"] .category-option {
+    background: var(--dark-gray);
+    border-color: var(--steel);
+    color: var(--accent-dim);
+}
+[data-theme="light"] .category-option.active {
+    background: var(--accent);
+    color: var(--dark-gray);
+    border-color: var(--accent);
+}
+[data-theme="light"] .category-filter {
+    background: var(--dark-gray);
+    border-color: var(--steel);
+    color: var(--accent-dim);
+}
+[data-theme="light"] .category-filter.active {
+    background: var(--accent-green);
+    color: var(--dark-gray);
+    border-color: var(--accent-green);
+}
+[data-theme="light"] .onboarding-overlay {
+    background: rgba(255, 255, 255, 0.95);
+}
+[data-theme="light"] .onboarding-card {
+    background: var(--dark-gray);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* ============================================================ */
 /* ACCESSIBILITÉ - Focus visible                                */
 /* ============================================================ */
 
