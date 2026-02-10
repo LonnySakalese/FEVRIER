@@ -32,7 +32,7 @@ import {
 } from './core/ranks.js';
 
 // --- Core (XP) ---
-import { getXPData, addXP, awardHabitXP, awardDayValidatedXP, awardStreakXP, resetDailyXP } from './core/xp.js';
+import { getXPData, addXP, awardHabitXP, awardDayValidatedXP, awardStreakXP, resetDailyXP, getFatigueData, checkClearFatigue } from './core/xp.js';
 
 // --- UI ---
 import { showPopup } from './ui/toast.js';
@@ -494,15 +494,27 @@ async function resetAllData() {
 
 function updateXPDisplay() {
     const xpData = getXPData();
+    const fatigueData = getFatigueData();
     const xpLevelEl = document.getElementById('xpLevel');
     const xpAmountEl = document.getElementById('xpAmount');
     const xpBarFillEl = document.getElementById('xpBarFill');
     const xpTodayEl = document.getElementById('xpToday');
+    const xpContainer = document.getElementById('xpBarContainer');
 
     if (xpLevelEl) xpLevelEl.textContent = `LVL ${xpData.level}`;
     if (xpAmountEl) xpAmountEl.textContent = `${xpData.xpInLevel} / ${xpData.xpNeeded} XP`;
     if (xpBarFillEl) xpBarFillEl.style.width = `${xpData.xpProgress}%`;
-    if (xpTodayEl) xpTodayEl.textContent = `+${xpData.todayXP} XP aujourd'hui`;
+    
+    // Fatigue : barre grise + message
+    if (xpContainer) {
+        if (fatigueData.isFatigued) {
+            xpContainer.classList.add('fatigued');
+            if (xpTodayEl) xpTodayEl.textContent = `😴 FATIGUE — XP ×0.5 | +${xpData.todayXP} XP`;
+        } else {
+            xpContainer.classList.remove('fatigued');
+            if (xpTodayEl) xpTodayEl.textContent = `+${xpData.todayXP} XP aujourd'hui`;
+        }
+    }
 }
 
 // --- Page Navigation ---

@@ -10,7 +10,7 @@ import { playSuccessSound, playUndoSound } from '../ui/sounds.js';
 import { triggerConfetti } from '../ui/confetti.js';
 import { showPopup } from '../ui/toast.js';
 import { checkAndUnlockBadges } from '../core/badges.js';
-import { awardHabitXP, awardDayValidatedXP } from '../core/xp.js';
+import { awardHabitXP, awardDayValidatedXP, checkClearFatigue } from '../core/xp.js';
 
 // Met à jour le statut (coché/décoché) d'une habitude pour aujourd'hui
 function setHabitStatus(habitId, checked) {
@@ -175,6 +175,11 @@ export function toggleHabit(habitId) {
         const completed = habits.filter(h => getDayData(currentDate)[h.id]).length;
         if (completed === habits.length) {
             triggerConfetti();
+        }
+        // Vérifier si la fatigue est levée (score 100%)
+        const currentScore = getDayScore(currentDate);
+        if (checkClearFatigue(currentScore)) {
+            if (window.updateXPDisplay) window.updateXPDisplay();
         }
     }
 }

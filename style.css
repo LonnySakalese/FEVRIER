@@ -4942,6 +4942,33 @@ button:active, .modal-btn:active, .auth-btn:active, .settings-btn:active, .form-
     box-shadow: 0 2px 8px rgba(0,0,0,0.06);
 }
 
+/* Fatigue mode */
+.xp-bar-container.fatigued {
+    border-color: #555;
+    background: linear-gradient(135deg, var(--dark-gray), rgba(60, 60, 60, 0.5));
+}
+.xp-bar-container.fatigued .xp-level {
+    color: #888;
+}
+.xp-bar-container.fatigued .xp-bar-fill {
+    background: linear-gradient(90deg, #666, #888);
+    box-shadow: none;
+}
+.xp-bar-container.fatigued .xp-today {
+    color: #FF6B6B;
+    font-weight: 600;
+}
+.xp-bar-container.fatigued .xp-amount {
+    color: #888;
+}
+[data-theme="light"] .xp-bar-container.fatigued {
+    background: linear-gradient(135deg, #f0f0f0, #e0e0e0);
+    border-color: #ccc;
+}
+[data-theme="light"] .xp-bar-container.fatigued .xp-bar-fill {
+    background: linear-gradient(90deg, #bbb, #ccc);
+}
+
 /* ============================================================ */
 /* ANALYTICS AVANCÉS                                            */
 /* ============================================================ */

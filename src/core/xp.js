@@ -2,10 +2,13 @@
 // SYSTÈME XP (EXPERIENCE POINTS)
 // ============================================================
 
-import { getData, saveData, getDateKey } from '../services/storage.js';
+import { getData, saveData, getDateKey, getDayData } from '../services/storage.js';
 import { showPopup } from '../ui/toast.js';
+import { habits } from '../services/state.js';
+import { isHabitScheduledForDate } from './habits.js';
 
 const MAX_LEVEL = 50;
+const FATIGUE_THRESHOLD = 70; // Score minimum de la veille pour éviter la fatigue
 
 // XP total requis pour atteindre le niveau N = N × (N+1) × 50
 export function getXPForLevel(level) {
@@ -55,7 +58,7 @@ export function getXPData() {
     };
 }
 
-// Ajoute de l'XP, vérifie le level up
+// Ajoute de l'XP, vérifie le level up (applique le multiplicateur de fatigue)
 export function addXP(amount, reason) {
     const data = getData();
     if (!data.xp) {
@@ -69,9 +72,13 @@ export function addXP(amount, reason) {
         data.xp.lastDate = today;
     }
 
+    // Appliquer le multiplicateur de fatigue
+    const fatigueData = getFatigueData();
+    const effectiveAmount = Math.round(amount * fatigueData.xpMultiplier);
+
     const oldLevel = data.xp.level;
-    data.xp.total += amount;
-    data.xp.todayXP += amount;
+    data.xp.total += effectiveAmount;
+    data.xp.todayXP += effectiveAmount;
 
     // Recalculer le niveau
     const newLevel = getLevel(data.xp.total);
@@ -171,4 +178,63 @@ export function resetDailyXP() {
     data.xp.awardedHabits = [];
     data.xp.lastDate = getDateKey(new Date());
     saveData(data);
+}
+
+// ============================================================
+// SYSTÈME DE FATIGUE
+// ============================================================
+
+// Vérifie si le joueur est en état de fatigue
+// Fatigue = le score de la veille était < 70%
+export function checkFatigue() {
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    
+    const yesterdayData = getDayData(yesterday);
+    const scheduledHabits = habits.filter(h => isHabitScheduledForDate(h, yesterday));
+    
+    // Pas de fatigue si pas d'habitudes programmées hier (premier jour, etc.)
+    if (scheduledHabits.length === 0) return false;
+    
+    const completed = scheduledHabits.filter(h => yesterdayData[h.id]).length;
+    const yesterdayScore = Math.round((completed / scheduledHabits.length) * 100);
+    
+    return yesterdayScore < FATIGUE_THRESHOLD;
+}
+
+// Retourne les infos complètes de fatigue
+export function getFatigueData() {
+    const isFatigued = checkFatigue();
+    const data = getData();
+    const today = getDateKey(new Date());
+    
+    // Vérifier si la fatigue a été levée aujourd'hui
+    if (!data.xp) data.xp = {};
+    if (data.xp.fatigueClearedDate === today) {
+        return { isFatigued: false, wasCleared: true, xpMultiplier: 1 };
+    }
+    
+    if (!isFatigued) {
+        return { isFatigued: false, wasCleared: false, xpMultiplier: 1 };
+    }
+    
+    // En fatigue : XP divisé par 2
+    return { isFatigued: true, wasCleared: false, xpMultiplier: 0.5 };
+}
+
+// Vérifie si le score actuel du jour permet de lever la fatigue
+// La fatigue est levée quand le score du jour atteint 100%
+export function checkClearFatigue(currentDayScore) {
+    const fatigueData = getFatigueData();
+    if (!fatigueData.isFatigued) return false;
+    
+    if (currentDayScore >= 100) {
+        const data = getData();
+        if (!data.xp) data.xp = {};
+        data.xp.fatigueClearedDate = getDateKey(new Date());
+        saveData(data);
+        showPopup('⚡ FATIGUE LEVÉE ! XP normal rétabli !', 'success', 4000);
+        return true;
+    }
+    return false;
 }
