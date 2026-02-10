@@ -2570,6 +2570,12 @@ canvas {
     box-shadow: 0 0 8px rgba(231, 76, 60, 0.3);
 }
 
+.calendar-day.no-data {
+    background: var(--charcoal);
+    color: var(--accent-dark);
+    opacity: 0.4;
+}
+
 .calendar-day.future {
     background: var(--steel);
     color: var(--accent-dark);

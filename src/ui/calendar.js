@@ -114,6 +114,7 @@ export function renderCalendarGrid() {
             const dateKey = getDateKey(date);
 
             const dayData = calendarData.days && calendarData.days[dateKey];
+            const hasTrackedData = !!dayData; // User actually tracked this day
             const isCompleted = dayData && dayData[habit.id] === true;
             const isPast = date < today;
             const isTodayDate = date.getTime() === today.getTime();
@@ -128,17 +129,22 @@ export function renderCalendarGrid() {
                 dayClass += ' success';
                 habitSuccess++;
                 totalSuccess++;
-            } else if (isPast) {
+            } else if (hasTrackedData) {
+                // Only mark as fail if user actually tracked that day
                 dayClass += ' fail';
                 habitFail++;
                 totalFail++;
+            } else if (isPast) {
+                // No data for this day — not tracked, show as neutral/empty
+                dayClass += ' no-data';
             }
 
             if (isTodayDate) {
                 dayClass += ' today';
             }
 
-            if (!isFuture) {
+            // Only count in totals if user tracked or it's today
+            if (!isFuture && (hasTrackedData || isTodayDate)) {
                 habitTotal++;
                 totalPossible++;
             }
