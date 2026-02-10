@@ -206,10 +206,21 @@
         .cta-btn--green {
             background: var(--accent-green);
             color: var(--black);
+            animation: ctaPulse 2.5s ease-in-out infinite;
         }
 
         .cta-btn--green:hover {
             box-shadow: 0 8px 30px rgba(25, 230, 57, 0.2);
+            animation: none;
+        }
+
+        @keyframes ctaPulse {
+            0%, 100% {
+                box-shadow: 0 0 0 0 rgba(25, 230, 57, 0.4);
+            }
+            50% {
+                box-shadow: 0 0 0 12px rgba(25, 230, 57, 0);
+            }
         }
 
         /* ===== SECTION COMMON ===== */
@@ -247,6 +258,34 @@
             border-radius: 12px;
             padding: 28px 24px;
             transition: border-color 0.3s, transform 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            border-radius: 12px 12px 0 0;
+        }
+
+        .feature-card:nth-child(1)::before {
+            background: linear-gradient(90deg, #19E639, #0fa82a);
+        }
+
+        .feature-card:nth-child(2)::before {
+            background: linear-gradient(90deg, #FF6B35, #E64A19);
+        }
+
+        .feature-card:nth-child(3)::before {
+            background: linear-gradient(90deg, #FFD700, #FFA000);
+        }
+
+        .feature-card:nth-child(4)::before {
+            background: linear-gradient(90deg, #19A3E6, #1565C0);
         }
 
         .feature-card:hover {
@@ -677,6 +716,58 @@
             letter-spacing: 2px;
         }
 
+        /* ===== AVAILABLE EVERYWHERE ===== */
+        .available-section {
+            text-align: center;
+            max-width: 900px;
+        }
+
+        .platforms-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        @media (min-width: 500px) {
+            .platforms-grid {
+                grid-template-columns: repeat(4, 1fr);
+                max-width: 700px;
+            }
+        }
+
+        .platform-item {
+            padding: 24px 16px;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            transition: border-color 0.3s, transform 0.3s;
+        }
+
+        .platform-item:hover {
+            border-color: var(--accent-dim);
+            transform: translateY(-3px);
+        }
+
+        .platform-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .platform-name {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--accent);
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+        }
+
+        .platform-desc {
+            font-size: 0.7rem;
+            color: var(--accent-dim);
+        }
+
         /* ===== FOOTER ===== */
         footer {
             text-align: center;
@@ -685,6 +776,40 @@
             font-size: 0.75rem;
             letter-spacing: 1px;
             border-top: 1px solid var(--border);
+        }
+
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .footer-brand {
+            color: var(--accent-dim);
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 16px;
+        }
+
+        .footer-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--accent-dim);
+            text-decoration: none;
+            font-size: 0.8rem;
+            transition: color 0.2s;
+        }
+
+        .footer-link:hover {
+            color: var(--accent);
+        }
+
+        .footer-link svg {
+            flex-shrink: 0;
         }
     </style>
 </head>
@@ -842,6 +967,34 @@
         <div class="community-label">habitudes validées</div>
     </section>
 
+    <!-- DISPONIBLE PARTOUT -->
+    <section class="available-section fade-in">
+        <h2 class="section-heading">📱 DISPONIBLE PARTOUT</h2>
+        <p style="color: var(--accent-dim); text-align: center; margin-bottom: 40px; font-size: 0.95rem;">Installe l'app sur n'importe quel appareil. Aucun store nécessaire.</p>
+        <div class="platforms-grid">
+            <div class="platform-item">
+                <div class="platform-icon">🌐</div>
+                <div class="platform-name">PWA</div>
+                <div class="platform-desc">Progressive Web App</div>
+            </div>
+            <div class="platform-item">
+                <div class="platform-icon">🔵</div>
+                <div class="platform-name">Chrome</div>
+                <div class="platform-desc">Desktop & Android</div>
+            </div>
+            <div class="platform-item">
+                <div class="platform-icon">🧭</div>
+                <div class="platform-name">Safari</div>
+                <div class="platform-desc">iOS & macOS</div>
+            </div>
+            <div class="platform-item">
+                <div class="platform-icon">📱</div>
+                <div class="platform-name">Mobile</div>
+                <div class="platform-desc">Écran d'accueil</div>
+            </div>
+        </div>
+    </section>
+
     <!-- FINAL CTA -->
     <section class="final-cta fade-in">
         <h2>Prêt à devenir meilleur ?</h2>
@@ -850,7 +1003,15 @@
 
     <!-- FOOTER -->
     <footer>
-        PROJET FEVRIER © 2025
+        <div class="footer-content">
+            <div class="footer-brand">PROJET FEVRIER © 2025</div>
+            <div class="footer-links">
+                <a href="https://github.com/LonnySakalese/FEVRIER" target="_blank" rel="noopener" class="footer-link">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+                    GitHub
+                </a>
+            </div>
+        </div>
     </footer>
 
     <!-- CONFETTI CONTAINER -->
@@ -860,11 +1021,17 @@
     (function() {
         'use strict';
 
-        // ===== SCROLL PROGRESS =====
+        // ===== SCROLL PROGRESS + PARALLAX =====
         const scrollBar = document.getElementById('scrollProgress');
+        const heroLogo = document.querySelector('.hero-logo');
         window.addEventListener('scroll', function() {
             const h = document.documentElement.scrollHeight - window.innerHeight;
             scrollBar.style.width = h > 0 ? (window.scrollY / h * 100) + '%' : '0%';
+
+            // Parallax: logo moves slower than scroll
+            if (heroLogo && window.scrollY < window.innerHeight) {
+                heroLogo.style.transform = 'translateY(' + (window.scrollY * 0.3) + 'px)';
+            }
         }, { passive: true });
 
         // ===== PARTICLES =====

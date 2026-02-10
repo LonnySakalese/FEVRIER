@@ -140,6 +140,11 @@
         <button id="validateDayBtn" class="validate-day-btn" onclick="showValidateDayModal()" style="display: none;">
             ✅ VALIDER LA JOURNÉE
         </button>
+
+        <!-- Bouton partager ma journée -->
+        <button class="share-day-btn" onclick="shareDay()">
+            📤 PARTAGER MA JOURNÉE
+        </button>
     </div>
 
     <!-- Page "Stats" : affiche les statistiques et graphiques -->
@@ -761,6 +766,21 @@
             <div class="modal-buttons">
                 <button class="modal-btn cancel" onclick="closeGroupDetail()" style="flex: 1;">Fermer</button>
             </div>
+        </div>
+    </div>
+
+    <!-- Bannière PWA Install -->
+    <div class="install-banner" id="installBanner" style="display: none;">
+        <div class="install-banner-content">
+            <div class="install-banner-icon">📲</div>
+            <div class="install-banner-text">
+                <div class="install-banner-title">Installer PROJET FEVRIER</div>
+                <div class="install-banner-desc">Accès rapide depuis ton écran d'accueil</div>
+            </div>
+        </div>
+        <div class="install-banner-actions">
+            <button class="install-banner-btn dismiss" onclick="dismissInstallBanner()">Plus tard</button>
+            <button class="install-banner-btn install" onclick="installApp()">Installer</button>
         </div>
     </div>
 

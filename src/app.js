@@ -32,6 +32,8 @@ import { ConfirmModal } from './ui/modals.js';
 import { loadTheme, toggleTheme, loadThemeFromFirestore } from './ui/theme.js';
 import { triggerConfetti } from './ui/confetti.js';
 import { openCalendarModal, closeCalendarModal, changeCalendarMonth } from './ui/calendar.js';
+import { initInstallBanner, dismissInstallBanner, installApp } from './ui/install.js';
+import { shareDay } from './ui/share.js';
 import {
     isFirstTimeUser, showTutorial, hideTutorial, initTutorial,
     nextTutorialStep, prevTutorialStep, skipTutorial,
@@ -594,6 +596,12 @@ Object.assign(window, {
     // Data
     resetAllData,
 
+    // PWA Install
+    dismissInstallBanner, installApp,
+
+    // Share
+    shareDay,
+
     // Groups
     openCreateGroupModal, closeCreateGroupModal, createGroup,
     openJoinGroupModal, closeJoinGroupModal, joinGroup,
@@ -668,6 +676,9 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+    // Initialize PWA install banner
+    initInstallBanner();
 
     if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('sw.js').catch((err) => {
