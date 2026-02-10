@@ -37,7 +37,7 @@ import { openCalendarModal, closeCalendarModal, changeCalendarMonth } from './ui
 import { initInstallBanner, dismissInstallBanner, installApp } from './ui/install.js';
 import { shareDay } from './ui/share.js';
 import { exportDataCSV } from './ui/export.js';
-import { renderHeatmap } from './ui/heatmap.js';
+// import { renderHeatmap } from './ui/heatmap.js';
 import { showCelebration, celebrateNewRank, celebrateNewBadge } from './ui/celebration.js';
 import {
     isFirstTimeUser, showTutorial, hideTutorial, initTutorial,
@@ -499,7 +499,7 @@ function showPage(page, event) {
 
     if (page === 'stats') {
         updateStats();
-        renderHeatmap('heatmapContainer');
+        // renderHeatmap('heatmapContainer');
     } else if (page === 'motivation') {
         displayRandomQuote();
     } else if (page === 'profile') {
