@@ -323,6 +323,12 @@ function renderHabitRegularity(data) {
     if (habits.length === 0) return '';
 
     const now = new Date();
+    now.setHours(0, 0, 0, 0);
+
+    // Only count days where the user actually tracked (has data)
+    const trackedDays = Object.keys(data.days || {}).sort();
+    if (trackedDays.length === 0) return '';
+
     const habitRates = [];
 
     for (const habit of habits) {
@@ -332,10 +338,13 @@ function renderHabitRegularity(data) {
         for (let i = 0; i < 30; i++) {
             const d = new Date(now);
             d.setDate(d.getDate() - i);
+            const key = getDateKey(d);
+
+            // Only count this day if user has tracked data for it
+            if (!data.days[key]) continue;
 
             if (isHabitScheduledForDate(habit, d)) {
                 scheduled++;
-                const key = getDateKey(d);
                 const dayData = data.days[key] || {};
                 if (dayData[habit.id]) {
                     completed++;
