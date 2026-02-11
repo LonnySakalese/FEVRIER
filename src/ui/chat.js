@@ -61,12 +61,27 @@ export function startChatListener(groupId) {
 
     const statusEl = document.getElementById('chatStatus');
 
+    previousMessageCount = 0;
+
     chatUnsubscribe = db.collection('groups').doc(groupId)
         .collection('messages')
         .orderBy('createdAt', 'asc')
         .limitToLast(100)
         .onSnapshot(snapshot => {
             if (statusEl) statusEl.textContent = '🟢 En ligne';
+
+            // Detect new messages from other users and play sound
+            const newCount = snapshot.docs.length;
+            if (previousMessageCount > 0 && newCount > previousMessageCount) {
+                // Check if the latest message is from someone else
+                const lastDoc = snapshot.docs[snapshot.docs.length - 1];
+                const lastMsg = lastDoc?.data();
+                if (lastMsg && lastMsg.senderId !== appState.currentUser?.uid) {
+                    playChatSound();
+                }
+            }
+            previousMessageCount = newCount;
+
             renderMessages(snapshot.docs);
         }, err => {
             console.error('Chat listener error:', err);
