@@ -8,6 +8,7 @@ import { getDayScore, getHabitMonthProgress } from '../core/scores.js';
 // Génère et affiche la grille des scores de la semaine
 export function renderWeeklyGrid() {
     const container = document.getElementById('weeklyGrid');
+    if (!container) return;
     const today = new Date();
     const dayNames = ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'];
     let html = '';
@@ -27,8 +28,12 @@ export function renderWeeklyGrid() {
 
 // Génère et met à jour les graphiques
 export function renderCharts() {
+    const weeklyCanvas = document.getElementById('weeklyChart');
+    const habitsCanvas = document.getElementById('habitsChart');
+    if (!weeklyCanvas || !habitsCanvas) return;
+
     // Graphique de score hebdomadaire
-    const weeklyCtx = document.getElementById('weeklyChart').getContext('2d');
+    const weeklyCtx = weeklyCanvas.getContext('2d');
     const weeklyData = [];
     const weeklyLabels = [];
     for (let i = 6; i >= 0; i--) {
@@ -61,7 +66,12 @@ export function renderCharts() {
     setWeeklyChart(wChart);
 
     // Graphique de performance par habitude
-    const habitsCtx = document.getElementById('habitsChart').getContext('2d');
+    const habitsCtx = habitsCanvas.getContext('2d');
+    if (habits.length === 0) {
+        let hChart = getHabitsChart();
+        if (hChart) hChart.destroy();
+        return;
+    }
     const habitsData = habits.map(h => getHabitMonthProgress(h.id));
 
     let hChart = getHabitsChart();

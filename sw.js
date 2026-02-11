@@ -45,6 +45,13 @@ const urlsToCache = [
   './src/ui/rewards.js',
   './src/ui/levelup.js',
   './src/ui/streak-display.js',
+  './src/ui/analytics.js',
+  './src/ui/install.js',
+  './src/ui/share.js',
+  './src/ui/qrcode.js',
+  './src/core/xp.js',
+  './src/services/i18n.js',
+  './src/utils/lazy.js',
   './apple-shortcut.html',
   './offline.html',
   // Firebase SDK

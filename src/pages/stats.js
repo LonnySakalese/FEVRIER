@@ -11,20 +11,30 @@ import { renderWeeklyGrid, renderCharts } from '../ui/charts.js';
 export { toggleBadgesVisibility };
 
 export function updateStats() {
-    const avgScore = getAvgScore();
-    const rank = getRank(avgScore);
+    try {
+        const avgScore = getAvgScore();
+        const rank = getRank(avgScore);
 
-    document.getElementById('rankName').textContent = rank.name;
-    document.getElementById('rankName').style.color = rank.color;
-    document.getElementById('rankProgress').style.width = avgScore + '%';
-    document.getElementById('monthScore').textContent = getMonthScore() + '%';
-    document.getElementById('bestStreak').textContent = getBestStreak();
-    document.getElementById('totalWins').textContent = getTotalWins();
-    document.getElementById('avgScore').textContent = avgScore + '%';
+        const rankNameEl = document.getElementById('rankName');
+        const rankProgressEl = document.getElementById('rankProgress');
+        const monthScoreEl = document.getElementById('monthScore');
+        const bestStreakEl = document.getElementById('bestStreak');
+        const totalWinsEl = document.getElementById('totalWins');
+        const avgScoreEl = document.getElementById('avgScore');
 
-    renderWeeklyGrid();
-    renderCharts();
+        if (rankNameEl) { rankNameEl.textContent = rank.name; rankNameEl.style.color = rank.color; }
+        if (rankProgressEl) rankProgressEl.style.width = avgScore + '%';
+        if (monthScoreEl) monthScoreEl.textContent = getMonthScore() + '%';
+        if (bestStreakEl) bestStreakEl.textContent = getBestStreak();
+        if (totalWinsEl) totalWinsEl.textContent = getTotalWins();
+        if (avgScoreEl) avgScoreEl.textContent = avgScore + '%';
 
-    checkAndUnlockBadges();
-    renderBadges();
+        renderWeeklyGrid();
+        renderCharts();
+
+        checkAndUnlockBadges();
+        renderBadges();
+    } catch (err) {
+        console.error('Erreur updateStats:', err);
+    }
 }

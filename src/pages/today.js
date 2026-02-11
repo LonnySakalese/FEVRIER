@@ -188,24 +188,34 @@ export function toggleHabit(habitId) {
 
 // Met à jour les KPIs (score, streak, etc.) sur la page "Aujourd'hui"
 export function updateKPIs() {
-    const currentDate = getCurrentDate();
-    const dayData = getDayData(currentDate);
-    const completed = habits.filter(h => dayData[h.id]).length;
-    const score = getDayScore(currentDate);
-    const locked = !canEditDate(currentDate);
+    try {
+        const currentDate = getCurrentDate();
+        const dayData = getDayData(currentDate);
+        const completed = habits.filter(h => dayData[h.id]).length;
+        const score = getDayScore(currentDate);
+        const locked = !canEditDate(currentDate);
 
-    document.getElementById('dailyScore').textContent = score + '%';
-    document.getElementById('currentStreak').textContent = getStreak();
-    document.getElementById('perfectDays').textContent = getPerfectDays();
-    document.getElementById('completedCount').textContent = locked ? '🔒 VERROUILLÉ' : `${completed}/${habits.length}`;
-    document.getElementById('currentDate').textContent = formatDate(currentDate) + (locked ? ' 🔒' : '');
+        const dailyScoreEl = document.getElementById('dailyScore');
+        const currentStreakEl = document.getElementById('currentStreak');
+        const perfectDaysEl = document.getElementById('perfectDays');
+        const completedCountEl = document.getElementById('completedCount');
+        const currentDateEl = document.getElementById('currentDate');
 
-    const data = getData();
-    const currentStreak = getStreak();
-    if (currentStreak > (data.stats?.bestStreak || 0)) {
-        data.stats = data.stats || {};
-        data.stats.bestStreak = currentStreak;
-        saveData(data);
+        if (dailyScoreEl) dailyScoreEl.textContent = score + '%';
+        if (currentStreakEl) currentStreakEl.textContent = getStreak();
+        if (perfectDaysEl) perfectDaysEl.textContent = getPerfectDays();
+        if (completedCountEl) completedCountEl.textContent = locked ? '🔒 VERROUILLÉ' : `${completed}/${habits.length}`;
+        if (currentDateEl) currentDateEl.textContent = formatDate(currentDate) + (locked ? ' 🔒' : '');
+
+        const data = getData();
+        const currentStreak = getStreak();
+        if (currentStreak > (data.stats?.bestStreak || 0)) {
+            data.stats = data.stats || {};
+            data.stats.bestStreak = currentStreak;
+            saveData(data);
+        }
+    } catch (err) {
+        console.error('Erreur updateKPIs:', err);
     }
 }
 
@@ -226,6 +236,12 @@ export function closeValidateDayModal() {
 }
 
 export function confirmValidateDay() {
+    if (!habits || habits.length === 0) {
+        closeValidateDayModal();
+        showPopup('Aucune habitude à valider', 'warning');
+        return;
+    }
+
     const data = getData();
     const today = getDateKey(new Date());
 
