@@ -8,6 +8,8 @@ import { showPopup } from '../ui/toast.js';
 import { ConfirmModal } from '../ui/modals.js';
 import { getRank } from '../core/ranks.js';
 import { renderChatSection, startChatListener, stopChatListener } from '../ui/chat.js';
+import { renderChallenges } from '../ui/challenges.js';
+import { renderLeaderboard } from '../ui/leaderboard.js';
 
 // ============================================================
 // HELPERS
@@ -445,22 +447,38 @@ export async function openGroupDetail(groupId) {
                     </div>
                 </div>
 
-                <div class="group-members-title">Classement du jour</div>
-                <div class="group-members-list">
-                    ${members.map((m, i) => `
-                        <div class="group-member ${m.id === userId ? 'group-member-me' : ''}">
-                            <div class="group-member-position">${i + 1}</div>
-                            <div class="group-member-avatar">${m.avatar}</div>
-                            <div class="group-member-info">
-                                <div class="group-member-pseudo">${escapeHtml(m.pseudo)}</div>
-                                <div class="group-member-rank" style="color: ${m.rank.color}">${m.rank.name}</div>
-                            </div>
-                            <div class="group-member-score">${m.todayScore}%</div>
-                        </div>
-                    `).join('')}
+                <div class="group-tabs">
+                    <button class="group-tab active" data-tab="chat" onclick="switchGroupTab('chat', '${groupId}')">💬 Chat</button>
+                    <button class="group-tab" data-tab="leaderboard" onclick="switchGroupTab('leaderboard', '${groupId}')">🏆 Classement</button>
                 </div>
 
-                ${renderChatSection(groupId)}
+                <div class="group-tab-content" id="groupTabChat">
+                    <div class="group-members-title">Classement du jour</div>
+                    <div class="group-members-list">
+                        ${members.map((m, i) => `
+                            <div class="group-member ${m.id === userId ? 'group-member-me' : ''}">
+                                <div class="group-member-position">${i + 1}</div>
+                                <div class="group-member-avatar">${m.avatar}</div>
+                                <div class="group-member-info">
+                                    <div class="group-member-pseudo">${escapeHtml(m.pseudo)}</div>
+                                    <div class="group-member-rank" style="color: ${m.rank.color}">${m.rank.name}</div>
+                                </div>
+                                <div class="group-member-score">${m.todayScore}%</div>
+                            </div>
+                        `).join('')}
+                    </div>
+
+                    ${renderChatSection(groupId)}
+                </div>
+
+                <div class="group-tab-content" id="groupTabLeaderboard" style="display: none;">
+                    <div id="leaderboardContent">
+                        <div class="leaderboard-loading">
+                            <div class="leaderboard-loading-icon">⏳</div>
+                            <div>Chargement...</div>
+                        </div>
+                    </div>
+                </div>
 
                 <div class="group-detail-actions">
                     ${isCreator ? `
@@ -480,7 +498,38 @@ export async function openGroupDetail(groupId) {
     }
 }
 
+// ============================================================
+// TAB SWITCHING (Chat / Leaderboard)
+// ============================================================
+
+let leaderboardLoaded = false;
+
+export function switchGroupTab(tab, groupId) {
+    const chatPanel = document.getElementById('groupTabChat');
+    const leaderboardPanel = document.getElementById('groupTabLeaderboard');
+
+    // Update tab buttons
+    document.querySelectorAll('.group-tab').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.tab === tab);
+    });
+
+    if (tab === 'chat') {
+        if (chatPanel) chatPanel.style.display = 'block';
+        if (leaderboardPanel) leaderboardPanel.style.display = 'none';
+    } else {
+        if (chatPanel) chatPanel.style.display = 'none';
+        if (leaderboardPanel) leaderboardPanel.style.display = 'block';
+
+        // Load leaderboard only once per group detail open
+        if (!leaderboardLoaded) {
+            leaderboardLoaded = true;
+            renderLeaderboard(groupId);
+        }
+    }
+}
+
 export function closeGroupDetail() {
+    leaderboardLoaded = false;
     stopChatListener();
     const modal = document.getElementById('groupDetailModal');
     if (modal) modal.classList.remove('active');

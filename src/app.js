@@ -75,8 +75,9 @@ import {
     renderGroups, openCreateGroupModal, closeCreateGroupModal, createGroup,
     openJoinGroupModal, closeJoinGroupModal, joinGroup,
     openGroupDetail, closeGroupDetail, leaveGroup, deleteGroup, copyGroupCode,
-    renderProfileGroups
+    renderProfileGroups, switchGroupTab
 } from './pages/groups.js';
+import { renderLeaderboard } from './ui/leaderboard.js';
 
 // --- Auth functions (defined here because they use firebase globals) ---
 
@@ -680,7 +681,10 @@ Object.assign(window, {
     showQRModal, closeQRModal, downloadQR,
 
     // Chat
-    sendChatMessage, toggleRecording, cancelRecording, playAudio
+    sendChatMessage, toggleRecording, cancelRecording, playAudio,
+
+    // Leaderboard
+    switchGroupTab, renderLeaderboard
 });
 
 // --- Language cycling (exposed on window) ---

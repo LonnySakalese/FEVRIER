@@ -5683,6 +5683,263 @@ button:active, .modal-btn:active, .auth-btn:active, .settings-btn:active, .form-
 }
 
 /* ============================================================ */
+/* GROUP TABS (Chat / Classement)                               */
+/* ============================================================ */
+
+.group-tabs {
+    display: flex;
+    gap: 6px;
+    padding: 12px 0;
+    margin: 0;
+    background: transparent;
+}
+
+.group-tab {
+    flex: 1;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 50px;
+    background: var(--charcoal);
+    color: var(--accent-dim);
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    letter-spacing: 0.5px;
+    position: relative;
+    overflow: hidden;
+}
+
+.group-tab::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50px;
+    border: 2px solid transparent;
+    transition: border-color 0.25s ease;
+}
+
+.group-tab.active {
+    background: var(--accent);
+    color: var(--black);
+}
+
+.group-tab.active::before {
+    border-color: var(--accent);
+}
+
+.group-tab:not(.active):hover {
+    background: var(--steel);
+    color: var(--accent);
+}
+
+.group-tab:active {
+    transform: scale(0.97);
+}
+
+/* Light theme */
+[data-theme="light"] .group-tab {
+    background: var(--charcoal);
+    color: var(--accent-dim);
+}
+
+[data-theme="light"] .group-tab.active {
+    background: var(--accent);
+    color: var(--dark-gray);
+}
+
+[data-theme="light"] .group-tab:not(.active):hover {
+    background: var(--steel);
+}
+
+.group-tab-content {
+    min-height: 100px;
+}
+
+/* ============================================================ */
+/* LEADERBOARD - CLASSEMENT DES MEMBRES                         */
+/* ============================================================ */
+
+.leaderboard-loading,
+.leaderboard-empty {
+    text-align: center;
+    padding: 30px 15px;
+    color: var(--accent-dim);
+    font-size: 0.9rem;
+}
+
+.leaderboard-loading-icon,
+.leaderboard-empty-icon {
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+.leaderboard-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 8px 0;
+}
+
+.leaderboard-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 12px;
+    background: var(--charcoal);
+    border: 1px solid var(--steel);
+    border-radius: 14px;
+    transition: all 0.3s ease;
+    animation: fadeInUp 0.4s ease-out backwards;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Top 3 gradients */
+.leaderboard-top-1 {
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.15), rgba(255, 215, 0, 0.05));
+    border-color: rgba(255, 215, 0, 0.4);
+}
+
+.leaderboard-top-2 {
+    background: linear-gradient(135deg, rgba(192, 192, 192, 0.15), rgba(192, 192, 192, 0.05));
+    border-color: rgba(192, 192, 192, 0.4);
+}
+
+.leaderboard-top-3 {
+    background: linear-gradient(135deg, rgba(205, 127, 50, 0.15), rgba(205, 127, 50, 0.05));
+    border-color: rgba(205, 127, 50, 0.4);
+}
+
+/* Light theme top 3 */
+[data-theme="light"] .leaderboard-top-1 {
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.12), rgba(255, 215, 0, 0.04));
+    border-color: rgba(200, 170, 0, 0.5);
+}
+
+[data-theme="light"] .leaderboard-top-2 {
+    background: linear-gradient(135deg, rgba(160, 160, 160, 0.12), rgba(160, 160, 160, 0.04));
+    border-color: rgba(160, 160, 160, 0.5);
+}
+
+[data-theme="light"] .leaderboard-top-3 {
+    background: linear-gradient(135deg, rgba(205, 127, 50, 0.12), rgba(205, 127, 50, 0.04));
+    border-color: rgba(180, 110, 40, 0.5);
+}
+
+/* Highlight current user */
+.leaderboard-me {
+    border-color: var(--accent-green) !important;
+    box-shadow: 0 0 12px rgba(25, 230, 57, 0.15);
+}
+
+[data-theme="light"] .leaderboard-me {
+    border-color: var(--accent-green) !important;
+    box-shadow: 0 0 12px rgba(25, 135, 84, 0.15);
+}
+
+.leaderboard-position {
+    font-size: 1.2rem;
+    font-weight: 900;
+    min-width: 32px;
+    text-align: center;
+    color: var(--accent);
+}
+
+.leaderboard-avatar {
+    font-size: 1.6rem;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.leaderboard-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.leaderboard-pseudo {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.leaderboard-you {
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: var(--accent-green);
+}
+
+.leaderboard-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 6px;
+}
+
+.leaderboard-rank {
+    font-size: 0.65rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.leaderboard-streak {
+    font-size: 0.7rem;
+    color: var(--accent-dim);
+}
+
+.leaderboard-bar {
+    width: 100%;
+    height: 6px;
+    background: var(--steel);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.leaderboard-bar-fill {
+    height: 100%;
+    border-radius: 3px;
+    background: var(--accent);
+    transition: width 0.6s ease;
+}
+
+.leaderboard-bar-fill.leaderboard-top-1 {
+    background: linear-gradient(90deg, #FFD700, #FFC107);
+}
+
+.leaderboard-bar-fill.leaderboard-top-2 {
+    background: linear-gradient(90deg, #C0C0C0, #A8A8A8);
+}
+
+.leaderboard-bar-fill.leaderboard-top-3 {
+    background: linear-gradient(90deg, #CD7F32, #B8860B);
+}
+
+.leaderboard-score {
+    font-size: 1.1rem;
+    font-weight: 900;
+    color: var(--accent);
+    min-width: 48px;
+    text-align: right;
+}
+
+.leaderboard-footer {
+    text-align: center;
+    font-size: 0.7rem;
+    color: var(--accent-dark);
+    padding: 12px 0 4px;
+    font-style: italic;
+}
+
+/* ============================================================ */
 /* CHAT - MESSAGERIE GROUPE                                     */
 /* ============================================================ */
 
