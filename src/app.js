@@ -46,10 +46,8 @@ import { exportDataCSV } from './ui/export.js';
 import { showQRModal, closeQRModal, downloadQR } from './ui/qrcode.js';
 import { sendChatMessage, toggleRecording, cancelRecording, playAudio } from './ui/chat.js';
 import { openCreateChallengeModal, closeCreateChallengeModal, setChallengeDuration, createChallenge, renderChallenges, joinChallenge, leaveChallenge, openChallengeDetail } from './ui/challenges.js';
-import { renderAnalytics } from './ui/analytics.js';
+// Lazy-loaded on navigation: analytics, streak-display, heatmap
 import './ui/auto-messages.js';
-import { renderStreakDisplay } from './ui/streak-display.js';
-// import { renderHeatmap } from './ui/heatmap.js';
 import { showCelebration, celebrateNewRank, celebrateNewBadge } from './ui/celebration.js';
 import { showLevelUp } from './ui/levelup.js';
 import { initRewards, renderThemeSelector, checkNewThemeUnlocks, selectTheme } from './ui/rewards.js';
@@ -59,6 +57,7 @@ import {
     completeTutorial, toggleDemoCheckbox, restartTutorial,
     goToTutorialStep, setCurrentTutorialStep
 } from './ui/tutorial.js';
+import { needsOnboarding, startOnboarding } from './ui/onboarding.js';
 
 // --- Pages ---
 import {
@@ -551,12 +550,13 @@ function showPage(page, event) {
 
     if (page === 'stats') {
         updateStats();
-        renderAnalytics('analyticsContainer');
-        // renderHeatmap('heatmapContainer');
+        // Lazy-load analytics
+        import('./ui/analytics.js').then(m => m.renderAnalytics('analyticsContainer')).catch(e => console.warn('Analytics load error:', e));
     } else if (page === 'motivation') {
         displayRandomQuote();
     } else if (page === 'profile') {
-        renderStreakDisplay('streakDisplay');
+        // Lazy-load streak display
+        import('./ui/streak-display.js').then(m => m.renderStreakDisplay('streakDisplay')).catch(e => console.warn('Streak display load error:', e));
         renderProfile();
         renderProfileGroups();
         renderThemeSelector();
@@ -676,9 +676,6 @@ Object.assign(window, {
     // Celebration
     showCelebration, celebrateNewRank, celebrateNewBadge, showLevelUp,
 
-    // Streak Display
-    renderStreakDisplay,
-
     // Groups
     openCreateGroupModal, closeCreateGroupModal, createGroup,
     openJoinGroupModal, closeJoinGroupModal, joinGroup,
@@ -756,9 +753,14 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('deleteItem').style.display = 'none';
 
         showAppPage('today');
-        initializeApp();
-        hideSplash();
-        if (isFirstTimeUser()) { showTutorial(); }
+        initializeApp().then(() => {
+            hideSplash();
+            if (needsOnboarding()) {
+                startOnboarding();
+            } else if (isFirstTimeUser()) {
+                showTutorial();
+            }
+        });
     } else {
         showAppPage('auth');
 
@@ -785,7 +787,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 showAppPage('today');
                 await initializeApp();
                 hideSplash();
-                if (isFirstTimeUser()) { showTutorial(); }
+                if (needsOnboarding()) {
+                    startOnboarding();
+                } else if (isFirstTimeUser()) {
+                    showTutorial();
+                }
 
                 // Demander le pseudo si pas encore défini
                 if (checkNeedsPseudo()) {

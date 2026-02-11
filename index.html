@@ -24,6 +24,11 @@
     <!-- Permet à l'application web d'être ajoutée à l'écran d'accueil sur Android -->
 
     <!-- LIENS EXTERNES ET INTERNES -->
+    <!-- Preconnect for performance -->
+    <link rel="preconnect" href="https://www.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <link rel="preconnect" href="https://firestore.googleapis.com" crossorigin>
+
     <link rel="manifest" href="manifest.json">
     <!-- Lien vers le fichier manifest pour la PWA (Progressive Web App) -->
     <link rel="icon" type="image/svg+xml"
@@ -63,7 +68,7 @@
         </div>
     </div>
 
-    <!-- Onboarding Overlay -->
+    <!-- Onboarding Overlay (ancien - tutorial simple) -->
     <div class="onboarding-overlay" id="onboardingOverlay">
         <div class="onboarding-card">
             <button class="onboarding-skip" onclick="skipTutorial()">Passer</button>
@@ -78,6 +83,20 @@
             <div class="onboarding-buttons">
                 <button class="onboarding-btn secondary" id="onboardingPrev" onclick="prevTutorialStep()">← RETOUR</button>
                 <button class="onboarding-btn primary" id="onboardingNext" onclick="nextTutorialStep()">SUIVANT →</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Onboarding amélioré - Création d'habitudes -->
+    <div class="habit-onboarding-overlay" id="habitOnboardingOverlay">
+        <div class="onb-container">
+            <div class="onb-dots">
+                <span class="onb-dot active"></span>
+                <span class="onb-dot"></span>
+                <span class="onb-dot"></span>
+            </div>
+            <div class="onb-steps-container">
+                <!-- Contenu rendu dynamiquement par onboarding.js -->
             </div>
         </div>
     </div>
