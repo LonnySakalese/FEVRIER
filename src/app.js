@@ -47,6 +47,8 @@ import { showQRModal, closeQRModal, downloadQR } from './ui/qrcode.js';
 import { sendChatMessage, toggleRecording, cancelRecording, playAudio } from './ui/chat.js';
 import { openCreateChallengeModal, closeCreateChallengeModal, setChallengeDuration, createChallenge, renderChallenges, joinChallenge, leaveChallenge, openChallengeDetail } from './ui/challenges.js';
 import { renderAnalytics } from './ui/analytics.js';
+import './ui/auto-messages.js';
+import { renderStreakDisplay } from './ui/streak-display.js';
 // import { renderHeatmap } from './ui/heatmap.js';
 import { showCelebration, celebrateNewRank, celebrateNewBadge } from './ui/celebration.js';
 import { showLevelUp } from './ui/levelup.js';
@@ -554,6 +556,7 @@ function showPage(page, event) {
     } else if (page === 'motivation') {
         displayRandomQuote();
     } else if (page === 'profile') {
+        renderStreakDisplay('streakDisplay');
         renderProfile();
         renderProfileGroups();
         renderThemeSelector();
@@ -672,6 +675,9 @@ Object.assign(window, {
 
     // Celebration
     showCelebration, celebrateNewRank, celebrateNewBadge, showLevelUp,
+
+    // Streak Display
+    renderStreakDisplay,
 
     // Groups
     openCreateGroupModal, closeCreateGroupModal, createGroup,

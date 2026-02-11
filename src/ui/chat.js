@@ -5,9 +5,11 @@
 import { auth, db, isFirebaseConfigured } from '../config/firebase.js';
 import { appState } from '../services/state.js';
 import { showPopup } from '../ui/toast.js';
+import { playChatSound } from '../ui/sounds.js';
 
 let currentChatGroupId = null;
 let chatUnsubscribe = null;
+let previousMessageCount = 0;
 let mediaRecorder = null;
 let audioChunks = [];
 let isRecording = false;
@@ -116,6 +118,15 @@ function renderMessages(docs) {
         }
 
         const timeStr = ts.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+
+        // Message système : bulle centrée, pas de sender
+        if (msg.type === 'system') {
+            html += `<div class="chat-bubble chat-bubble-system">`;
+            html += `<div class="chat-bubble-text">${escapeHtml(msg.text || '')}</div>`;
+            html += `<div class="chat-bubble-time">${timeStr}</div>`;
+            html += `</div>`;
+            continue;
+        }
 
         html += `<div class="chat-bubble ${isMe ? 'chat-bubble-me' : 'chat-bubble-other'}">`;
 

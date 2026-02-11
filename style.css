@@ -6081,6 +6081,27 @@ button:active, .modal-btn:active, .auth-btn:active, .settings-btn:active, .form-
     color: var(--dark-gray);
 }
 
+.chat-bubble-system {
+    align-self: center;
+    background: transparent;
+    border: 1px solid var(--steel);
+    max-width: 90%;
+    text-align: center;
+    padding: 6px 16px;
+    border-radius: 20px;
+}
+
+.chat-bubble-system .chat-bubble-text {
+    font-style: italic;
+    font-size: 0.75rem;
+    color: var(--accent-dim);
+}
+
+.chat-bubble-system .chat-bubble-time {
+    text-align: center;
+    color: var(--accent-dark);
+}
+
 /* Audio message */
 .chat-audio-msg {
     display: flex;
@@ -6801,5 +6822,212 @@ button:active, .modal-btn:active, .auth-btn:active, .settings-btn:active, .form-
     
     .challenge-countdown-value {
         font-size: 1.5rem;
+    }
+}
+
+/* ============================================================
+   STREAK DISPLAY WIDGET - Flamme animée & compteur
+   ============================================================ */
+
+.streak-widget {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 25px 20px 20px;
+    margin: 15px;
+    border-radius: 16px;
+    background: var(--dark-gray);
+    border: 1px solid var(--steel);
+    position: relative;
+    overflow: hidden;
+}
+
+.streak-flame-container {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 8px;
+}
+
+.streak-flame {
+    animation: streakPulse 1.5s ease-in-out infinite, streakWobble 3s ease-in-out infinite;
+    filter: drop-shadow(0 0 8px rgba(255, 120, 0, 0.5));
+    z-index: 2;
+    line-height: 1;
+}
+
+.streak-count {
+    font-size: 3.2rem;
+    font-weight: 900;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 4px;
+}
+
+.streak-label {
+    font-size: 0.9rem;
+    color: var(--accent-dim);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+}
+
+.streak-tier-label {
+    margin-top: 8px;
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 3px 12px;
+    border-radius: 20px;
+    background: rgba(255, 215, 0, 0.15);
+    color: #FFD700;
+}
+
+.streak-best {
+    margin-top: 10px;
+    font-size: 0.78rem;
+    color: var(--accent-dark);
+}
+
+/* --- Tier: Zero (grisé) --- */
+.streak-tier-zero .streak-flame {
+    filter: grayscale(1) opacity(0.4);
+    animation: none;
+}
+.streak-tier-zero .streak-count {
+    color: var(--accent-dark);
+}
+.streak-tier-zero .streak-label {
+    color: var(--accent-dark);
+    font-style: italic;
+}
+
+/* --- Tier: Normal (orange chaud) --- */
+.streak-tier-normal .streak-flame {
+    filter: drop-shadow(0 0 10px rgba(255, 120, 0, 0.6));
+}
+
+/* --- Tier: Gold (>= 7 jours) --- */
+.streak-tier-gold .streak-flame {
+    filter: drop-shadow(0 0 14px rgba(255, 215, 0, 0.7)) drop-shadow(0 0 30px rgba(255, 180, 0, 0.3));
+}
+.streak-tier-gold .streak-count {
+    background: linear-gradient(135deg, #FFD700, #FFA500);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+.streak-tier-gold .streak-tier-label {
+    background: rgba(255, 215, 0, 0.15);
+    color: #FFD700;
+}
+
+/* --- Tier: Legendary (>= 30 jours, bleu) --- */
+.streak-tier-legendary .streak-flame {
+    filter: drop-shadow(0 0 16px rgba(80, 160, 255, 0.8)) drop-shadow(0 0 40px rgba(60, 130, 255, 0.4)) hue-rotate(200deg);
+}
+.streak-tier-legendary .streak-count {
+    background: linear-gradient(135deg, #50A0FF, #8040FF);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+.streak-tier-legendary .streak-tier-label {
+    background: rgba(80, 160, 255, 0.15);
+    color: #50A0FF;
+}
+
+/* Halo pour le tier legendary */
+.streak-halo {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(80, 160, 255, 0.25) 0%, transparent 70%);
+    animation: streakHalo 2s ease-in-out infinite;
+    z-index: 1;
+}
+
+/* Particules flottantes */
+.streak-particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: #FFD700;
+    opacity: 0;
+    animation: streakParticleFloat 2.5s ease-out infinite;
+    z-index: 1;
+}
+.streak-tier-legendary .streak-particle {
+    background: #50A0FF;
+}
+
+/* --- Animations --- */
+@keyframes streakPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.12); }
+}
+
+@keyframes streakWobble {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(3deg); }
+    75% { transform: rotate(-3deg); }
+}
+
+@keyframes streakHalo {
+    0%, 100% { transform: scale(1); opacity: 0.5; }
+    50% { transform: scale(1.3); opacity: 0.8; }
+}
+
+@keyframes streakParticleFloat {
+    0% { transform: translateY(0) scale(1); opacity: 0.8; }
+    100% { transform: translateY(-50px) scale(0); opacity: 0; }
+}
+
+/* --- Light theme adjustments --- */
+[data-theme="light"] .streak-widget {
+    background: var(--dark-gray);
+    border: 2px solid var(--steel);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+[data-theme="light"] .streak-tier-gold .streak-count {
+    background: linear-gradient(135deg, #B8860B, #D2691E);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+[data-theme="light"] .streak-tier-legendary .streak-count {
+    background: linear-gradient(135deg, #2060C0, #5030A0);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+[data-theme="light"] .streak-tier-label {
+    background: rgba(0, 0, 0, 0.06);
+}
+[data-theme="light"] .streak-tier-gold .streak-tier-label {
+    color: #B8860B;
+}
+[data-theme="light"] .streak-tier-legendary .streak-tier-label {
+    color: #2060C0;
+}
+
+/* Responsive */
+@media (max-width: 360px) {
+    .streak-widget {
+        padding: 20px 15px 15px;
+        margin: 10px;
+    }
+    .streak-count {
+        font-size: 2.5rem;
+    }
+    .streak-flame-container {
+        width: 65px;
+        height: 65px;
     }
 }

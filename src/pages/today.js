@@ -11,6 +11,9 @@ import { triggerConfetti } from '../ui/confetti.js';
 import { showPopup } from '../ui/toast.js';
 import { checkAndUnlockBadges } from '../core/badges.js';
 import { awardHabitXP, awardDayValidatedXP, checkClearFatigue } from '../core/xp.js';
+import { broadcastToUserGroups } from '../ui/auto-messages.js';
+import { db, isFirebaseConfigured } from '../config/firebase.js';
+import { appState } from '../services/state.js';
 
 // Met à jour le statut (coché/décoché) d'une habitude pour aujourd'hui
 function setHabitStatus(habitId, checked) {
@@ -266,6 +269,15 @@ export function confirmValidateDay() {
     renderHabits();
 
     checkAndUnlockBadges();
+
+    // Message auto dans les groupes
+    if (isFirebaseConfigured && appState.currentUser) {
+        const userId = appState.currentUser.uid;
+        db.collection('users').doc(userId).get().then(uDoc => {
+            const pseudo = uDoc.data()?.pseudo || 'Anonyme';
+            broadcastToUserGroups(userId, `${pseudo} a validé sa journée avec ${score}% 🔥`);
+        }).catch(err => console.error('Erreur auto-message validation:', err));
+    }
 }
 
 export function updateValidateButton() {

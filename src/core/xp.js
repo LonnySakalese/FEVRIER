@@ -5,8 +5,10 @@
 import { getData, saveData, getDateKey, getDayData } from '../services/storage.js';
 import { showPopup } from '../ui/toast.js';
 import { showLevelUp } from '../ui/levelup.js';
-import { habits } from '../services/state.js';
+import { habits, appState } from '../services/state.js';
 import { isHabitScheduledForDate } from './habits.js';
+import { broadcastToUserGroups } from '../ui/auto-messages.js';
+import { db, isFirebaseConfigured } from '../config/firebase.js';
 
 // Callback pour le level up (utilisé par rewards)
 let _onLevelUp = null;
@@ -97,6 +99,15 @@ export function addXP(amount, reason) {
     if (leveledUp) {
         showLevelUp(oldLevel, newLevel);
         if (_onLevelUp) _onLevelUp(newLevel);
+
+        // Message auto dans les groupes
+        if (isFirebaseConfigured && appState.currentUser) {
+            const userId = appState.currentUser.uid;
+            db.collection('users').doc(userId).get().then(uDoc => {
+                const pseudo = uDoc.data()?.pseudo || 'Anonyme';
+                broadcastToUserGroups(userId, `${pseudo} a atteint le niveau ${newLevel} ⚡`);
+            }).catch(err => console.error('Erreur auto-message level up:', err));
+        }
     }
 
     return { newTotal: data.xp.total, leveledUp, newLevel };
