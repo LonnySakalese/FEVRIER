@@ -1,0 +1,1020 @@
+/* ============================================================ */
+/* RESPONSIVE.CSS — Complete responsive layer                   */
+/* Mobile-first + Tablet + Desktop                              */
+/* ============================================================ */
+
+/* ============================================================ */
+/* GLOBAL — Prevent horizontal overflow everywhere              */
+/* ============================================================ */
+
+html, body {
+    overflow-x: hidden;
+    max-width: 100vw;
+}
+
+*, *::before, *::after {
+    max-width: 100%;
+}
+
+/* Exceptions for elements that need overflow */
+canvas, svg, .chart-wrapper canvas, .heatmap-grid {
+    max-width: none;
+}
+
+img, video, iframe {
+    max-width: 100%;
+    height: auto;
+}
+
+/* ============================================================ */
+/* BASE — Touch-friendly & text readability on all screens      */
+/* ============================================================ */
+
+/* Ensure minimum touch targets (44px) */
+.nav-item,
+.habit-checkbox,
+.modal-btn,
+.auth-btn,
+.settings-btn,
+.form-btn,
+.onboarding-btn,
+.calendar-nav-btn,
+.category-filter,
+.category-option,
+.day-checkbox,
+.group-action-btn,
+.challenge-duration-btn,
+.install-banner-btn,
+.validate-day-btn,
+.share-day-btn,
+.profile-edit-btn,
+.profile-change-avatar-btn,
+.group-tab,
+.chat-send-btn,
+.chat-mic-btn {
+    min-height: 44px;
+}
+
+/* Minimum font size for inputs (prevents iOS zoom) */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="date"],
+input[type="time"],
+textarea,
+select,
+.chat-text-input {
+    font-size: max(16px, 1rem);
+}
+
+/* ============================================================ */
+/* MOBILE SMALL (≤360px)                                        */
+/* ============================================================ */
+
+@media (max-width: 360px) {
+    /* Header */
+    .header {
+        padding: 12px 10px;
+    }
+    .header h1 {
+        font-size: 1.1rem;
+        letter-spacing: 2px;
+    }
+    .header .quote {
+        font-size: 0.65rem;
+    }
+
+    /* Date nav */
+    .date-nav {
+        gap: 8px;
+        padding: 10px 8px;
+    }
+    .date-nav .current-date {
+        font-size: 0.85rem;
+        min-width: 120px;
+    }
+    .date-nav button {
+        padding: 8px 12px;
+        font-size: 1rem;
+    }
+
+    /* Habits list */
+    .habit-item {
+        padding: 12px 8px;
+        gap: 10px;
+    }
+    .habit-checkbox {
+        width: 40px;
+        height: 40px;
+    }
+    .habit-checkbox.checked::after {
+        font-size: 1.2rem;
+    }
+    .habit-name {
+        font-size: 0.85rem;
+    }
+    .habit-description {
+        font-size: 0.7rem;
+    }
+    .habit-streak {
+        font-size: 0.6rem;
+    }
+    .habit-progress .percent {
+        font-size: 0.85rem;
+    }
+
+    /* Section titles */
+    .section-title {
+        padding: 10px;
+        font-size: 0.75rem;
+        letter-spacing: 1px;
+    }
+
+    /* Category filters */
+    .category-filters {
+        padding: 0 8px 8px;
+        gap: 4px;
+    }
+    .category-filter {
+        padding: 6px 10px;
+        font-size: 0.7rem;
+    }
+
+    /* XP bar */
+    .xp-bar-container {
+        margin: 0 8px 10px;
+        padding: 10px;
+    }
+    .xp-level {
+        font-size: 0.75rem;
+    }
+    .xp-amount {
+        font-size: 0.65rem;
+    }
+    .xp-info-rule {
+        font-size: 0.65rem;
+    }
+
+    /* Validate & share buttons */
+    .validate-day-btn,
+    .share-day-btn {
+        width: calc(100% - 16px);
+        margin-left: 8px;
+        margin-right: 8px;
+        padding: 14px 16px;
+        font-size: 0.85rem;
+        letter-spacing: 1px;
+    }
+
+    /* Bottom nav */
+    .bottom-nav .nav-item .icon {
+        font-size: 1.1rem;
+    }
+    .bottom-nav .nav-item .label {
+        font-size: 0.48rem;
+    }
+    .nav-item {
+        padding: 10px 3px;
+    }
+
+    /* Modals */
+    .modal-overlay {
+        padding: 10px;
+    }
+    .modal {
+        padding: 18px 14px;
+        border-radius: 12px;
+    }
+    .modal h3 {
+        font-size: 0.95rem;
+        margin-bottom: 14px;
+    }
+    .modal-large {
+        max-height: 80vh;
+    }
+    .modal-btn {
+        padding: 10px;
+        font-size: 0.85rem;
+    }
+
+    /* Auth */
+    .auth-container {
+        margin: 20px auto;
+        padding: 15px;
+    }
+    .auth-logo h1 {
+        font-size: 1.4rem;
+    }
+    .auth-logo svg {
+        width: 60px;
+        height: 60px;
+    }
+
+    /* Profile */
+    .profile-container {
+        padding: 15px 8px;
+    }
+    .profile-avatar {
+        font-size: 3rem;
+        width: 70px;
+        height: 70px;
+    }
+    .profile-field {
+        padding: 10px 8px;
+    }
+    .profile-label {
+        font-size: 0.65rem;
+        min-width: 50px;
+    }
+    .profile-value {
+        font-size: 0.85rem;
+    }
+
+    /* Groups */
+    .groups-container {
+        padding: 10px 8px;
+    }
+    .groups-header {
+        gap: 6px;
+    }
+    .group-action-btn {
+        font-size: 0.78rem;
+        padding: 10px 8px;
+    }
+    .group-card {
+        padding: 12px;
+    }
+    .group-card-name {
+        font-size: 0.9rem;
+    }
+
+    /* Settings */
+    .settings-container {
+        padding: 10px 8px;
+    }
+    .settings-item {
+        padding: 8px 10px;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+    .settings-item-label {
+        font-size: 0.75rem;
+    }
+    .settings-item-desc {
+        font-size: 0.6rem;
+    }
+    .settings-btn {
+        padding: 6px 12px;
+        font-size: 0.65rem;
+    }
+
+    /* Motivation card */
+    .motivation-card {
+        margin: 10px 8px;
+        padding: 15px;
+    }
+    .motivation-card .quote-text {
+        font-size: 0.8rem;
+    }
+
+    /* Onboarding */
+    .onboarding-card {
+        padding: 25px 15px;
+    }
+    .onboarding-icon {
+        font-size: 2.5rem;
+    }
+    .onboarding-title {
+        font-size: 1rem;
+    }
+    .onboarding-text {
+        font-size: 0.8rem;
+    }
+
+    /* Level up overlay */
+    .levelup-title {
+        font-size: 2rem;
+        letter-spacing: 3px;
+    }
+    .levelup-number {
+        font-size: 4rem;
+    }
+    .levelup-xp-bar {
+        width: 180px;
+    }
+
+    /* Avatar picker */
+    .avatar-picker-grid {
+        grid-template-columns: repeat(5, 1fr);
+        gap: 6px;
+    }
+    .avatar-option {
+        font-size: 1.4rem;
+    }
+
+    /* Form groups inside modals */
+    .form-group label {
+        font-size: 0.7rem;
+    }
+    .form-group input[type="text"],
+    .form-group textarea {
+        padding: 8px 10px;
+        font-size: 0.85rem;
+    }
+
+    /* Schedule picker */
+    .schedule-type-btn {
+        padding: 10px 8px;
+        font-size: 0.78rem;
+    }
+
+    /* Challenge cards */
+    .challenge-card {
+        padding: 12px;
+    }
+    .challenge-card-name {
+        font-size: 0.9rem;
+    }
+
+    /* Celebration */
+    .celebration-icon {
+        font-size: 3.5rem;
+    }
+    .celebration-title {
+        font-size: 1.5rem;
+    }
+    .celebration-subtitle {
+        font-size: 0.9rem;
+    }
+
+    /* Group tabs */
+    .group-tab {
+        font-size: 0.75rem;
+        padding: 8px 10px;
+    }
+
+    /* Install banner */
+    .install-banner {
+        padding: 12px;
+    }
+    .install-banner-title {
+        font-size: 0.85rem;
+    }
+    .install-banner-desc {
+        font-size: 0.7rem;
+    }
+}
+
+/* ============================================================ */
+/* MOBILE STANDARD (≤480px)                                     */
+/* ============================================================ */
+
+@media (max-width: 480px) {
+    /* Ensure no horizontal overflow */
+    .page {
+        overflow-x: hidden;
+    }
+
+    /* Manage habits modal - ensure form doesn't overflow */
+    .add-habit-section {
+        max-width: 100%;
+    }
+
+    .icon-picker,
+    .color-picker-grid,
+    .category-picker,
+    .schedule-type-picker,
+    .days-of-week-picker {
+        max-width: 100%;
+        overflow: hidden;
+    }
+
+    /* Habit management list items */
+    .habit-management-item {
+        overflow: hidden;
+    }
+    .habit-management-header {
+        flex-wrap: wrap;
+    }
+    .habit-management-description {
+        padding-left: 0;
+    }
+
+    /* Calendar modal */
+    .modal-calendar {
+        max-width: 100%;
+        width: 100%;
+        padding: 15px 10px;
+    }
+    .calendar-header h3 {
+        font-size: 0.95rem;
+    }
+
+    /* QR Modal */
+    #qrCanvas {
+        max-width: 200px !important;
+    }
+
+    /* Badges grid */
+    .badges-grid {
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+        gap: 8px;
+        padding: 8px;
+    }
+
+    /* Leaderboard */
+    .leaderboard-card {
+        padding: 10px 8px;
+        gap: 8px;
+    }
+    .leaderboard-position {
+        font-size: 1rem;
+        min-width: 24px;
+    }
+    .leaderboard-avatar {
+        font-size: 1.3rem;
+        width: 32px;
+        height: 32px;
+    }
+    .leaderboard-pseudo {
+        font-size: 0.8rem;
+    }
+    .leaderboard-score {
+        font-size: 0.95rem;
+        min-width: 36px;
+    }
+
+    /* Chat improvements */
+    .chat-bubble {
+        max-width: 85%;
+    }
+    .chat-reply-btn {
+        opacity: 0.5;
+        right: -24px;
+    }
+    .chat-bubble-me .chat-reply-btn {
+        left: -24px;
+    }
+    .chat-reply-quote-text {
+        max-width: 150px;
+    }
+
+    /* Recording bar */
+    .chat-recording-bar {
+        padding: 6px 10px;
+    }
+
+    /* Group detail */
+    .group-code-value {
+        font-size: 1.2rem;
+        letter-spacing: 3px;
+    }
+
+    /* Analytics - ensure full width */
+    .analytics-container {
+        overflow: hidden;
+    }
+
+    /* Heatmap scroll */
+    .heatmap-container {
+        padding: 10px 8px;
+    }
+
+    /* Reward themes */
+    .reward-themes-grid {
+        gap: 10px;
+        padding: 10px;
+    }
+}
+
+/* ============================================================ */
+/* TABLET (481px - 767px) — breathing room                      */
+/* ============================================================ */
+
+@media (min-width: 481px) and (max-width: 767px) {
+    /* Container centering */
+    #page-today,
+    #page-stats,
+    #page-motivation,
+    #page-profile,
+    #page-groups {
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    /* KPI grid can breathe */
+    .kpi-container {
+        gap: 12px;
+        padding: 15px 20px;
+    }
+    .kpi-card .value {
+        font-size: 1.6rem;
+    }
+
+    /* Stats grid */
+    .stats-grid {
+        gap: 12px;
+        padding: 15px 20px;
+    }
+    .stat-card .stat-value {
+        font-size: 2rem;
+    }
+
+    /* Weekly grid */
+    .weekly-grid {
+        gap: 6px;
+        padding: 15px 20px;
+    }
+
+    /* Badges */
+    .badges-grid {
+        grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    }
+
+    /* Chat more space */
+    .chat-messages {
+        height: 320px;
+    }
+
+    /* Reward themes 3-col */
+    .reward-themes-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* ============================================================ */
+/* TABLET-LANDSCAPE / SMALL DESKTOP (768px - 1024px)            */
+/* ============================================================ */
+
+@media (min-width: 768px) and (max-width: 1024px) {
+    /* App container */
+    #page-today,
+    #page-stats,
+    #page-motivation,
+    #page-profile,
+    #page-groups,
+    #page-auth {
+        max-width: 700px;
+        margin: 0 auto;
+    }
+
+    /* KPI — more breathing room */
+    .kpi-container {
+        gap: 15px;
+        padding: 20px 25px;
+    }
+    .kpi-card {
+        padding: 16px 12px;
+    }
+    .kpi-card .value {
+        font-size: 1.8rem;
+    }
+
+    /* Stats grid — could be 4 cols */
+    .stats-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 12px;
+        padding: 20px 25px;
+    }
+
+    /* Weekly grid */
+    .weekly-grid {
+        gap: 8px;
+        padding: 20px 25px;
+    }
+    .weekly-day {
+        padding: 12px 8px;
+    }
+    .weekly-day .day-name {
+        font-size: 0.7rem;
+    }
+    .weekly-day .day-score {
+        font-size: 1.1rem;
+    }
+
+    /* Charts */
+    .chart-container {
+        padding: 20px 25px;
+    }
+
+    /* Badges — 4-col */
+    .badges-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 14px;
+        padding: 20px;
+    }
+
+    /* Reward themes — 3-col */
+    .reward-themes-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 14px;
+        padding: 20px;
+    }
+
+    /* Chat bigger */
+    .chat-messages {
+        height: 380px;
+    }
+
+    /* Modals */
+    .modal {
+        max-width: 480px;
+    }
+    .modal-large {
+        max-width: 560px;
+    }
+
+    /* Groups layout */
+    .groups-container {
+        padding: 20px 25px;
+    }
+
+    /* Settings */
+    .settings-container {
+        padding: 20px 25px;
+    }
+}
+
+/* ============================================================ */
+/* DESKTOP (≥768px) — Full experience                           */
+/* ============================================================ */
+
+@media (min-width: 768px) {
+    /* ---- App Container ---- */
+    #page-today,
+    #page-stats,
+    #page-motivation,
+    #page-profile,
+    #page-groups {
+        max-width: 640px;
+        margin: 0 auto;
+        padding: 0 20px;
+    }
+
+    #page-auth {
+        max-width: 500px;
+        margin: 0 auto;
+    }
+
+    /* ---- Header ---- */
+    .header {
+        padding: 20px 30px;
+    }
+
+    /* ---- Modals — centered, max-width ---- */
+    .modal {
+        max-width: 500px;
+        border-radius: 16px;
+    }
+    .modal-large {
+        max-width: 580px;
+    }
+    .modal-calendar {
+        max-width: 560px;
+    }
+
+    /* ---- Bottom nav stays but gets cleaner ---- */
+    .bottom-nav {
+        max-width: 640px;
+        margin: 0 auto;
+        left: 50%;
+        transform: translateX(-50%);
+        border-radius: 20px 20px 0 0;
+        border: 1px solid var(--steel);
+        border-bottom: none;
+    }
+    .nav-item {
+        padding: 12px 10px;
+    }
+    .nav-item .label {
+        font-size: 0.65rem;
+    }
+    .nav-item .icon {
+        font-size: 1.4rem;
+    }
+
+    /* ---- Hover states for desktop (cursor pointer, effects) ---- */
+    .habit-item:hover {
+        background: var(--charcoal);
+        border-left-color: var(--accent-dim);
+        cursor: pointer;
+    }
+    .habit-item.completed:hover {
+        background: linear-gradient(90deg, rgba(46, 204, 113, 0.2), rgba(46, 204, 113, 0.08), transparent);
+    }
+
+    .habit-checkbox:hover {
+        transform: scale(1.15);
+        border-color: var(--accent);
+        cursor: pointer;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .kpi-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .group-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .badge-card.unlocked:hover {
+        transform: translateY(-5px) scale(1.03);
+    }
+
+    .settings-category:hover {
+        border-color: var(--accent-dim);
+    }
+
+    .category-filter:hover {
+        background: var(--steel);
+        cursor: pointer;
+    }
+
+    .date-nav button:hover {
+        background: var(--steel);
+        border-color: var(--accent-dim);
+        cursor: pointer;
+    }
+
+    .nav-item:hover {
+        background: var(--charcoal);
+        cursor: pointer;
+    }
+
+    .validate-day-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 30px rgba(25, 230, 57, 0.4);
+        cursor: pointer;
+    }
+
+    .share-day-btn:hover {
+        cursor: pointer;
+    }
+
+    .auth-btn:hover {
+        opacity: 0.9;
+        cursor: pointer;
+    }
+
+    .auth-tab:hover {
+        background: var(--steel);
+        cursor: pointer;
+    }
+
+    .modal-btn:hover {
+        opacity: 0.9;
+        cursor: pointer;
+    }
+
+    .group-tab:hover {
+        cursor: pointer;
+    }
+
+    .challenge-card:hover {
+        cursor: pointer;
+    }
+
+    .onb-template-card:hover {
+        cursor: pointer;
+    }
+
+    .reward-theme-card:hover {
+        cursor: pointer;
+    }
+
+    .profile-edit-btn:hover {
+        cursor: pointer;
+        opacity: 1;
+    }
+
+    .profile-change-avatar-btn:hover {
+        cursor: pointer;
+    }
+
+    .avatar-option:hover {
+        cursor: pointer;
+    }
+
+    /* ---- Chat — more space on desktop ---- */
+    .chat-messages {
+        height: 400px;
+    }
+
+    .chat-bubble {
+        max-width: 70%;
+    }
+
+    .chat-text-input {
+        padding: 12px 20px;
+        font-size: 0.9rem;
+    }
+
+    /* Chat reply button visible on hover */
+    .chat-reply-btn {
+        opacity: 0;
+    }
+    .chat-bubble:hover .chat-reply-btn {
+        opacity: 1;
+    }
+
+    /* ---- Weekly grid — bigger cells ---- */
+    .weekly-grid {
+        gap: 8px;
+    }
+    .weekly-day {
+        padding: 14px 8px;
+    }
+
+    /* ---- Charts — better size ---- */
+    canvas {
+        max-height: 250px;
+    }
+
+    /* ---- Onboarding — centered & limited width ---- */
+    .onboarding-card {
+        max-width: 450px;
+    }
+    .onb-container {
+        max-width: 520px;
+    }
+
+    /* ---- Level up — scale nicely ---- */
+    .levelup-title {
+        font-size: 3.5rem;
+    }
+    .levelup-number {
+        font-size: 7rem;
+    }
+    .levelup-xp-bar {
+        width: 280px;
+    }
+
+    /* ---- Install banner — centered ---- */
+    .install-banner {
+        max-width: 640px;
+        left: 50%;
+        transform: translateX(-50%) translateY(100%);
+        border-radius: 16px 16px 0 0;
+    }
+    .install-banner.visible {
+        transform: translateX(-50%) translateY(0);
+    }
+
+    /* ---- Avatar picker — 8 col on desktop ---- */
+    .avatar-picker-grid {
+        grid-template-columns: repeat(8, 1fr);
+    }
+
+    /* ---- Reward themes — 3 cols ---- */
+    .reward-themes-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    /* ---- Onboarding templates — can go 3 cols ---- */
+    .onb-templates-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    /* ---- Streak widget max width ---- */
+    .streak-widget {
+        max-width: 400px;
+        margin: 15px auto;
+    }
+
+    /* ---- Motivation card more padding ---- */
+    .motivation-card {
+        margin: 20px 0;
+        padding: 25px 30px;
+    }
+
+    /* ---- Auth — nicer spacing ---- */
+    .auth-container {
+        margin: 80px auto;
+        padding: 40px;
+        background: var(--dark-gray);
+        border: 1px solid var(--steel);
+        border-radius: 16px;
+    }
+
+    /* ---- Calendar — bigger cells ---- */
+    .calendar-day {
+        font-size: 0.8rem;
+    }
+    .calendar-days-grid {
+        gap: 5px;
+    }
+
+    /* ---- Toast — wider on desktop ---- */
+    .toast-container {
+        max-width: 500px;
+    }
+
+    /* ---- Splash screen — bigger logo ---- */
+    .splash-logo {
+        width: 100px;
+        height: 100px;
+    }
+    .splash-title {
+        font-size: 1.8rem;
+    }
+}
+
+/* ============================================================ */
+/* LARGE DESKTOP (≥1024px) — Even more space                    */
+/* ============================================================ */
+
+@media (min-width: 1024px) {
+    /* Bigger app container */
+    #page-today,
+    #page-stats,
+    #page-motivation,
+    #page-profile,
+    #page-groups {
+        max-width: 680px;
+    }
+
+    /* Stats grid stays 4 cols */
+    .stats-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 15px;
+    }
+
+    /* Badges — 5-col possible */
+    .badges-grid {
+        grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+        gap: 15px;
+    }
+
+    /* Reward themes — 4 cols */
+    .reward-themes-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    /* Bottom nav max width */
+    .bottom-nav {
+        max-width: 680px;
+    }
+}
+
+/* ============================================================ */
+/* LANDING PAGE — Desktop responsive                            */
+/* ============================================================ */
+
+@media (min-width: 768px) {
+    /* Landing — features side by side, already handled in landing.html */
+    /* But ensure sections have more padding */
+}
+
+@media (min-width: 1024px) {
+    /* Landing page wider sections */
+}
+
+/* ============================================================ */
+/* LIGHT THEME — Desktop hover fixes                            */
+/* ============================================================ */
+
+@media (min-width: 768px) {
+    [data-theme="light"] .habit-item:hover {
+        background: var(--charcoal);
+    }
+    [data-theme="light"] .habit-item.completed:hover {
+        background: linear-gradient(90deg, rgba(46, 204, 113, 0.2), rgba(46, 204, 113, 0.08), transparent);
+    }
+    [data-theme="light"] .stat-card:hover,
+    [data-theme="light"] .kpi-card:hover {
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+    }
+    [data-theme="light"] .auth-container {
+        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+    }
+    [data-theme="light"] .bottom-nav {
+        box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.06);
+    }
+}
+
+/* ============================================================ */
+/* PRINT — Hide non-essential elements                          */
+/* ============================================================ */
+
+@media print {
+    .bottom-nav,
+    .header,
+    .install-banner,
+    .splash-screen,
+    .toast-container,
+    .modal-overlay,
+    .celebration-overlay,
+    .levelup-overlay {
+        display: none !important;
+    }
+    body {
+        padding-bottom: 0;
+    }
+}

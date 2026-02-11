@@ -364,6 +364,28 @@
             color: #aaa;
             line-height: 1.5;
         }
+
+        /* Responsive */
+        html, body {
+            overflow-x: hidden;
+            max-width: 100vw;
+        }
+
+        @media (max-width: 360px) {
+            body { padding: 12px; }
+            h1 { font-size: 1.3rem; }
+            .step { padding: 14px; }
+            .step-text { font-size: 0.85rem; }
+        }
+
+        @media (min-width: 768px) {
+            body {
+                max-width: 600px;
+                margin: 0 auto;
+                padding: 40px 30px;
+            }
+            h1 { font-size: 1.8rem; }
+        }
     </style>
 </head>
 <body>

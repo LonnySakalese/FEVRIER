@@ -799,6 +799,210 @@
             flex-shrink: 0;
         }
 
+        /* ============================================================ */
+        /* LANDING RESPONSIVE — Mobile/Tablet/Desktop                   */
+        /* ============================================================ */
+
+        /* Prevent horizontal overflow */
+        html, body {
+            overflow-x: hidden;
+            max-width: 100vw;
+        }
+
+        /* Small mobile (≤360px) */
+        @media (max-width: 360px) {
+            .hero {
+                padding: 30px 15px;
+            }
+            .hero-logo {
+                width: 60px;
+                height: 60px;
+            }
+            .cta-btn {
+                padding: 14px 28px;
+                font-size: 0.85rem;
+            }
+            .feature-card {
+                padding: 20px 16px;
+            }
+            .feature-title {
+                font-size: 0.9rem;
+            }
+            .feature-desc {
+                font-size: 0.82rem;
+            }
+            section {
+                padding: 50px 15px;
+            }
+            .section-heading {
+                font-size: 1.2rem;
+                letter-spacing: 2px;
+                margin-bottom: 32px;
+            }
+            .phone-frame,
+            .auto-phone-frame {
+                max-width: 260px;
+            }
+            .testimonial-card {
+                padding: 20px 16px;
+            }
+            .testimonial-name {
+                font-size: 0.85rem;
+            }
+            .testimonial-text {
+                font-size: 0.82rem;
+            }
+            .quote-section {
+                padding: 60px 15px;
+            }
+            .quote-text {
+                font-size: 1rem;
+            }
+            .step-text {
+                font-size: 0.9rem;
+            }
+            .step-number {
+                width: 40px;
+                height: 40px;
+                font-size: 0.95rem;
+            }
+            .platform-item {
+                padding: 18px 12px;
+            }
+            .community-counter {
+                font-size: 2rem;
+            }
+        }
+
+        /* Standard mobile (≤480px) */
+        @media (max-width: 480px) {
+            .hero {
+                min-height: 90vh;
+            }
+            .phone-frame {
+                max-width: 280px;
+            }
+        }
+
+        /* Tablet (768px+) */
+        @media (min-width: 768px) {
+            section {
+                padding: 100px 40px;
+            }
+            .hero {
+                padding: 60px 40px;
+            }
+            .features-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 28px;
+            }
+            .testimonials-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 24px;
+            }
+            .stats-row {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 24px;
+            }
+            .steps {
+                max-width: 600px;
+            }
+
+            /* Hover states */
+            .feature-card:hover {
+                cursor: pointer;
+            }
+            .testimonial-card:hover {
+                cursor: pointer;
+            }
+            .platform-item:hover {
+                cursor: pointer;
+            }
+            .cta-btn:hover {
+                cursor: pointer;
+            }
+        }
+
+        /* Desktop (1024px+) */
+        @media (min-width: 1024px) {
+            section {
+                padding: 120px 40px;
+                max-width: 1100px;
+            }
+            .hero {
+                padding: 80px 60px;
+            }
+            .hero-subtext {
+                max-width: 560px;
+            }
+            .features-grid {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 20px;
+            }
+            .testimonials-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 28px;
+            }
+            .platforms-grid {
+                grid-template-columns: repeat(4, 1fr);
+                max-width: 800px;
+            }
+
+            /* Steps side by side text */
+            .steps {
+                max-width: 700px;
+            }
+            .step {
+                gap: 24px;
+            }
+
+            /* Phone demo bigger */
+            .phone-frame {
+                max-width: 360px;
+            }
+            .auto-phone-frame {
+                max-width: 320px;
+            }
+
+            /* Quote wider */
+            .quote-text {
+                max-width: 750px;
+            }
+
+            .community-section {
+                max-width: 1100px;
+            }
+
+            .available-section {
+                max-width: 1100px;
+            }
+
+            .demo-section {
+                max-width: 1100px;
+            }
+
+            .auto-demo-section {
+                max-width: 1100px;
+            }
+
+            .final-cta {
+                padding: 100px 40px 120px;
+            }
+        }
+
+        /* Large desktop (1200px+) — max comfort */
+        @media (min-width: 1200px) {
+            .features-grid {
+                gap: 24px;
+            }
+            .feature-card {
+                padding: 32px 28px;
+            }
+            .testimonial-card {
+                padding: 32px 28px;
+            }
+        }
+
         /* ===== AUTO DEMO SECTION (Animated Phone Mockup) ===== */
         .auto-demo-section {
             max-width: 900px;

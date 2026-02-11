@@ -7861,3 +7861,333 @@ button:active, .modal-btn:active, .auth-btn:active, .settings-btn:active, .form-
         height: 65px;
     }
 }
+
+/* ============================================================ */
+/* GUIDED TOUR - Tour guidé interactif                          */
+/* ============================================================ */
+
+/* Overlay sombre avec cutout */
+.gt-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.75);
+    z-index: 99990;
+    transition: clip-path 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+    pointer-events: auto;
+}
+
+.gt-overlay-final {
+    background: rgba(0, 0, 0, 0.85);
+    clip-path: none !important;
+}
+
+.gt-overlay-exit {
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+/* Élément highlighté */
+.gt-highlighted {
+    position: relative !important;
+    z-index: 99991 !important;
+    border-radius: 12px;
+    animation: gt-glow-pulse 2s ease-in-out infinite;
+    pointer-events: auto;
+}
+
+@keyframes gt-glow-pulse {
+    0%, 100% {
+        box-shadow: 0 0 0 3px rgba(245, 245, 240, 0.4), 0 0 20px rgba(245, 245, 240, 0.15);
+    }
+    50% {
+        box-shadow: 0 0 0 5px rgba(245, 245, 240, 0.6), 0 0 30px rgba(245, 245, 240, 0.25);
+    }
+}
+
+[data-theme="light"] .gt-highlighted {
+    animation: gt-glow-pulse-light 2s ease-in-out infinite;
+}
+
+@keyframes gt-glow-pulse-light {
+    0%, 100% {
+        box-shadow: 0 0 0 3px rgba(33, 37, 41, 0.3), 0 0 20px rgba(33, 37, 41, 0.1);
+    }
+    50% {
+        box-shadow: 0 0 0 5px rgba(33, 37, 41, 0.5), 0 0 30px rgba(33, 37, 41, 0.2);
+    }
+}
+
+/* Tooltip */
+.gt-tooltip {
+    position: absolute;
+    z-index: 99992;
+    background: var(--dark-gray);
+    border: 1.5px solid var(--steel);
+    border-radius: 16px;
+    padding: 20px;
+    max-width: 320px;
+    width: calc(100vw - 32px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+    opacity: 0;
+    transform: translateY(10px);
+    pointer-events: auto;
+}
+
+.gt-tooltip-enter {
+    animation: gt-tooltip-in 0.35s ease forwards;
+}
+
+.gt-tooltip-exit {
+    animation: gt-tooltip-out 0.3s ease forwards;
+}
+
+@keyframes gt-tooltip-in {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes gt-tooltip-out {
+    from { opacity: 1; transform: translateY(0); }
+    to { opacity: 0; transform: translateY(-10px); }
+}
+
+/* Tooltip final centré */
+.gt-tooltip-final {
+    text-align: center;
+    max-width: 360px;
+    padding: 30px 24px;
+}
+
+.gt-final-icon {
+    font-size: 3rem;
+    margin-bottom: 12px;
+    animation: gt-bounce 1s ease infinite;
+}
+
+@keyframes gt-bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
+
+/* Flèche du tooltip */
+.gt-tooltip-arrow {
+    position: absolute;
+    width: 0;
+    height: 0;
+    border: 8px solid transparent;
+}
+
+.gt-arrow-top {
+    top: -16px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-bottom-color: var(--steel);
+}
+
+.gt-arrow-top::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: -7px;
+    width: 0;
+    height: 0;
+    border: 7px solid transparent;
+    border-bottom-color: var(--dark-gray);
+}
+
+.gt-arrow-bottom {
+    bottom: -16px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-top-color: var(--steel);
+}
+
+.gt-arrow-bottom::after {
+    content: '';
+    position: absolute;
+    bottom: 2px;
+    left: -7px;
+    width: 0;
+    height: 0;
+    border: 7px solid transparent;
+    border-top-color: var(--dark-gray);
+}
+
+/* Titre et texte du tooltip */
+.gt-tooltip-title {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: var(--accent);
+    margin-bottom: 8px;
+    letter-spacing: 0.5px;
+}
+
+.gt-tooltip-text {
+    font-size: 0.9rem;
+    color: var(--accent-dim);
+    line-height: 1.5;
+    margin-bottom: 16px;
+}
+
+/* Barre de progression */
+.gt-progress {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.gt-progress-bar {
+    flex: 1;
+    height: 4px;
+    background: var(--steel);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.gt-progress-fill {
+    height: 100%;
+    background: var(--accent-green);
+    border-radius: 4px;
+    transition: width 0.4s ease;
+}
+
+.gt-progress-text {
+    font-size: 0.75rem;
+    color: var(--accent-dark);
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+/* Boutons du tooltip */
+.gt-tooltip-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+.gt-btn-skip {
+    background: transparent;
+    border: 1px solid var(--steel);
+    color: var(--accent-dark);
+    padding: 8px 16px;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.gt-btn-skip:hover,
+.gt-btn-skip:active {
+    background: var(--charcoal);
+    color: var(--accent);
+}
+
+.gt-btn-next {
+    background: var(--accent);
+    border: none;
+    color: var(--black);
+    padding: 8px 20px;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.gt-btn-next:hover,
+.gt-btn-next:active {
+    opacity: 0.85;
+    transform: scale(1.02);
+}
+
+.gt-btn-finish {
+    background: var(--accent-green);
+    border: none;
+    color: #0A0A0A;
+    padding: 14px 32px;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 800;
+    cursor: pointer;
+    width: 100%;
+    transition: all 0.2s ease;
+    letter-spacing: 0.5px;
+}
+
+.gt-btn-finish:hover,
+.gt-btn-finish:active {
+    opacity: 0.9;
+    transform: scale(1.02);
+}
+
+/* Light theme ajustements */
+[data-theme="light"] .gt-overlay {
+    background: rgba(0, 0, 0, 0.6);
+}
+
+[data-theme="light"] .gt-tooltip {
+    background: #FFFFFF;
+    border-color: #CED4DA;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+}
+
+[data-theme="light"] .gt-arrow-top {
+    border-bottom-color: #CED4DA;
+}
+
+[data-theme="light"] .gt-arrow-top::after {
+    border-bottom-color: #FFFFFF;
+}
+
+[data-theme="light"] .gt-arrow-bottom {
+    border-top-color: #CED4DA;
+}
+
+[data-theme="light"] .gt-arrow-bottom::after {
+    border-top-color: #FFFFFF;
+}
+
+[data-theme="light"] .gt-btn-skip {
+    border-color: #CED4DA;
+}
+
+[data-theme="light"] .gt-btn-skip:hover {
+    background: #E9ECEF;
+}
+
+/* Responsive mobile */
+@media (max-width: 480px) {
+    .gt-tooltip {
+        max-width: calc(100vw - 24px);
+        padding: 16px;
+        border-radius: 14px;
+    }
+
+    .gt-tooltip-final {
+        max-width: calc(100vw - 32px);
+        padding: 24px 18px;
+    }
+
+    .gt-tooltip-title {
+        font-size: 1rem;
+    }
+
+    .gt-tooltip-text {
+        font-size: 0.85rem;
+    }
+
+    .gt-btn-next, .gt-btn-skip {
+        padding: 8px 14px;
+        font-size: 0.8rem;
+    }
+
+    .gt-btn-finish {
+        padding: 12px 24px;
+        font-size: 0.95rem;
+    }
+}

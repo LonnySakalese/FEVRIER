@@ -615,7 +615,7 @@ async function finishChallenge(groupId, challengeId, challengeData) {
             if (rankings[i].id === appState.currentUser?.uid) {
                 if (i < 3) {
                     addXP(xpRewards[i], `challenge_rank_${i + 1}`);
-                    showPopup(`🏆 Challenge terminé ! +${xpRewards[i]} XP (${i === 0 ? '1er' : i === 1 ? '2ème' : '3ème'})`, 'success', 5000);
+                    showPopup(`🏆 Challenge terminé ! +${xpRewards[i]} XP (${i === 0 ? '1er' : i === 1 ? '2e' : '3e'})`, 'success', 5000);
                 }
                 // Participation XP
                 addXP(50, 'challenge_participation');

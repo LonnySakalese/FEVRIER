@@ -58,6 +58,7 @@ import {
     goToTutorialStep, setCurrentTutorialStep
 } from './ui/tutorial.js';
 import { needsOnboarding, startOnboarding } from './ui/onboarding.js';
+import { needsGuidedTour, startGuidedTour, resetGuidedTour } from './ui/guided-tour.js';
 
 // --- Pages ---
 import {
@@ -594,7 +595,13 @@ setOnHabitsChanged(() => updateUI());
 setOnRanksChanged(() => updateStats());
 setOnLevelUp((newLevel) => checkNewThemeUnlocks(newLevel));
 setShowValidateDayModal(() => showValidateDayModal());
-window._onFilterChange = () => updateUI();
+window._onFilterChange = () => {
+    updateUI();
+    // After onboarding finishes, check if guided tour should start
+    if (!needsOnboarding() && needsGuidedTour()) {
+        setTimeout(() => startGuidedTour(), 600);
+    }
+};
 
 // --- Close modal on overlay click ---
 document.getElementById('manageHabitsModal')?.addEventListener('click', function (e) {
@@ -695,7 +702,10 @@ Object.assign(window, {
     renderChallenges, joinChallenge, leaveChallenge, openChallengeDetail,
 
     // Leaderboard
-    switchGroupTab, renderLeaderboard
+    switchGroupTab, renderLeaderboard,
+
+    // Guided Tour
+    startGuidedTour, resetGuidedTour
 });
 
 // --- Language cycling (exposed on window) ---
@@ -760,6 +770,8 @@ document.addEventListener('DOMContentLoaded', () => {
             hideSplash();
             if (needsOnboarding()) {
                 startOnboarding();
+            } else if (needsGuidedTour()) {
+                startGuidedTour();
             } else if (isFirstTimeUser()) {
                 showTutorial();
             }
@@ -792,6 +804,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 hideSplash();
                 if (needsOnboarding()) {
                     startOnboarding();
+                } else if (needsGuidedTour()) {
+                    startGuidedTour();
                 } else if (isFirstTimeUser()) {
                     showTutorial();
                 }
