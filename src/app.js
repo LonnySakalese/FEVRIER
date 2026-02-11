@@ -44,7 +44,7 @@ import { initInstallBanner, dismissInstallBanner, installApp } from './ui/instal
 import { shareDay } from './ui/share.js';
 import { exportDataCSV } from './ui/export.js';
 import { showQRModal, closeQRModal, downloadQR } from './ui/qrcode.js';
-import { sendChatMessage, toggleRecording, cancelRecording, playAudio } from './ui/chat.js';
+import { sendChatMessage, toggleRecording, cancelRecording, playAudio, handleTypingInput, showReactionPopup, selectReaction, toggleReaction, handleBubbleTouchStart, handleBubbleTouchEnd, handleBubbleTouchMove, setReplyTo, cancelReply, scrollToMessage, scrollChatToBottom } from './ui/chat.js';
 import { openCreateChallengeModal, closeCreateChallengeModal, setChallengeDuration, createChallenge, renderChallenges, joinChallenge, leaveChallenge, openChallengeDetail } from './ui/challenges.js';
 // Lazy-loaded on navigation: analytics, streak-display, heatmap
 import './ui/auto-messages.js';
@@ -686,6 +686,9 @@ Object.assign(window, {
 
     // Chat
     sendChatMessage, toggleRecording, cancelRecording, playAudio,
+    handleTypingInput, showReactionPopup, selectReaction, toggleReaction,
+    handleBubbleTouchStart, handleBubbleTouchEnd, handleBubbleTouchMove,
+    setReplyTo, cancelReply, scrollToMessage, scrollChatToBottom,
 
     // Challenges
     openCreateChallengeModal, closeCreateChallengeModal, setChallengeDuration, createChallenge,

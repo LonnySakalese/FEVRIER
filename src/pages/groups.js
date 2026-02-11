@@ -7,7 +7,7 @@ import { appState, habits } from '../services/state.js';
 import { showPopup } from '../ui/toast.js';
 import { ConfirmModal } from '../ui/modals.js';
 import { getRank } from '../core/ranks.js';
-import { renderChatSection, startChatListener, stopChatListener } from '../ui/chat.js';
+import { renderChatSection, startChatListener, stopChatListener, getUnreadCount } from '../ui/chat.js';
 import { renderChallenges } from '../ui/challenges.js';
 import { renderLeaderboard } from '../ui/leaderboard.js';
 
@@ -99,10 +99,19 @@ export async function renderGroups() {
                     .limit(5).get();
                 const avatars = membersSnap.docs.map(d => d.data().avatar || '👤');
 
+                // Get unread count
+                let unreadCount = 0;
+                try {
+                    unreadCount = await getUnreadCount(gId);
+                } catch (e) { /* ignore */ }
+
                 cardsHtml += `
                     <div class="group-card" onclick="openGroupDetail('${gId}')">
                         <div class="group-card-header">
-                            <div class="group-card-name">${escapeHtml(g.name)}</div>
+                            <div class="group-card-name">
+                                ${escapeHtml(g.name)}
+                                ${unreadCount > 0 ? `<span class="group-unread-badge">${unreadCount > 99 ? '99+' : unreadCount}</span>` : ''}
+                            </div>
                             <div class="group-card-count">${g.memberCount || 0} membre${(g.memberCount || 0) > 1 ? 's' : ''}</div>
                         </div>
                         <div class="group-card-avatars">
