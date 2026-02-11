@@ -450,6 +450,7 @@ export async function openGroupDetail(groupId) {
                 <div class="group-tabs">
                     <button class="group-tab active" data-tab="chat" onclick="switchGroupTab('chat', '${groupId}')">💬 Chat</button>
                     <button class="group-tab" data-tab="leaderboard" onclick="switchGroupTab('leaderboard', '${groupId}')">🏆 Classement</button>
+                    <button class="group-tab" data-tab="challenges" onclick="switchGroupTab('challenges', '${groupId}')">⚔️ Challenges</button>
                 </div>
 
                 <div class="group-tab-content" id="groupTabChat">
@@ -480,6 +481,13 @@ export async function openGroupDetail(groupId) {
                     </div>
                 </div>
 
+                <div class="group-tab-content" id="groupTabChallenges" style="display: none;">
+                    <button class="challenge-create-btn" onclick="openCreateChallengeModal('${groupId}')">➕ Créer un challenge</button>
+                    <div id="challengesTabContent">
+                        <div style="text-align:center; padding: 20px; color: var(--accent-dim);">⏳ Chargement...</div>
+                    </div>
+                </div>
+
                 <div class="group-detail-actions">
                     ${isCreator ? `
                         <button class="group-danger-btn" onclick="deleteGroup('${groupId}')">🗑️ Supprimer le groupe</button>
@@ -503,33 +511,43 @@ export async function openGroupDetail(groupId) {
 // ============================================================
 
 let leaderboardLoaded = false;
+let challengesLoaded = false;
 
 export function switchGroupTab(tab, groupId) {
     const chatPanel = document.getElementById('groupTabChat');
     const leaderboardPanel = document.getElementById('groupTabLeaderboard');
+    const challengesPanel = document.getElementById('groupTabChallenges');
 
     // Update tab buttons
     document.querySelectorAll('.group-tab').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.tab === tab);
     });
 
+    // Hide all
+    if (chatPanel) chatPanel.style.display = 'none';
+    if (leaderboardPanel) leaderboardPanel.style.display = 'none';
+    if (challengesPanel) challengesPanel.style.display = 'none';
+
     if (tab === 'chat') {
         if (chatPanel) chatPanel.style.display = 'block';
-        if (leaderboardPanel) leaderboardPanel.style.display = 'none';
-    } else {
-        if (chatPanel) chatPanel.style.display = 'none';
+    } else if (tab === 'leaderboard') {
         if (leaderboardPanel) leaderboardPanel.style.display = 'block';
-
-        // Load leaderboard only once per group detail open
         if (!leaderboardLoaded) {
             leaderboardLoaded = true;
             renderLeaderboard(groupId);
+        }
+    } else if (tab === 'challenges') {
+        if (challengesPanel) challengesPanel.style.display = 'block';
+        if (!challengesLoaded) {
+            challengesLoaded = true;
+            renderChallenges(groupId);
         }
     }
 }
 
 export function closeGroupDetail() {
     leaderboardLoaded = false;
+    challengesLoaded = false;
     stopChatListener();
     const modal = document.getElementById('groupDetailModal');
     if (modal) modal.classList.remove('active');

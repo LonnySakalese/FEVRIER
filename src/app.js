@@ -45,6 +45,7 @@ import { shareDay } from './ui/share.js';
 import { exportDataCSV } from './ui/export.js';
 import { showQRModal, closeQRModal, downloadQR } from './ui/qrcode.js';
 import { sendChatMessage, toggleRecording, cancelRecording, playAudio } from './ui/chat.js';
+import { openCreateChallengeModal, closeCreateChallengeModal, setChallengeDuration, createChallenge, renderChallenges, joinChallenge, leaveChallenge, openChallengeDetail } from './ui/challenges.js';
 import { renderAnalytics } from './ui/analytics.js';
 // import { renderHeatmap } from './ui/heatmap.js';
 import { showCelebration, celebrateNewRank, celebrateNewBadge } from './ui/celebration.js';
@@ -682,6 +683,10 @@ Object.assign(window, {
 
     // Chat
     sendChatMessage, toggleRecording, cancelRecording, playAudio,
+
+    // Challenges
+    openCreateChallengeModal, closeCreateChallengeModal, setChallengeDuration, createChallenge,
+    renderChallenges, joinChallenge, leaveChallenge, openChallengeDetail,
 
     // Leaderboard
     switchGroupTab, renderLeaderboard

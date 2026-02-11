@@ -907,6 +907,46 @@
         </div>
     </div>
 
+    <!-- Modal Créer un challenge -->
+    <div class="modal-overlay" id="createChallengeModal">
+        <div class="modal">
+            <h3>⚔️ CRÉER UN CHALLENGE</h3>
+            <div class="form-group">
+                <label>Nom du challenge</label>
+                <input type="text" id="challengeName" placeholder="Ex: 7 jours sans excuses" maxlength="40"
+                    style="width: 100%; padding: 12px; background: var(--charcoal); border: 1px solid var(--steel); border-radius: 8px; color: var(--accent); font-size: 1rem;">
+            </div>
+            <div class="form-group">
+                <label>Description <span class="optional-label">(optionnel)</span></label>
+                <textarea id="challengeDesc" placeholder="Décris le challenge" maxlength="150" rows="2"
+                    style="width: 100%; padding: 12px; background: var(--charcoal); border: 1px solid var(--steel); border-radius: 8px; color: var(--accent); font-size: 1rem; resize: none;"></textarea>
+            </div>
+            <div class="form-group">
+                <label>Durée</label>
+                <div class="challenge-duration-picker">
+                    <button type="button" class="challenge-duration-btn active" data-duration="7" onclick="setChallengeDuration(7)">7 jours</button>
+                    <button type="button" class="challenge-duration-btn" data-duration="14" onclick="setChallengeDuration(14)">14 jours</button>
+                    <button type="button" class="challenge-duration-btn" data-duration="30" onclick="setChallengeDuration(30)">30 jours</button>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Date de début</label>
+                <input type="date" id="challengeStartDate"
+                    style="width: 100%; padding: 12px; background: var(--charcoal); border: 1px solid var(--steel); border-radius: 8px; color: var(--accent); font-size: 1rem;">
+            </div>
+            <div class="form-group">
+                <label>Habitudes ciblées</label>
+                <div class="group-habits-select" id="challengeHabitsList">
+                    <!-- Rempli dynamiquement -->
+                </div>
+            </div>
+            <div class="modal-buttons">
+                <button class="modal-btn cancel" onclick="closeCreateChallengeModal()">Annuler</button>
+                <button class="modal-btn save" onclick="createChallenge()">Lancer ⚔️</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Modal QR Code d'invitation -->
     <div class="modal-overlay" id="qrCodeModal">
         <div class="modal">
