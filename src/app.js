@@ -597,9 +597,13 @@ setOnLevelUp((newLevel) => checkNewThemeUnlocks(newLevel));
 setShowValidateDayModal(() => showValidateDayModal());
 window._onFilterChange = () => {
     updateUI();
-    // After onboarding finishes, check if guided tour should start
-    if (!needsOnboarding() && needsGuidedTour()) {
-        setTimeout(() => startGuidedTour(), 600);
+    // After onboarding finishes: pseudo first, then guided tour
+    if (!needsOnboarding()) {
+        if (checkNeedsPseudo()) {
+            setTimeout(() => showSetupPseudoModal(), 600);
+        } else if (needsGuidedTour()) {
+            setTimeout(() => startGuidedTour(), 600);
+        }
     }
 };
 
@@ -705,7 +709,7 @@ Object.assign(window, {
     switchGroupTab, renderLeaderboard,
 
     // Guided Tour
-    startGuidedTour, resetGuidedTour
+    startGuidedTour, resetGuidedTour, needsGuidedTour
 });
 
 // --- Language cycling (exposed on window) ---
@@ -770,6 +774,8 @@ document.addEventListener('DOMContentLoaded', () => {
             hideSplash();
             if (needsOnboarding()) {
                 startOnboarding();
+            } else if (checkNeedsPseudo()) {
+                setTimeout(() => showSetupPseudoModal(), 500);
             } else if (needsGuidedTour()) {
                 startGuidedTour();
             } else if (isFirstTimeUser()) {
@@ -804,15 +810,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 hideSplash();
                 if (needsOnboarding()) {
                     startOnboarding();
+                } else if (checkNeedsPseudo()) {
+                    // Pseudo d'abord, tour guidé après
+                    setTimeout(() => showSetupPseudoModal(), 500);
                 } else if (needsGuidedTour()) {
                     startGuidedTour();
                 } else if (isFirstTimeUser()) {
                     showTutorial();
-                }
-
-                // Demander le pseudo si pas encore défini
-                if (checkNeedsPseudo()) {
-                    setTimeout(() => showSetupPseudoModal(), 500);
                 }
             } else {
                 appState.currentUser = null;

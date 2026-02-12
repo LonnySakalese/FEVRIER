@@ -265,4 +265,11 @@ export function saveSetupPseudo() {
 
     if (navigator.vibrate) navigator.vibrate([50, 50, 50]);
     showPopup(`Bienvenue ${pseudo} ! 🔥`, 'success');
+
+    // Lancer le tour guidé après le pseudo
+    setTimeout(() => {
+        if (typeof window.needsGuidedTour === 'function' && window.needsGuidedTour()) {
+            window.startGuidedTour();
+        }
+    }, 800);
 }
