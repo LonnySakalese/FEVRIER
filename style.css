@@ -5378,6 +5378,155 @@ button:active, .modal-btn:active, .auth-btn:active, .settings-btn:active, .form-
     line-height: 1.3;
 }
 
+/* Custom habit section */
+.onb-custom-section {
+    margin: 20px 0 24px;
+    padding: 0 5px;
+}
+
+.onb-custom-title {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+    text-align: center;
+}
+
+.onb-custom-input-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.onb-custom-emoji-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    border: 1px solid var(--steel);
+    background: var(--charcoal);
+    font-size: 1.3rem;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: all 0.2s;
+}
+
+.onb-custom-emoji-btn:active {
+    transform: scale(0.95);
+}
+
+.onb-custom-input {
+    flex: 1;
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: 1px solid var(--steel);
+    background: var(--charcoal);
+    color: var(--accent);
+    font-size: 0.9rem;
+    font-weight: 600;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.onb-custom-input:focus {
+    border-color: var(--accent-green);
+}
+
+.onb-custom-input::placeholder {
+    color: var(--accent-dim);
+    font-weight: 400;
+}
+
+.onb-custom-add-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    border: none;
+    background: var(--accent-green);
+    color: var(--black);
+    font-size: 1.2rem;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: all 0.2s;
+}
+
+.onb-custom-add-btn:active {
+    transform: scale(0.9);
+}
+
+.onb-custom-add-btn.added {
+    background: var(--accent-green);
+}
+
+.onb-emoji-picker {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 10px;
+    margin-top: 8px;
+    background: var(--charcoal);
+    border: 1px solid var(--steel);
+    border-radius: 10px;
+    justify-content: center;
+}
+
+.onb-emoji-option {
+    width: 38px;
+    height: 38px;
+    border: none;
+    background: var(--dark-gray);
+    border-radius: 8px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+
+.onb-emoji-option:active {
+    transform: scale(0.9);
+    background: var(--accent-green);
+}
+
+.onb-custom-added {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 10px;
+    padding: 10px 14px;
+    background: rgba(25, 230, 57, 0.1);
+    border: 1px solid rgba(25, 230, 57, 0.3);
+    border-radius: 10px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--accent-green);
+}
+
+.onb-custom-remove {
+    background: none;
+    border: none;
+    color: var(--accent-dim);
+    font-size: 1rem;
+    cursor: pointer;
+    padding: 4px 8px;
+}
+
+/* Light theme */
+[data-theme="light"] .onb-custom-emoji-btn,
+[data-theme="light"] .onb-custom-input {
+    background: #E9ECEF;
+    border-color: #DEE2E6;
+    color: #212529;
+}
+
+[data-theme="light"] .onb-emoji-picker {
+    background: #E9ECEF;
+    border-color: #DEE2E6;
+}
+
+[data-theme="light"] .onb-emoji-option {
+    background: #F8F9FA;
+}
+
 /* Templates actions */
 .onb-templates-actions {
     display: flex;
