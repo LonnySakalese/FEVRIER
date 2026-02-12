@@ -842,18 +842,61 @@ document.addEventListener('DOMContentLoaded', () => {
                 break;
             case '#validate':
                 showPage('today');
-                // Small delay to let the page render before showing modal
                 setTimeout(() => {
                     if (typeof showValidateDayModal === 'function') {
                         showValidateDayModal();
                     }
                 }, 600);
                 break;
+            case '#maxdemo':
+                activateMaxDemo();
+                break;
         }
         // Clean hash from URL without triggering navigation
         if (window.history && window.history.replaceState) {
             window.history.replaceState(null, '', window.location.pathname);
         }
+    }
+
+    // --- Max Demo Mode (secret URL #maxdemo) ---
+    function activateMaxDemo() {
+        const data = getData();
+
+        // XP Level 50 max
+        data.xp = {
+            total: 50 * 51 * 50,
+            level: 50,
+            todayXP: 500,
+            lastDate: getDateKey(new Date()),
+            awardedHabits: [],
+            dayValidated: ''
+        };
+
+        // 45 jours de données parfaites + streak
+        const today = new Date();
+        if (!data.days) data.days = {};
+        if (!data.validatedDays) data.validatedDays = [];
+        const allHabits = data.customHabits || [];
+        for (let i = 1; i <= 45; i++) {
+            const d = new Date(today);
+            d.setDate(d.getDate() - i);
+            const key = getDateKey(d);
+            if (!data.days[key]) data.days[key] = {};
+            allHabits.forEach(h => { data.days[key][h.id] = true; });
+            if (!data.validatedDays.includes(key)) data.validatedDays.push(key);
+        }
+
+        saveData(data);
+
+        // Thème Galaxy
+        localStorage.setItem('selectedRewardTheme', 'galaxy');
+
+        // Onboarding + tour done
+        localStorage.setItem('onboardingDone', 'true');
+        localStorage.setItem('guidedTourDone', 'true');
+
+        // Reload
+        window.location.href = window.location.pathname;
     }
 
     // Listen for hash changes (in case user navigates while app is open)
