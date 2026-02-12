@@ -211,9 +211,13 @@ export function checkFatigue() {
     yesterday.setDate(yesterday.getDate() - 1);
     
     const yesterdayData = getDayData(yesterday);
+    
+    // Pas de fatigue si aucune donnée hier (nouveau user, premier jour)
+    if (!yesterdayData || Object.keys(yesterdayData).length === 0) return false;
+    
     const scheduledHabits = habits.filter(h => isHabitScheduledForDate(h, yesterday));
     
-    // Pas de fatigue si pas d'habitudes programmées hier (premier jour, etc.)
+    // Pas de fatigue si pas d'habitudes programmées hier
     if (scheduledHabits.length === 0) return false;
     
     const completed = scheduledHabits.filter(h => yesterdayData[h.id]).length;

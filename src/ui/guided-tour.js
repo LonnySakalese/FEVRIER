@@ -26,15 +26,9 @@ const TOUR_STEPS = [
         position: 'bottom'
     },
     {
-        selector: '#habitsList',
-        title: '🎯 Habitudes',
-        text: 'Tes habitudes du jour. Tape pour cocher ✅',
-        position: 'bottom'
-    },
-    {
         selector: '.habit-item',
-        title: '📋 Détail habitude',
-        text: 'Chaque habitude montre ta série et ta progression mensuelle',
+        title: '🎯 Tes habitudes',
+        text: 'Tape pour cocher une habitude ✅ Chaque ligne montre ta série et ta progression mensuelle.',
         position: 'bottom'
     },
     {
@@ -398,30 +392,38 @@ function positionTooltip(targetEl, step, index, totalSteps) {
         actualPosition = 'bottom';
     }
 
+    // Clamp rect to viewport for tall elements
+    const visibleTop = Math.max(rect.top, 0);
+    const visibleBottom = Math.min(rect.bottom, viewportHeight);
+    const visibleCenter = (visibleTop + visibleBottom) / 2;
+
     if (actualPosition === 'bottom') {
-        top = rect.bottom + margin + window.scrollY;
+        // Position below the visible part of the element (not the full rect)
+        const anchorBottom = Math.min(rect.bottom, viewportHeight - 100);
+        top = anchorBottom + margin + window.scrollY;
+        // Make sure tooltip stays on screen
+        if (top + 200 > window.scrollY + viewportHeight) {
+            top = window.scrollY + viewportHeight - 220;
+        }
         left = Math.max(margin, Math.min(
             rect.left + rect.width / 2 - tooltipMaxWidth / 2,
             viewportWidth - tooltipMaxWidth - margin
         ));
     } else {
-        // Position au-dessus
-        top = rect.top - margin + window.scrollY;
+        // Position above the visible part
         left = Math.max(margin, Math.min(
             rect.left + rect.width / 2 - tooltipMaxWidth / 2,
             viewportWidth - tooltipMaxWidth - margin
         ));
-        // On va utiliser bottom positioning
         tooltipEl.style.position = 'absolute';
         tooltipEl.style.left = `${left}px`;
         tooltipEl.style.top = 'auto';
-        tooltipEl.style.bottom = `${document.documentElement.scrollHeight - rect.top + margin - window.scrollY}px`;
+        const bottomOffset = document.documentElement.scrollHeight - Math.max(rect.top, 80) + margin - window.scrollY;
+        tooltipEl.style.bottom = `${bottomOffset}px`;
         tooltipEl.style.right = 'auto';
 
-        // Mettre à jour la flèche
         tooltipEl.querySelector('.gt-tooltip-arrow').className = 'gt-tooltip-arrow gt-arrow-bottom';
 
-        // Event listeners
         document.getElementById('gtSkipBtn').addEventListener('click', skipTour);
         document.getElementById('gtNextBtn').addEventListener('click', nextStep);
         return;
