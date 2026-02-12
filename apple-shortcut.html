@@ -23,11 +23,26 @@
         .back-link {
             display: inline-flex;
             align-items: center;
-            gap: 6px;
-            color: #87CEEB;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            padding: 14px 24px;
+            background: linear-gradient(135deg, #F5F5F0, #E0E0D8);
+            color: #0A0A0A;
             text-decoration: none;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            border-radius: 12px;
             margin-bottom: 20px;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .back-link:active {
+            transform: scale(0.97);
+            opacity: 0.9;
         }
 
         h1 {
