@@ -77,20 +77,15 @@ const TOUR_STEPS = [
         page: 'today'
     },
     {
-        selector: '.add-habit-toggle',
-        fallbackSelector: '#addHabitSection',
-        title: '➕ Ajouter',
-        text: 'Ajoute de nouvelles habitudes quand tu veux ➕',
+        selector: '.settings-btn.primary[onclick*="openManageHabitsModal"]',
+        fallbackSelector: '.settings-btn.primary',
+        title: '➕ Ajouter une habitude',
+        text: 'Clique ici pour créer ou gérer tes habitudes !',
         position: 'bottom',
-        page: 'motivation',
         prepare: () => {
             if (typeof window.showPage === 'function') {
                 window.showPage('motivation', null);
             }
-            setTimeout(() => {
-                const btn = document.querySelector('.settings-btn.primary[onclick*="openManageHabitsModal"]');
-                if (btn) btn.click();
-            }, 300);
         }
     },
     {
@@ -98,12 +93,7 @@ const TOUR_STEPS = [
         title: '🎨 Thème',
         text: 'Change le thème clair/sombre/auto 🎨',
         position: 'bottom',
-        page: 'motivation',
         prepare: () => {
-            // Close manage habits modal if open
-            if (typeof window.closeManageHabitsModal === 'function') {
-                window.closeManageHabitsModal();
-            }
             if (typeof window.showPage === 'function') {
                 window.showPage('motivation', null);
             }
@@ -123,6 +113,17 @@ let currentStepIndex = 0;
 let overlayEl = null;
 let tooltipEl = null;
 let isActive = false;
+
+/**
+ * Bloque les clics en dehors du tooltip pendant le tour
+ */
+function tourClickBlocker(e) {
+    if (!isActive) return;
+    // Autoriser les clics dans le tooltip
+    if (tooltipEl && tooltipEl.contains(e.target)) return;
+    e.stopPropagation();
+    e.preventDefault();
+}
 
 /**
  * Vérifie si le tour guidé est nécessaire
@@ -164,12 +165,14 @@ function createOverlay() {
     overlayEl.id = 'guidedTourOverlay';
     document.body.appendChild(overlayEl);
 
-    // Click sur l'overlay (en dehors du tooltip) = rien (ne pas fermer)
+    // Bloquer TOUS les clics sur l'overlay (pas juste ceux sur l'overlay lui-même)
     overlayEl.addEventListener('click', (e) => {
-        if (e.target === overlayEl) {
-            // Ne rien faire — l'user doit utiliser les boutons
-        }
-    });
+        e.stopPropagation();
+        e.preventDefault();
+    }, true);
+
+    // Ajouter un bloqueur global pendant le tour
+    document.addEventListener('click', tourClickBlocker, true);
 }
 
 /**
@@ -300,6 +303,9 @@ function renderFinalStep(step, index, totalSteps) {
     tooltipEl.style.transform = 'translate(-50%, -50%)';
     tooltipEl.style.bottom = 'auto';
     tooltipEl.style.right = 'auto';
+    tooltipEl.style.width = 'calc(100% - 40px)';
+    tooltipEl.style.maxWidth = '320px';
+    tooltipEl.style.textAlign = 'center';
 
     document.getElementById('gtFinishBtn').addEventListener('click', endTour);
 }
@@ -372,17 +378,18 @@ function positionTooltip(targetEl, step, index, totalSteps) {
         </div>
     `;
 
-    // Reset transform
+    // Reset styles
     tooltipEl.style.transform = '';
+    tooltipEl.style.width = '';
+    tooltipEl.style.maxWidth = '';
+    tooltipEl.style.textAlign = '';
 
-    // Calculer la position
     const viewportWidth = window.innerWidth;
     const viewportHeight = window.innerHeight;
 
     let top, left;
     let actualPosition = step.position;
 
-    // Vérifier si on a la place en bas ou en haut
     const spaceBelow = viewportHeight - rect.bottom;
     const spaceAbove = rect.top;
 
@@ -392,31 +399,20 @@ function positionTooltip(targetEl, step, index, totalSteps) {
         actualPosition = 'bottom';
     }
 
-    // Clamp rect to viewport for tall elements
-    const visibleTop = Math.max(rect.top, 0);
-    const visibleBottom = Math.min(rect.bottom, viewportHeight);
-    const visibleCenter = (visibleTop + visibleBottom) / 2;
+    // Always center tooltip horizontally on screen
+    const tooltipWidth = Math.min(tooltipMaxWidth, viewportWidth - margin * 2);
+    left = (viewportWidth - tooltipWidth) / 2;
 
     if (actualPosition === 'bottom') {
-        // Position below the visible part of the element (not the full rect)
         const anchorBottom = Math.min(rect.bottom, viewportHeight - 100);
         top = anchorBottom + margin + window.scrollY;
-        // Make sure tooltip stays on screen
         if (top + 200 > window.scrollY + viewportHeight) {
             top = window.scrollY + viewportHeight - 220;
         }
-        left = Math.max(margin, Math.min(
-            rect.left + rect.width / 2 - tooltipMaxWidth / 2,
-            viewportWidth - tooltipMaxWidth - margin
-        ));
     } else {
-        // Position above the visible part
-        left = Math.max(margin, Math.min(
-            rect.left + rect.width / 2 - tooltipMaxWidth / 2,
-            viewportWidth - tooltipMaxWidth - margin
-        ));
         tooltipEl.style.position = 'absolute';
         tooltipEl.style.left = `${left}px`;
+        tooltipEl.style.width = `${tooltipWidth}px`;
         tooltipEl.style.top = 'auto';
         const bottomOffset = document.documentElement.scrollHeight - Math.max(rect.top, 80) + margin - window.scrollY;
         tooltipEl.style.bottom = `${bottomOffset}px`;
@@ -432,6 +428,7 @@ function positionTooltip(targetEl, step, index, totalSteps) {
     tooltipEl.style.position = 'absolute';
     tooltipEl.style.top = `${top}px`;
     tooltipEl.style.left = `${left}px`;
+    tooltipEl.style.width = `${tooltipWidth}px`;
     tooltipEl.style.bottom = 'auto';
     tooltipEl.style.right = 'auto';
 
@@ -472,6 +469,9 @@ function skipTour() {
 function endTour() {
     isActive = false;
     localStorage.setItem('guidedTourDone', 'true');
+
+    // Retirer le bloqueur de clics
+    document.removeEventListener('click', tourClickBlocker, true);
 
     // Retirer highlight
     document.querySelectorAll('.gt-highlighted').forEach(el => {
