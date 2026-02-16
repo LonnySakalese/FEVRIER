@@ -32,7 +32,7 @@ img, video, iframe {
 
 /* Ensure minimum touch targets (44px) */
 .nav-item,
-.habit-checkbox,
+.habit-status,
 .modal-btn,
 .auth-btn,
 .settings-btn,
@@ -103,12 +103,10 @@ select,
         padding: 12px 8px;
         gap: 10px;
     }
-    .habit-checkbox {
-        width: 40px;
-        height: 40px;
-    }
-    .habit-checkbox.checked::after {
-        font-size: 1.2rem;
+    .habit-status {
+        width: 28px;
+        height: 28px;
+        font-size: 1rem;
     }
     .habit-name {
         font-size: 0.85rem;
@@ -703,9 +701,8 @@ select,
         background: linear-gradient(90deg, rgba(46, 204, 113, 0.2), rgba(46, 204, 113, 0.08), transparent);
     }
 
-    .habit-checkbox:hover {
+    .habit-status:hover {
         transform: scale(1.15);
-        border-color: var(--accent);
         cursor: pointer;
     }
 

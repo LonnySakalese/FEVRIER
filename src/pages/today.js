@@ -121,34 +121,40 @@ export function renderHabits() {
         const streakText = locked ? (isFailed ? '❌ Non fait' : '✅ Fait') : `🔥 Série: ${streak} jours`;
 
         let itemClasses = 'habit-item';
-        let checkboxClasses = 'habit-checkbox';
 
         if (locked) {
             itemClasses += ' locked';
-            checkboxClasses += ' locked';
         }
         if (checked) {
             itemClasses += ' completed';
-            checkboxClasses += ' checked';
         } else if (isFailed) {
             itemClasses += ' failed';
-            checkboxClasses += ' failed';
         }
 
         const descriptionHtml = description
             ? `<div class="habit-description">${description}</div>`
             : '';
 
+        // Status indicator: ✓ if done, ✕ if not done
+        const statusIcon = checked
+            ? '<div class="habit-status habit-status-done">✓</div>'
+            : '<div class="habit-status habit-status-undone">✕</div>';
+
         return `
-            <div class="${itemClasses}" ${onclickAttr}>
-                <div class="${checkboxClasses}"></div>
-                <div class="habit-info">
-                    <div class="habit-name">${habit.icon} ${displayName}</div>
-                    ${descriptionHtml}
-                    <div class="habit-streak">${streakText}</div>
-                </div>
-                <div class="habit-progress">
-                    <div class="percent">${monthData}%</div>
+            <div class="${itemClasses}" ${onclickAttr} data-habit-id="${escapedId}">
+                <div class="habit-fill-bar"></div>
+                <div class="habit-content">
+                    <div class="habit-info">
+                        <div class="habit-name">${habit.icon} ${displayName}</div>
+                        ${descriptionHtml}
+                        <div class="habit-streak">${streakText}</div>
+                    </div>
+                    <div class="habit-right">
+                        <div class="habit-progress">
+                            <div class="percent">${monthData}%</div>
+                        </div>
+                        ${statusIcon}
+                    </div>
                 </div>
             </div>
         `;
@@ -160,11 +166,27 @@ export function toggleHabit(habitId) {
     const currentDate = getCurrentDate();
     const dayData = getDayData(currentDate);
     const newStatus = !dayData[habitId];
+
+    // Animate the fill bar BEFORE updating data
+    const escapedId = habitId.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+    const itemEl = document.querySelector(`.habit-item[data-habit-id="${CSS.escape(habitId)}"]`);
+
+    if (itemEl && newStatus) {
+        // Fill animation: bar sweeps from left to right
+        const bar = itemEl.querySelector('.habit-fill-bar');
+        if (bar) {
+            bar.style.transition = 'none';
+            bar.style.width = '0%';
+            void bar.offsetWidth; // reflow
+            bar.style.transition = 'width 0.5s cubic-bezier(0.22, 1, 0.36, 1)';
+            bar.style.width = '100%';
+        }
+    }
+
     setHabitStatus(habitId, newStatus);
 
     if (newStatus) {
         playSuccessSound();
-        // XP awarded only at day validation (within 24h rule)
     } else {
         playUndoSound();
     }
@@ -178,7 +200,6 @@ export function toggleHabit(habitId) {
         if (completed === habits.length) {
             triggerConfetti();
         }
-        // Vérifier si la fatigue est levée (score 100%)
         const currentScore = getDayScore(currentDate);
         if (checkClearFatigue(currentScore)) {
             if (window.updateXPDisplay) window.updateXPDisplay();
