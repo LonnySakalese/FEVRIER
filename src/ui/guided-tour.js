@@ -122,6 +122,8 @@ export function needsGuidedTour() {
     return localStorage.getItem('guidedTourDone') !== 'true';
 }
 
+let savedScrollY = 0;
+
 export function startGuidedTour() {
     if (!needsGuidedTour()) return;
     if (isActive) return;
@@ -133,10 +135,23 @@ export function startGuidedTour() {
         window.showPage('today', null);
     }
 
+    // Freeze background — lock scroll & interactions
+    savedScrollY = window.scrollY;
+    document.body.style.top = `-${savedScrollY}px`;
+    document.body.classList.add('tour-active');
+
     createElements();
     document.addEventListener('click', tourClickBlocker, true);
+    document.addEventListener('touchmove', tourTouchBlocker, { passive: false });
 
     setTimeout(() => showStep(0), 400);
+}
+
+function tourTouchBlocker(e) {
+    if (!isActive) return;
+    // Allow scrolling inside tooltip only
+    if (tooltipEl && tooltipEl.contains(e.target)) return;
+    e.preventDefault();
 }
 
 function createElements() {
@@ -348,8 +363,14 @@ function endTour() {
     isActive = false;
     localStorage.setItem('guidedTourDone', 'true');
 
-    // Retirer le bloqueur de clics
+    // Retirer les bloqueurs
     document.removeEventListener('click', tourClickBlocker, true);
+    document.removeEventListener('touchmove', tourTouchBlocker, { passive: false });
+
+    // Unfreeze background
+    document.body.classList.remove('tour-active');
+    document.body.style.top = '';
+    window.scrollTo(0, savedScrollY);
 
     // Fade out tout
     if (overlayEl) overlayEl.style.opacity = '0';
