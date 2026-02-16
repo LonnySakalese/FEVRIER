@@ -135,11 +135,6 @@ export function renderHabits() {
             ? `<div class="habit-description">${description}</div>`
             : '';
 
-        // Status indicator: ✓ if done, ✕ if not done
-        const statusIcon = checked
-            ? '<div class="habit-status habit-status-done">✓</div>'
-            : '<div class="habit-status habit-status-undone">✕</div>';
-
         return `
             <div class="${itemClasses}" ${onclickAttr} data-habit-id="${escapedId}">
                 <div class="habit-fill-bar"></div>
@@ -149,11 +144,8 @@ export function renderHabits() {
                         ${descriptionHtml}
                         <div class="habit-streak">${streakText}</div>
                     </div>
-                    <div class="habit-right">
-                        <div class="habit-progress">
-                            <div class="percent">${monthData}%</div>
-                        </div>
-                        ${statusIcon}
+                    <div class="habit-progress">
+                        <div class="percent">${monthData}%</div>
                     </div>
                 </div>
             </div>
@@ -171,15 +163,23 @@ export function toggleHabit(habitId) {
     const escapedId = habitId.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
     const itemEl = document.querySelector(`.habit-item[data-habit-id="${CSS.escape(habitId)}"]`);
 
-    if (itemEl && newStatus) {
-        // Fill animation: bar sweeps from left to right
+    if (itemEl) {
         const bar = itemEl.querySelector('.habit-fill-bar');
         if (bar) {
-            bar.style.transition = 'none';
-            bar.style.width = '0%';
-            void bar.offsetWidth; // reflow
-            bar.style.transition = 'width 0.5s cubic-bezier(0.22, 1, 0.36, 1)';
-            bar.style.width = '100%';
+            if (newStatus) {
+                // Fill up like a glass of water (bottom → top)
+                bar.style.transition = 'none';
+                bar.style.height = '0%';
+                bar.style.opacity = '1';
+                void bar.offsetWidth;
+                bar.style.transition = 'height 0.6s cubic-bezier(0.22, 1, 0.36, 1)';
+                bar.style.height = '100%';
+            } else {
+                // Drain down (top → bottom)
+                bar.style.transition = 'height 0.4s ease-in, opacity 0.4s ease-in';
+                bar.style.height = '0%';
+                bar.style.opacity = '0';
+            }
         }
     }
 

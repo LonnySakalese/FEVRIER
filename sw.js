@@ -3,7 +3,7 @@
 // --- CONFIGURATION DU CACHE ---
 
 // Nom du cache. Changer cette valeur invalidera le cache existant et en créera un nouveau.
-const CACHE_NAME = 'warrior-tracker-v9';
+const CACHE_NAME = 'warrior-tracker-v10';
 
 // Liste des fichiers essentiels à mettre en cache pour que l'application fonctionne hors ligne.
 const urlsToCache = [

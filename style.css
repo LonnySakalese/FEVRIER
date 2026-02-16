@@ -370,22 +370,21 @@ body {
     margin-bottom: 4px;
 }
 
-/* Fill bar — sweeps from left on check */
+/* Fill bar — fills from bottom to top like a glass of water */
 .habit-fill-bar {
     position: absolute;
-    top: 0;
+    bottom: 0;
     left: 0;
-    height: 100%;
-    width: 0%;
-    background: linear-gradient(90deg, rgba(46, 204, 113, 0.25), rgba(46, 204, 113, 0.10));
+    width: 100%;
+    height: 0%;
+    background: linear-gradient(0deg, rgba(46, 204, 113, 0.30), rgba(46, 204, 113, 0.12));
     z-index: 0;
     pointer-events: none;
     border-radius: 8px;
 }
 
 .habit-item.completed .habit-fill-bar {
-    width: 100%;
-    background: linear-gradient(90deg, rgba(46, 204, 113, 0.25), rgba(46, 204, 113, 0.08));
+    height: 100%;
 }
 
 /* Content sits above the fill bar */
@@ -397,46 +396,7 @@ body {
     gap: 12px;
 }
 
-/* Status icon (✓ or ✕) */
-.habit-status {
-    width: 32px;
-    height: 32px;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.1rem;
-    font-weight: 800;
-    flex-shrink: 0;
-    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-}
-
-.habit-status-undone {
-    background: rgba(231, 76, 60, 0.15);
-    color: #E74C3C;
-    border: 1.5px solid rgba(231, 76, 60, 0.3);
-}
-
-.habit-status-done {
-    background: linear-gradient(135deg, #2ECC71, #27AE60);
-    color: white;
-    border: none;
-    box-shadow: 0 0 12px rgba(46, 204, 113, 0.4);
-    animation: statusPop 0.4s ease-out;
-}
-
-@keyframes statusPop {
-    0% { transform: scale(0.5); opacity: 0; }
-    50% { transform: scale(1.2); }
-    100% { transform: scale(1); opacity: 1; }
-}
-
-.habit-right {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    flex-shrink: 0;
-}
+/* (status icons removed — fill bar replaces them) */
 
 /* Completed state */
 .habit-item.completed {
@@ -1446,9 +1406,6 @@ canvas {
 }
 
 /* Legacy .habit-checkbox kept for manage-habits modal only */
-.habit-status {
-    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-}
 
 .section-title {
     animation: fadeIn 0.4s ease-out;

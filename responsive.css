@@ -32,7 +32,7 @@ img, video, iframe {
 
 /* Ensure minimum touch targets (44px) */
 .nav-item,
-.habit-status,
+.habit-item,
 .modal-btn,
 .auth-btn,
 .settings-btn,
@@ -103,10 +103,8 @@ select,
         padding: 12px 8px;
         gap: 10px;
     }
-    .habit-status {
-        width: 28px;
-        height: 28px;
-        font-size: 1rem;
+    .habit-fill-bar {
+        border-radius: 6px;
     }
     .habit-name {
         font-size: 0.85rem;
@@ -701,9 +699,8 @@ select,
         background: linear-gradient(90deg, rgba(46, 204, 113, 0.2), rgba(46, 204, 113, 0.08), transparent);
     }
 
-    .habit-status:hover {
-        transform: scale(1.15);
-        cursor: pointer;
+    .habit-item:hover .habit-fill-bar {
+        opacity: 0.9;
     }
 
     .stat-card:hover {
