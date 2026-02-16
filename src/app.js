@@ -259,17 +259,36 @@ function closeDeleteAccountModal() {
 }
 
 async function confirmDeleteAccount() {
-    const input = document.getElementById('deleteAccountInput').value.trim();
+    const password = document.getElementById('deleteAccountInput').value.trim();
 
-    if (input !== 'SUPPRIMER') {
-        showPopup('Tu dois taper exactement "SUPPRIMER" pour confirmer', 'warning');
+    if (!password) {
+        showPopup('Entre ton mot de passe pour confirmer', 'warning');
+        return;
+    }
+
+    const user = auth.currentUser;
+    if (!user || !user.email) {
+        showPopup('Erreur : utilisateur non connecté', 'error');
+        return;
+    }
+
+    try {
+        // Ré-authentifier avec le mot de passe
+        const credential = firebase.auth.EmailAuthProvider.credential(user.email, password);
+        await user.reauthenticateWithCredential(credential);
+    } catch (error) {
+        console.error('❌ Erreur ré-authentification:', error);
+        if (error.code === 'auth/wrong-password' || error.code === 'auth/invalid-credential') {
+            showPopup('Mot de passe incorrect', 'error');
+        } else {
+            showPopup('Erreur de vérification : ' + (error.message || error.code), 'error');
+        }
         return;
     }
 
     closeDeleteAccountModal();
 
     try {
-        const user = auth.currentUser;
         const userId = user.uid;
 
         const batch = db.batch();
@@ -297,12 +316,7 @@ async function confirmDeleteAccount() {
 
     } catch (error) {
         console.error('❌ Erreur suppression compte:', error);
-
-        if (error.code === 'auth/requires-recent-login') {
-            showPopup('Pour des raisons de sécurité, tu dois te reconnecter avant de supprimer ton compte.', 'error', 6000);
-        } else {
-            showPopup('Erreur lors de la suppression du compte : ' + error.message, 'error');
-        }
+        showPopup('Erreur lors de la suppression du compte : ' + error.message, 'error');
     }
 }
 
