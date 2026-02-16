@@ -70,14 +70,12 @@ export function renderHabits() {
 
     const scheduledHabits = habits.filter(habit => isHabitScheduledForDate(habit, currentDate));
 
-    // Render category filter buttons dynamically
-    renderCategoryFilters(scheduledHabits);
+    // No category filtering — show all scheduled habits
+    const filteredHabits = scheduledHabits;
 
-    // Apply category filter
-    const filter = getActiveFilter();
-    const filteredHabits = filter === 'all'
-        ? scheduledHabits
-        : scheduledHabits.filter(h => (h.category || 'autre') === filter);
+    // Hide category filters if present
+    const filtersContainer = document.getElementById('categoryFilters');
+    if (filtersContainer) filtersContainer.style.display = 'none';
 
     if (scheduledHabits.length === 0) {
         const dayNames = ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
