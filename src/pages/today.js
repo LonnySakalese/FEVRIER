@@ -242,6 +242,14 @@ export function confirmValidateDay() {
         return;
     }
 
+    // Jour de repos → aucune XP, pas de validation
+    const scheduledForXP = habits.filter(h => isHabitScheduledForDate(h, new Date()));
+    if (scheduledForXP.length === 0) {
+        closeValidateDayModal();
+        showPopup('😌 Jour de repos — rien à valider !', 'info');
+        return;
+    }
+
     const data = getData();
     const today = getDateKey(new Date());
 
@@ -262,9 +270,8 @@ export function confirmValidateDay() {
 
     // Award XP — only at validation (within 24h rule)
     const dayDataToday2 = getDayData(new Date());
-    const scheduledForXP = habits.filter(h => isHabitScheduledForDate(h, new Date()));
     const completedForXP = scheduledForXP.filter(h => dayDataToday2[h.id]);
-    const score = scheduledForXP.length > 0 ? Math.round((completedForXP.length / scheduledForXP.length) * 100) : 0;
+    const score = Math.round((completedForXP.length / scheduledForXP.length) * 100);
 
     // +10 XP per completed habit (only those actually done)
     completedForXP.forEach(h => awardHabitXP(h.id));
@@ -310,6 +317,13 @@ export function updateValidateButton() {
     const currentDateKey = getDateKey(currentDate);
 
     if (currentDateKey !== today) {
+        btn.style.display = 'none';
+        return;
+    }
+
+    // Jour de repos = pas de bouton valider
+    const scheduledToday = habits.filter(h => isHabitScheduledForDate(h, new Date()));
+    if (scheduledToday.length === 0) {
         btn.style.display = 'none';
         return;
     }
