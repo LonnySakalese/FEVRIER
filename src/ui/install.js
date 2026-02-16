@@ -45,6 +45,19 @@ export function dismissInstallBanner() {
     localStorage.setItem('pwaInstallDismissed', 'true');
 }
 
+export function promptInstallFromSettings() {
+    if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) {
+        import('../ui/toast.js').then(m => m.showPopup('✅ L\'app est déjà installée !', 'info'));
+        return;
+    }
+    if (deferredPrompt) {
+        installApp();
+    } else {
+        // iOS / browsers without beforeinstallprompt
+        import('../ui/toast.js').then(m => m.showPopup('📲 Sur Safari : Partager → Ajouter à l\'écran d\'accueil', 'info', 5000));
+    }
+}
+
 export async function installApp() {
     if (!deferredPrompt) return;
 

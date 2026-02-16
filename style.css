@@ -528,7 +528,7 @@ canvas {
     left: 0;
     right: 0;
     display: flex;
-    justify-content: center;
+    align-items: flex-end;
     background: var(--black);
     border-top: 1px solid var(--steel);
     z-index: 100;
@@ -539,53 +539,88 @@ canvas {
 
 .nav-item {
     flex: 1;
-    padding: 12px 5px;
+    padding: 10px 5px 8px;
     text-align: center;
     cursor: pointer;
-    transition: color 0.2s ease, transform 0.2s ease, background 0.2s ease;
+    transition: color 0.2s ease, transform 0.2s ease;
     position: relative;
     color: var(--accent-dark);
 }
 
 .nav-item.active {
-    background: var(--charcoal);
     color: var(--accent);
-    transform: translateY(-2px);
 }
 
 .nav-item.active::after {
     content: '';
     position: absolute;
-    bottom: 4px;
+    top: 0;
     left: 50%;
     transform: translateX(-50%);
-    width: 20px;
+    width: 24px;
     height: 3px;
     background: var(--accent-green);
-    border-radius: 2px;
+    border-radius: 0 0 2px 2px;
     animation: navIndicatorIn 0.3s ease;
 }
 
 @keyframes navIndicatorIn {
     from { width: 0; opacity: 0; }
-    to { width: 20px; opacity: 1; }
+    to { width: 24px; opacity: 1; }
 }
 
 .nav-item .icon {
     font-size: 1.3rem;
-    margin-bottom: 3px;
+    margin-bottom: 2px;
     transition: transform 0.2s ease;
 }
 
 .nav-item.active .icon {
-    transform: scale(1.1);
+    transform: scale(1.15);
 }
 
 .nav-item .label {
     font-size: 0.6rem;
-    color: var(--accent);
+    color: var(--accent-dim);
     text-transform: uppercase;
     transition: color 0.2s ease;
+}
+
+.nav-item.active .label {
+    color: var(--accent);
+    font-weight: 700;
+}
+
+/* Bouton + central surélevé */
+.nav-add-btn {
+    position: relative;
+    width: 56px;
+    height: 56px;
+    flex-shrink: 0;
+    margin: 0 6px;
+    margin-top: -20px;
+    cursor: pointer;
+    z-index: 101;
+}
+
+.nav-add-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #2ECC71, #27AE60);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    font-weight: 300;
+    color: white;
+    box-shadow: 0 4px 15px rgba(46, 204, 113, 0.4), 0 2px 6px rgba(0, 0, 0, 0.3);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.nav-add-btn:active .nav-add-icon {
+    transform: scale(0.9) rotate(90deg);
+    box-shadow: 0 2px 8px rgba(46, 204, 113, 0.3);
 }
 
 /* Système de pages/onglets avec transitions */
@@ -880,8 +915,9 @@ canvas {
     background: transparent;
     color: var(--accent-dim);
     border: 1px solid var(--accent-dark);
-    padding: 8px 16px;
+    padding: 10px 18px;
     font-size: 0.7rem;
+    min-height: 44px;
     font-weight: bold;
     cursor: pointer;
     transition: all 0.15s ease;
@@ -4059,7 +4095,8 @@ button, .modal-btn, .auth-btn, .settings-btn, .form-btn, .validate-day-btn {
 }
 
 button:active, .modal-btn:active, .auth-btn:active, .settings-btn:active, .form-btn:active {
-    transform: scale(0.97);
+    transform: scale(0.95);
+    opacity: 0.85;
 }
 
 /* Cards - hover lift */
@@ -6601,8 +6638,16 @@ button:active, .modal-btn:active, .auth-btn:active, .settings-btn:active, .form-
     margin-bottom: 4px;
 }
 
+.chat-bubble-sender-bottom {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 4px;
+    opacity: 0.7;
+}
+
 .chat-bubble-avatar {
-    font-size: 1.1rem;
+    font-size: 1rem;
     line-height: 1;
 }
 

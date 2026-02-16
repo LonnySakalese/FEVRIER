@@ -279,14 +279,6 @@ function renderMessages(docs) {
                       ontouchmove="handleBubbleTouchMove(event)"
                       ondblclick="showReactionPopup(event, '${msgId}')">`;
 
-        // Show sender info only on first message of a group (not me)
-        if (!isMe && isFirstInGroup) {
-            html += `<div class="chat-bubble-sender">
-                <span class="chat-bubble-avatar">${escapeHtml(msg.senderAvatar || '👤')}</span>
-                <span class="chat-bubble-name" style="color: ${senderColor}">${escapeHtml(msg.senderPseudo || 'Anonyme')}</span>
-            </div>`;
-        }
-
         // Reply preview
         if (msg.replyTo) {
             html += `<div class="chat-reply-quote" onclick="scrollToMessage('${escapeHtml(msg.replyTo.messageId || '')}')">
@@ -323,6 +315,14 @@ function renderMessages(docs) {
 
         // Reply button (small, subtle)
         html += `<button class="chat-reply-btn" onclick="setReplyTo('${msgId}', '${escapeAttr(msg.senderPseudo || 'Anonyme')}', '${escapeAttr(msg.text || msg.type === 'audio' ? '🎵 Audio' : '')}')">↩</button>`;
+
+        // Sender pseudo at bottom (not me, last in group)
+        if (!isMe && isLastInGroup) {
+            html += `<div class="chat-bubble-sender-bottom">
+                <span class="chat-bubble-avatar">${escapeHtml(msg.senderAvatar || '👤')}</span>
+                <span class="chat-bubble-name" style="color: ${senderColor}">${escapeHtml(msg.senderPseudo || 'Anonyme')}</span>
+            </div>`;
+        }
 
         html += `<div class="chat-bubble-time">${timeStr}</div>`;
         html += `</div>`;

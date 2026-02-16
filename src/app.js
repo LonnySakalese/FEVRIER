@@ -40,7 +40,7 @@ import { ConfirmModal } from './ui/modals.js';
 import { loadTheme, toggleTheme, loadThemeFromFirestore } from './ui/theme.js';
 import { triggerConfetti } from './ui/confetti.js';
 import { openCalendarModal, closeCalendarModal, changeCalendarMonth } from './ui/calendar.js';
-import { initInstallBanner, dismissInstallBanner, installApp } from './ui/install.js';
+import { initInstallBanner, dismissInstallBanner, installApp, promptInstallFromSettings } from './ui/install.js';
 import { shareDay } from './ui/share.js';
 import { exportDataCSV } from './ui/export.js';
 import { showQRModal, closeQRModal, downloadQR } from './ui/qrcode.js';
@@ -687,6 +687,7 @@ Object.assign(window, {
 
     // PWA Install
     dismissInstallBanner, installApp,
+    promptInstallFromSettings,
 
     // Share
     shareDay,
