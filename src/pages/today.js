@@ -186,12 +186,57 @@ export function toggleHabit(habitId) {
     }
 }
 
+// ============================================================
+// ANIMATION SCORE — Compteur animé + Pulse dopamine
+// ============================================================
+
+let _lastScore = null;
+let _lastCompleted = null;
+
+function animateCountUp(el, from, to, suffix = '', durationMs = 500) {
+    if (from === to) { el.textContent = to + suffix; return; }
+    const start = performance.now();
+    const diff = to - from;
+    function frame(now) {
+        const t = Math.min((now - start) / durationMs, 1);
+        // easeOutExpo for snappy feel
+        const ease = t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
+        const current = Math.round(from + diff * ease);
+        el.textContent = current + suffix;
+        if (t < 1) requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+}
+
+function pulseElement(el) {
+    el.classList.remove('kpi-pulse');
+    // Force reflow to restart animation
+    void el.offsetWidth;
+    el.classList.add('kpi-pulse');
+}
+
+function spawnScoreParticles(el) {
+    const rect = el.getBoundingClientRect();
+    const symbols = ['⚡', '🔥', '💪', '✨', '+'];
+    for (let i = 0; i < 5; i++) {
+        const p = document.createElement('span');
+        p.className = 'score-particle';
+        p.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+        p.style.left = (rect.left + rect.width / 2 + (Math.random() - 0.5) * 60) + 'px';
+        p.style.top = (rect.top + window.scrollY) + 'px';
+        p.style.animationDelay = (i * 60) + 'ms';
+        document.body.appendChild(p);
+        p.addEventListener('animationend', () => p.remove());
+    }
+}
+
 // Met à jour les KPIs (score, streak, etc.) sur la page "Aujourd'hui"
 export function updateKPIs() {
     try {
         const currentDate = getCurrentDate();
         const dayData = getDayData(currentDate);
-        const completed = habits.filter(h => dayData[h.id]).length;
+        const scheduledToday = habits.filter(h => isHabitScheduledForDate(h, currentDate));
+        const completed = scheduledToday.filter(h => dayData[h.id]).length;
         const score = getDayScore(currentDate);
         const locked = !canEditDate(currentDate);
 
@@ -201,10 +246,36 @@ export function updateKPIs() {
         const completedCountEl = document.getElementById('completedCount');
         const currentDateEl = document.getElementById('currentDate');
 
-        if (dailyScoreEl) dailyScoreEl.textContent = score + '%';
+        // Animate score count-up + dopamine effects
+        if (dailyScoreEl) {
+            const prevScore = _lastScore !== null ? _lastScore : score;
+            if (score > prevScore) {
+                animateCountUp(dailyScoreEl, prevScore, score, '%', 600);
+                pulseElement(dailyScoreEl);
+                spawnScoreParticles(dailyScoreEl);
+            } else {
+                animateCountUp(dailyScoreEl, prevScore, score, '%', 400);
+                if (score < prevScore) pulseElement(dailyScoreEl);
+            }
+            _lastScore = score;
+        }
+
+        // Animate completed count
+        if (completedCountEl) {
+            if (locked) {
+                completedCountEl.textContent = '🔒 VERROUILLÉ';
+            } else {
+                const prevCompleted = _lastCompleted !== null ? _lastCompleted : completed;
+                if (completed !== prevCompleted) {
+                    pulseElement(completedCountEl);
+                }
+                completedCountEl.textContent = `${completed}/${scheduledToday.length}`;
+                _lastCompleted = completed;
+            }
+        }
+
         if (currentStreakEl) currentStreakEl.textContent = getStreak();
         if (perfectDaysEl) perfectDaysEl.textContent = getPerfectDays();
-        if (completedCountEl) completedCountEl.textContent = locked ? '🔒 VERROUILLÉ' : `${completed}/${habits.length}`;
         if (currentDateEl) currentDateEl.textContent = formatDate(currentDate) + (locked ? ' 🔒' : '');
 
         const data = getData();
