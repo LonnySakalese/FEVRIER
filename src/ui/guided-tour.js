@@ -24,7 +24,7 @@ const TOUR_STEPS = [
     {
         selector: '.habit-item',
         title: '🎯 Tes habitudes',
-        text: 'Tape pour cocher une habitude ✅ Chaque ligne montre ta série et ta progression mensuelle.',
+        text: 'Tape pour cocher une habitude ✅ La barre se remplit en vert quand c\'est fait.',
         position: 'bottom'
     },
     {
@@ -32,12 +32,6 @@ const TOUR_STEPS = [
         fallbackSelector: '.validate-day-btn',
         title: '✅ Validation',
         text: 'Valide ta journée pour gagner de l\'XP ! Tu as 24h.',
-        position: 'top'
-    },
-    {
-        selector: '.share-day-btn',
-        title: '📤 Partage',
-        text: 'Partage ton score du jour en image 📸',
         position: 'top'
     },
     {
@@ -49,58 +43,28 @@ const TOUR_STEPS = [
         page: 'today'
     },
     {
-        selector: '.nav-item[aria-label="Informations et motivation"]',
-        fallbackSelector: '.nav-item:nth-child(3)',
-        title: '🔥 Infos',
-        text: 'Citations motivantes et système de rangs 🔥',
-        position: 'top',
-        page: 'today'
-    },
-    {
-        selector: '.nav-item[aria-label="Profil"]',
-        fallbackSelector: '.nav-item:nth-child(4)',
-        title: '👤 Profil',
-        text: 'Ton profil : avatar, pseudo, streaks, thèmes débloqués 👤',
-        position: 'top',
-        page: 'today'
-    },
-    {
         selector: '.nav-item[aria-label="Groupes"]',
-        fallbackSelector: '.nav-item:nth-child(5)',
+        fallbackSelector: '.nav-item:nth-child(4)',
         title: '👥 Groupes',
         text: 'Rejoins ou crée des groupes pour te motiver en équipe ! 👥',
         position: 'top',
         page: 'today'
     },
     {
-        selector: '.settings-btn.primary[onclick*="openManageHabitsModal"]',
-        fallbackSelector: '.settings-btn.primary',
-        title: '➕ Ajouter une habitude',
-        text: 'Clique ici pour créer ou gérer tes habitudes !',
-        position: 'bottom',
-        prepare: () => {
-            if (typeof window.showPage === 'function') {
-                window.showPage('motivation', null);
-            }
-        }
+        selector: '.nav-item[aria-label="Profil"]',
+        fallbackSelector: '.nav-item:nth-child(5)',
+        title: '👤 Profil',
+        text: 'Ton profil : avatar, pseudo, streaks, paramètres 👤',
+        position: 'top',
+        page: 'today'
     },
     {
-        selector: '#themeToggleBtn',
-        title: '🎨 Thème',
-        text: 'Change le thème clair/sombre/auto 🎨',
-        position: 'bottom',
-        prepare: () => {
-            if (typeof window.showPage === 'function') {
-                window.showPage('motivation', null);
-            }
-        }
-    },
-    {
-        selector: null,
-        isFinal: true,
-        title: 'Tu es prêt ! 🔥',
-        text: 'Commence par cocher ta première habitude.',
-        position: 'center'
+        selector: '.nav-add-btn',
+        title: '➕ Crée ta première habitude !',
+        text: 'Appuie sur ce bouton pour ajouter une habitude et commencer ton parcours 💪',
+        position: 'top',
+        page: 'today',
+        isFinal: true
     }
 ];
 
@@ -315,9 +279,24 @@ function renderFinalStep(step, totalSteps) {
         window.showPage('today', null);
     }
 
-    // Cacher le spotlight
-    spotlightEl.style.display = 'none';
-    overlayEl.style.background = 'rgba(0,0,0,0.8)';
+    // Si le step final a un selector, spotlight dessus (ex: bouton +)
+    let targetEl = step.selector ? document.querySelector(step.selector) : null;
+    if (!targetEl && step.fallbackSelector) targetEl = document.querySelector(step.fallbackSelector);
+
+    if (targetEl) {
+        const r = targetEl.getBoundingClientRect();
+        const pad = 10;
+        spotlightEl.style.top = (r.top - pad) + 'px';
+        spotlightEl.style.left = (r.left - pad) + 'px';
+        spotlightEl.style.width = (r.width + pad * 2) + 'px';
+        spotlightEl.style.height = (r.height + pad * 2) + 'px';
+        spotlightEl.style.borderRadius = '50%';
+        spotlightEl.style.display = 'block';
+        overlayEl.style.background = 'transparent';
+    } else {
+        spotlightEl.style.display = 'none';
+        overlayEl.style.background = 'rgba(0,0,0,0.8)';
+    }
 
     tooltipEl.innerHTML = `
         <div style="text-align:center;">
@@ -340,13 +319,22 @@ function renderFinalStep(step, totalSteps) {
         </div>
     `;
 
-    // Centrer sur l'écran
+    // Position tooltip above the target (or center if no target)
     const vw = window.innerWidth;
     const tooltipW = Math.min(300, vw - 40);
-    tooltipEl.style.top = '50%';
-    tooltipEl.style.left = ((vw - tooltipW) / 2) + 'px';
-    tooltipEl.style.width = tooltipW + 'px';
-    tooltipEl.style.transform = 'translateY(-50%)';
+
+    if (targetEl) {
+        const r = targetEl.getBoundingClientRect();
+        tooltipEl.style.top = Math.max(10, r.top - 220) + 'px';
+        tooltipEl.style.left = ((vw - tooltipW) / 2) + 'px';
+        tooltipEl.style.width = tooltipW + 'px';
+        tooltipEl.style.transform = 'translateY(0)';
+    } else {
+        tooltipEl.style.top = '50%';
+        tooltipEl.style.left = ((vw - tooltipW) / 2) + 'px';
+        tooltipEl.style.width = tooltipW + 'px';
+        tooltipEl.style.transform = 'translateY(-50%)';
+    }
     tooltipEl.style.opacity = '1';
 
     document.getElementById('gtFinishBtn').addEventListener('click', endTour);
