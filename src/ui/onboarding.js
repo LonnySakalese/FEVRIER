@@ -237,17 +237,8 @@ function renderStep() {
         dot.classList.toggle('active', i === currentStep);
     });
     
-    switch (currentStep) {
-        case 0:
-            renderWelcome(container);
-            break;
-        case 1:
-            renderTemplates(container);
-            break;
-        case 2:
-            renderRecap(container);
-            break;
-    }
+    // Only welcome screen — habit selection is done via the "+" button after
+    renderWelcome(container);
 }
 
 function renderWelcome(container) {
@@ -258,12 +249,12 @@ function renderWelcome(container) {
             <p class="onb-subtitle">Prêt à transformer ta vie ?</p>
             <p class="onb-text">
                 Chaque jour est une opportunité de devenir meilleur.<br>
-                Commence par choisir les habitudes que tu veux ancrer dans ta routine.
+                Appuie sur le bouton <b style="color:#2ECC71;">+</b> pour créer tes habitudes.
             </p>
-            <button class="onb-cta-btn" id="onbNextBtn">C'est parti →</button>
+            <button class="onb-cta-btn" id="onbNextBtn">C'est parti 🚀</button>
         </div>
     `;
-    container.querySelector('#onbNextBtn').addEventListener('click', nextStep);
+    container.querySelector('#onbNextBtn').addEventListener('click', finishOnboarding);
 }
 
 function renderTemplates(container) {

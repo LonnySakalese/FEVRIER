@@ -319,22 +319,16 @@ function renderFinalStep(step, totalSteps) {
         </div>
     `;
 
-    // Position tooltip above the target (or center if no target)
+    // Always center tooltip on screen for final step
     const vw = window.innerWidth;
+    const vh = window.innerHeight;
     const tooltipW = Math.min(300, vw - 40);
 
-    if (targetEl) {
-        const r = targetEl.getBoundingClientRect();
-        tooltipEl.style.top = Math.max(10, r.top - 220) + 'px';
-        tooltipEl.style.left = ((vw - tooltipW) / 2) + 'px';
-        tooltipEl.style.width = tooltipW + 'px';
-        tooltipEl.style.transform = 'translateY(0)';
-    } else {
-        tooltipEl.style.top = '50%';
-        tooltipEl.style.left = ((vw - tooltipW) / 2) + 'px';
-        tooltipEl.style.width = tooltipW + 'px';
-        tooltipEl.style.transform = 'translateY(-50%)';
-    }
+    tooltipEl.style.left = ((vw - tooltipW) / 2) + 'px';
+    tooltipEl.style.width = tooltipW + 'px';
+    // Center vertically (slightly above center to not overlap bottom nav)
+    tooltipEl.style.top = '40%';
+    tooltipEl.style.transform = 'translateY(-50%)';
     tooltipEl.style.opacity = '1';
 
     document.getElementById('gtFinishBtn').addEventListener('click', endTour);
