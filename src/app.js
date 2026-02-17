@@ -746,6 +746,15 @@ function hideSplash() {
 
 // --- INITIALIZATION ---
 document.addEventListener('DOMContentLoaded', () => {
+    // Nav bar tap animation
+    document.querySelectorAll('.nav-item').forEach(item => {
+        item.addEventListener('click', () => {
+            item.classList.remove('nav-tapped');
+            void item.offsetWidth;
+            item.classList.add('nav-tapped');
+        });
+    });
+
     // Charger le thème immédiatement pour éviter un flash
     loadTheme();
     // Initialiser le système de récompenses (thèmes visuels)

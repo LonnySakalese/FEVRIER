@@ -28,13 +28,6 @@ const TOUR_STEPS = [
         position: 'bottom'
     },
     {
-        selector: '#validateDayBtn',
-        fallbackSelector: '.validate-day-btn',
-        title: '✅ Validation',
-        text: 'Valide ta journée pour gagner de l\'XP ! Tu as 24h.',
-        position: 'top'
-    },
-    {
         selector: '.nav-item[aria-label="Statistiques"]',
         fallbackSelector: '.nav-item:nth-child(2)',
         title: '📊 Stats',
