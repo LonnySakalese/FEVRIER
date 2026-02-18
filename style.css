@@ -374,7 +374,69 @@ body {
     color: var(--accent-dark);
 }
 
-/* Titres de section */
+/* Missions du jour — header premium */
+.missions-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 16px;
+    margin: 0 15px 8px;
+    background: linear-gradient(145deg, var(--charcoal), rgba(30, 30, 30, 0.9));
+    border: 1px solid var(--steel);
+    border-radius: 14px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    position: relative;
+    overflow: hidden;
+}
+
+.missions-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 15%;
+    right: 15%;
+    height: 3px;
+    border-radius: 0 0 4px 4px;
+    background: linear-gradient(90deg, #E74C3C, #C0392B);
+}
+
+.missions-title-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.missions-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.missions-icon svg {
+    stroke: #E74C3C;
+    filter: drop-shadow(0 0 6px rgba(231, 76, 60, 0.3));
+}
+
+.missions-title {
+    font-size: 0.8rem;
+    font-weight: 900;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.missions-count {
+    font-size: 1.1rem;
+    font-weight: 900;
+    color: #E74C3C;
+    text-shadow: 0 0 10px rgba(231, 76, 60, 0.3);
+    background: rgba(231, 76, 60, 0.1);
+    padding: 4px 12px;
+    border-radius: 20px;
+    border: 1px solid rgba(231, 76, 60, 0.2);
+}
+
+/* Titres de section (generic) */
 .section-title {
     background: var(--charcoal);
     color: var(--accent);
