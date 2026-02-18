@@ -163,8 +163,9 @@ select,
     }
 
     /* Bottom nav */
-    .bottom-nav .nav-item .icon {
-        font-size: 1.1rem;
+    .bottom-nav .nav-item .icon svg {
+        width: 20px;
+        height: 20px;
     }
     .bottom-nav .nav-item .label {
         font-size: 0.48rem;
@@ -695,8 +696,9 @@ select,
     .nav-item .label {
         font-size: 0.65rem;
     }
-    .nav-item .icon {
-        font-size: 1.4rem;
+    .nav-item .icon svg {
+        width: 24px;
+        height: 24px;
     }
     .nav-add-btn:hover .nav-add-icon {
         transform: scale(1.1) rotate(90deg);

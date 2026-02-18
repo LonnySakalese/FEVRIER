@@ -746,12 +746,13 @@ function hideSplash() {
 
 // --- INITIALIZATION ---
 document.addEventListener('DOMContentLoaded', () => {
-    // Nav bar tap animation
-    document.querySelectorAll('.nav-item').forEach(item => {
+    // Nav bar bounce animation
+    document.querySelectorAll('.nav-item, .nav-add-btn').forEach(item => {
         item.addEventListener('click', () => {
             item.classList.remove('nav-tapped');
             void item.offsetWidth;
             item.classList.add('nav-tapped');
+            setTimeout(() => item.classList.remove('nav-tapped'), 600);
         });
     });
 
