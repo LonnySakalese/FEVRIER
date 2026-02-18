@@ -300,7 +300,6 @@ body {
 .kpi-container {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    /* Grille à 3 colonnes */
     gap: 10px;
     padding: 15px;
     background: var(--dark-gray);
@@ -309,24 +308,65 @@ body {
 .kpi-card {
     background: var(--charcoal);
     border: 1px solid var(--steel);
-    border-radius: 10px;
-    padding: 12px 8px;
+    border-radius: 14px;
+    padding: 14px 8px 12px;
     text-align: center;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.kpi-card .label {
-    font-size: 0.6rem;
-    color: var(--accent-dark);
-    text-transform: uppercase;
-    font-weight: bold;
-    letter-spacing: 1px;
+.kpi-card:active {
+    transform: scale(0.96);
 }
 
+/* Subtle colored top border per card */
+.kpi-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 20%;
+    right: 20%;
+    height: 3px;
+    border-radius: 0 0 4px 4px;
+}
+
+.kpi-score::before { background: linear-gradient(90deg, #2ECC71, #27AE60); }
+.kpi-streak::before { background: linear-gradient(90deg, #F39C12, #E67E22); }
+.kpi-perfect::before { background: linear-gradient(90deg, #9B59B6, #8E44AD); }
+
+/* Icon */
+.kpi-icon {
+    margin-bottom: 4px;
+    display: flex;
+    justify-content: center;
+}
+
+.kpi-score .kpi-icon svg { stroke: #2ECC71; }
+.kpi-streak .kpi-icon svg { stroke: #F39C12; }
+.kpi-perfect .kpi-icon svg { stroke: #9B59B6; }
+
+/* Value */
 .kpi-card .value {
-    font-size: 1.5rem;
+    font-size: 1.6rem;
     font-weight: 900;
     color: var(--accent);
-    margin: 5px 0;
+    margin: 2px 0;
+    line-height: 1.1;
+}
+
+.kpi-score .value { color: #2ECC71; text-shadow: 0 0 12px rgba(46, 204, 113, 0.3); }
+.kpi-streak .value { color: #F39C12; text-shadow: 0 0 12px rgba(243, 156, 18, 0.3); }
+.kpi-perfect .value { color: #9B59B6; text-shadow: 0 0 12px rgba(155, 89, 182, 0.3); }
+
+/* Label */
+.kpi-card .label {
+    font-size: 0.6rem;
+    color: var(--accent-dim);
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 1.5px;
 }
 
 .kpi-card .sub {
@@ -4313,7 +4353,8 @@ button:active, .modal-btn:active, .auth-btn:active, .settings-btn:active, .form-
 
 /* Cards depth in light mode */
 [data-theme="light"] .kpi-card {
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+    border-color: rgba(0, 0, 0, 0.08);
 }
 
 [data-theme="light"] .stat-card {
