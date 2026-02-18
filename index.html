@@ -234,10 +234,7 @@
             <div class="missions-count" id="completedCount">0/10</div>
         </div>
 
-        <!-- Filtres de catégorie -->
-        <div class="category-filters" id="categoryFilters">
-            <button class="category-filter active" data-category="all" onclick="filterByCategory('all')">Tout</button>
-        </div>
+        <!-- Catégories supprimées -->
 
         <!-- Liste des habitudes (générée par JavaScript) -->
         <div class="habits-list" id="habitsList"></div>
@@ -615,20 +612,6 @@
                             <div class="day-checkbox" data-day="5" onclick="toggleDayOfWeek(5)">V</div>
                             <div class="day-checkbox" data-day="6" onclick="toggleDayOfWeek(6)">S</div>
                             <div class="day-checkbox" data-day="0" onclick="toggleDayOfWeek(0)">D</div>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Catégorie</label>
-                        <div class="category-picker" id="categoryPicker">
-                            <div class="category-option active" data-category="autre" onclick="setHabitCategory('autre')">⭐ Autre</div>
-                            <div class="category-option" data-category="sport" onclick="setHabitCategory('sport')">💪 Sport</div>
-                            <div class="category-option" data-category="mental" onclick="setHabitCategory('mental')">🧠 Mental</div>
-                            <div class="category-option" data-category="sante" onclick="setHabitCategory('sante')">🥗 Santé</div>
-                            <div class="category-option" data-category="apprentissage" onclick="setHabitCategory('apprentissage')">📚 Apprentissage</div>
-                            <div class="category-option" data-category="productivite" onclick="setHabitCategory('productivite')">💰 Productivité</div>
-                            <div class="category-option" data-category="creativite" onclick="setHabitCategory('creativite')">🎨 Créativité</div>
-                            <div class="category-option" data-category="relations" onclick="setHabitCategory('relations')">❤️ Relations</div>
                         </div>
                     </div>
 
