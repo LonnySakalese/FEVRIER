@@ -159,9 +159,13 @@
         </div>
         <!-- Navigation pour changer de date -->
         <div class="date-nav">
-            <button onclick="changeDate(-1)" aria-label="Jour précédent">◀</button>
+            <button class="date-nav-btn" onclick="changeDate(-1)" aria-label="Jour précédent">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+            </button>
             <div class="current-date" id="currentDate"></div>
-            <button onclick="changeDate(1)" aria-label="Jour suivant">▶</button>
+            <button class="date-nav-btn date-nav-today" onclick="changeDate(0)" aria-label="Aujourd'hui" id="dateNavToday" style="display:none;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </button>
         </div>
 
         <!-- Indicateurs clés de performance (KPIs) -->
@@ -239,39 +243,44 @@
         <!-- Liste des habitudes (générée par JavaScript) -->
         <div class="habits-list" id="habitsList"></div>
 
-        <!-- Bouton pour valider la journée -->
-        <button id="validateDayBtn" class="validate-day-btn" onclick="showValidateDayModal()" style="display: none;" data-i18n="today.validateDay">
-            ✅ VALIDER LA JOURNÉE
-        </button>
-
-        <!-- Bouton partager ma journée -->
-        <button class="share-day-btn" onclick="shareDay()" data-i18n="today.shareDay">
-            📤 PARTAGER MA JOURNÉE
-        </button>
+        <!-- Boutons d'action -->
+        <div class="today-actions">
+            <button id="validateDayBtn" class="action-btn action-btn-primary" onclick="showValidateDayModal()" style="display: none;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                <span data-i18n="today.validateDay">Valider la journée</span>
+            </button>
+            <button class="action-btn action-btn-secondary" onclick="shareDay()">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+                <span data-i18n="today.shareDay">Partager</span>
+            </button>
+        </div>
     </div>
 
     <!-- Page "Stats" : affiche les statistiques et graphiques -->
     <div id="page-stats" class="page" role="main">
-        <!-- Affichage du rang de l'utilisateur -->
-        <div class="rank-display">
-            <div class="rank-title" data-i18n="stats.currentRank">Ton Rang Actuel</div>
-            <div class="rank-name" id="rankName">DÉBUTANT</div>
-            <div class="rank-progress">
-                <div class="rank-progress-bar" id="rankProgress" style="width: 0%"></div>
+        <!-- Rang + Calendrier — premium cards -->
+        <div class="stats-top-row">
+            <div class="rank-card">
+                <div class="rank-card-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                </div>
+                <div class="rank-card-label">Rang</div>
+                <div class="rank-card-name" id="rankName">DÉBUTANT</div>
+                <div class="rank-card-bar">
+                    <div class="rank-card-bar-fill" id="rankProgress" style="width: 0%"></div>
+                </div>
+            </div>
+            <div class="calendar-card" onclick="openCalendarModal()">
+                <div class="calendar-card-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                </div>
+                <div class="calendar-card-label">Calendrier</div>
+                <div class="calendar-card-month" id="calendarCardMonth">Février</div>
             </div>
         </div>
 
         <!-- Section des Badges -->
         <div id="badgesContainer"></div>
-
-        <!-- Performance du mois -->
-        <div class="section-title" data-i18n="stats.thisMonth">⏳ CE MOIS-CI</div>
-        <!-- Bouton calendrier visuel -->
-        <div class="calendar-btn-container">
-            <button class="calendar-view-btn" onclick="openCalendarModal()" data-i18n="stats.viewCalendar">
-                📅 VOIR LE CALENDRIER DU MOIS
-            </button>
-        </div>
 
         <!-- Heatmap 90 jours -->
 
@@ -319,28 +328,8 @@
         </div>
     </div>
 
-    <!-- Page "Motivation" : citations, règles et informations -->
+    <!-- Page "Motivation/Paramètres" -->
     <div id="page-motivation" class="page" role="main">
-        <div class="section-title" data-i18n="motivation.mental">🔥 MENTAL</div>
-        <div class="motivation-card">
-            <div class="quote-text" id="dailyQuote">"I don't count my sit-ups. I only start counting when it hurts."
-            </div>
-            <div class="quote-author" id="quoteAuthor">- Muhammad Ali</div>
-        </div>
-
-        <!-- Système de rangs dans la page informations -->
-        <div class="section-title" style="display: flex; justify-content: space-between; align-items: center;">
-            <span data-i18n="motivation.ranksTitle">🏆 RANG À ATTEINDRE</span>
-            <button id="editRanksBtn" class="edit-ranks-btn" onclick="toggleRankEditMode()">✏️</button>
-        </div>
-        <div id="ranksContainer" style="padding: 15px;">
-            <!-- Généré dynamiquement par JavaScript -->
-        </div>
-        <!-- Boutons d'édition (cachés par défaut) -->
-        <div id="rankEditButtons" class="rank-edit-buttons" style="display: none; padding: 0 15px 15px; gap: 10px;">
-            <button class="modal-btn cancel" onclick="cancelRankEdit()">Annuler</button>
-            <button class="modal-btn save" onclick="saveRankSettings()">Enregistrer</button>
-        </div>
 
         <!-- Section des paramètres -->
         <div class="section-title" data-i18n="settings.title">⚙️ PARAMÈTRES</div>
@@ -815,12 +804,6 @@
                     <div class="stat-value" id="profileRank">DÉBUTANT</div>
                     <div class="stat-label" data-i18n="profile.rank">Rang</div>
                 </div>
-            </div>
-
-            <!-- Thèmes débloquables -->
-            <div class="section-title">🎨 THÈMES DÉBLOQUÉS</div>
-            <div class="reward-themes-grid" id="themeRewardsContainer">
-                <!-- Rendu dynamique par rewards.js -->
             </div>
 
             <!-- Groupes -->

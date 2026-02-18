@@ -32,14 +32,27 @@ function setHabitStatus(habitId, checked) {
 // Change la date affichée (jour précédent/suivant)
 export function changeDate(delta) {
     const currentDate = getCurrentDate();
-    const newDate = new Date(currentDate);
-    newDate.setDate(newDate.getDate() + delta);
     const today = new Date();
     today.setHours(23, 59, 59, 999);
-    if (newDate > today) {
-        return;
+
+    if (delta === 0) {
+        // Jump back to today
+        setCurrentDate(new Date());
+    } else {
+        const newDate = new Date(currentDate);
+        newDate.setDate(newDate.getDate() + delta);
+        if (newDate > today) return;
+        setCurrentDate(newDate);
     }
-    setCurrentDate(newDate);
+
+    // Show/hide "back to today" button
+    const todayBtn = document.getElementById('dateNavToday');
+    if (todayBtn) {
+        const cur = getCurrentDate();
+        const isToday = cur.toDateString() === new Date().toDateString();
+        todayBtn.style.display = isToday ? 'none' : 'flex';
+    }
+
     updateUI();
 }
 
@@ -52,16 +65,19 @@ export function renderHabits() {
 
     if (habits.length === 0) {
         container.innerHTML = `
-            <div style="text-align: center; padding: 40px 20px; color: var(--accent-dim);">
-                <div style="font-size: 3rem; margin-bottom: 15px;">🎯</div>
-                <div style="font-size: 1.1rem; color: var(--accent); margin-bottom: 10px; font-weight: bold;">
-                    AUCUNE HABITUDE
+            <div style="text-align: center; padding: 50px 20px;">
+                <div style="width: 64px; height: 64px; margin: 0 auto 20px; background: linear-gradient(135deg, rgba(46,204,113,0.15), rgba(46,204,113,0.05)); border-radius: 20px; display: flex; align-items: center; justify-content: center;">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2ECC71" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
                 </div>
-                <div style="font-size: 0.85rem; margin-bottom: 20px; line-height: 1.5;">
-                    Crée tes propres habitudes pour commencer !
+                <div style="font-size: 1rem; color: var(--accent); margin-bottom: 8px; font-weight: 800; letter-spacing: 1px;">
+                    COMMENCE ICI
                 </div>
-                <button class="reset-btn edit-habits-btn" onclick="openManageHabitsModal()" style="max-width: 250px; margin: 0 auto;">
-                    ➕ CRÉER MA PREMIÈRE HABITUDE
+                <div style="font-size: 0.82rem; color: var(--accent-dim); margin-bottom: 24px; line-height: 1.5;">
+                    Crée ta première habitude pour démarrer ton parcours
+                </div>
+                <button class="action-btn action-btn-primary" onclick="openManageHabitsModal()" style="max-width: 260px; margin: 0 auto;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    <span>Créer une habitude</span>
                 </button>
             </div>
         `;
