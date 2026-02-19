@@ -43,6 +43,12 @@ export function renderCharts() {
         weeklyData.push(getDayScore(date));
     }
 
+    // Gradient fill for weekly chart
+    const gradient = weeklyCtx.createLinearGradient(0, 0, 0, weeklyCanvas.height);
+    gradient.addColorStop(0, 'rgba(46, 204, 113, 0.35)');
+    gradient.addColorStop(0.5, 'rgba(46, 204, 113, 0.10)');
+    gradient.addColorStop(1, 'rgba(46, 204, 113, 0)');
+
     let wChart = getWeeklyChart();
     if (wChart) wChart.destroy();
     wChart = new Chart(weeklyCtx, {
@@ -51,16 +57,25 @@ export function renderCharts() {
             labels: weeklyLabels,
             datasets: [{
                 data: weeklyData,
-                borderColor: '#F5F5F0',
-                backgroundColor: 'rgba(245, 245, 240, 0.1)',
+                borderColor: '#2ECC71',
+                borderWidth: 3,
+                backgroundColor: gradient,
                 fill: true,
-                tension: 0.4
+                tension: 0.4,
+                pointBackgroundColor: weeklyData.map(v => v === 100 ? '#FFB84D' : v > 0 ? '#2ECC71' : '#E74C3C'),
+                pointBorderColor: weeklyData.map(v => v === 100 ? '#FFB84D' : v > 0 ? '#2ECC71' : '#E74C3C'),
+                pointRadius: 5,
+                pointHoverRadius: 8,
+                pointBorderWidth: 2
             }]
         },
         options: {
             responsive: true,
             plugins: { legend: { display: false } },
-            scales: { y: { min: 0, max: 100, ticks: { color: '#A3A39E' }, grid: { color: '#2D2D2D' } }, x: { ticks: { color: '#A3A39E' }, grid: { color: '#2D2D2D' } } }
+            scales: {
+                y: { min: 0, max: 100, ticks: { color: '#888', font: { size: 11 } }, grid: { color: 'rgba(255,255,255,0.05)' } },
+                x: { ticks: { color: '#AAA', font: { size: 11, weight: '600' } }, grid: { display: false } }
+            }
         }
     });
     setWeeklyChart(wChart);
@@ -82,14 +97,20 @@ export function renderCharts() {
             labels: habits.map(h => h.icon),
             datasets: [{
                 data: habitsData,
-                backgroundColor: habitsData.map(v => v >= 80 ? '#F5F5F0' : v >= 50 ? '#A3A39E' : '#5A5A55'),
-                borderRadius: 5
+                backgroundColor: habitsData.map(v => v >= 80 ? 'rgba(46,204,113,0.8)' : v >= 50 ? 'rgba(243,156,18,0.7)' : 'rgba(231,76,60,0.6)'),
+                borderColor: habitsData.map(v => v >= 80 ? '#2ECC71' : v >= 50 ? '#F39C12' : '#E74C3C'),
+                borderWidth: 1,
+                borderRadius: 8,
+                borderSkipped: false
             }]
         },
         options: {
             responsive: true,
             plugins: { legend: { display: false } },
-            scales: { y: { min: 0, max: 100, ticks: { color: '#A3A39E' }, grid: { color: '#2D2D2D' } }, x: { ticks: { color: '#F5F5F0', font: { size: 16 } }, grid: { display: false } } }
+            scales: {
+                y: { min: 0, max: 100, ticks: { color: '#888', font: { size: 11 } }, grid: { color: 'rgba(255,255,255,0.05)' } },
+                x: { ticks: { color: '#F5F5F0', font: { size: 16 } }, grid: { display: false } }
+            }
         }
     });
     setHabitsChart(hChart);
