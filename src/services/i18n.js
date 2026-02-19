@@ -12,15 +12,15 @@ const translations = {
         'nav.groups': 'Groupes',
         
         // Today page
-        'today.missions': '🎯 MISSIONS DU JOUR',
+        'today.missions': 'MISSIONS DU JOUR',
         'today.score': 'Score',
         'today.today': "Aujourd'hui",
         'today.streak': 'Streak',
         'today.days': 'Jours',
         'today.perfect': 'Perfect',
         'today.perfectDays': 'Jours 100%',
-        'today.validateDay': '✅ VALIDER LA JOURNÉE',
-        'today.shareDay': '📤 PARTAGER MA JOURNÉE',
+        'today.validateDay': 'Valider la journée',
+        'today.shareDay': 'Partager',
         
         // Stats
         'stats.currentRank': 'Ton Rang Actuel',
@@ -112,8 +112,8 @@ const translations = {
         'today.days': 'Days',
         'today.perfect': 'Perfect',
         'today.perfectDays': '100% Days',
-        'today.validateDay': '✅ VALIDATE THE DAY',
-        'today.shareDay': '📤 SHARE MY DAY',
+        'today.validateDay': 'Validate the day',
+        'today.shareDay': 'Share',
         
         'stats.currentRank': 'Your Current Rank',
         'stats.thisMonth': '⏳ THIS MONTH',
@@ -192,15 +192,15 @@ const translations = {
         'nav.profile': 'Perfil',
         'nav.groups': 'Grupos',
         
-        'today.missions': '🎯 MISIONES DEL DÍA',
+        'today.missions': 'MISIONES DEL DÍA',
         'today.score': 'Puntuación',
         'today.today': 'Hoy',
         'today.streak': 'Racha',
         'today.days': 'Días',
         'today.perfect': 'Perfecto',
         'today.perfectDays': 'Días 100%',
-        'today.validateDay': '✅ VALIDAR EL DÍA',
-        'today.shareDay': '📤 COMPARTIR MI DÍA',
+        'today.validateDay': 'Validar el día',
+        'today.shareDay': 'Compartir',
         
         'stats.currentRank': 'Tu Rango Actual',
         'stats.thisMonth': '⏳ ESTE MES',
