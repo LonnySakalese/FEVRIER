@@ -188,7 +188,9 @@ export function toggleBadgesVisibility() {
 
     const isHidden = grid.style.display === 'none';
     grid.style.display = isHidden ? 'block' : 'none';
-    btn.textContent = isHidden ? '🏆 MASQUER LES BADGES' : '🏆 VOIR LES BADGES';
+    btn.innerHTML = isHidden 
+        ? '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg><span>Masquer les badges</span>' 
+        : '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg><span>Voir les badges</span>';
 }
 
 // Affiche les badges dans la page Stats
@@ -236,8 +238,9 @@ export function renderBadges() {
                     </div>
                 </div>
             </div>
-            <button id="toggleBadgesBtn" class="calendar-view-btn" onclick="toggleBadgesVisibility()" style="width: 100%; margin-bottom: 10px; display: ${isMobile ? 'block' : 'none'};">
-                🏆 VOIR LES BADGES
+            <button id="toggleBadgesBtn" class="action-btn action-btn-secondary" onclick="toggleBadgesVisibility()" style="width: 100%; margin-bottom: 10px; display: ${isMobile ? 'flex' : 'none'};">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>
+                <span>Voir les badges</span>
             </button>
             <div id="badgesGridWrapper" style="display: ${isMobile ? 'none' : 'block'};">
                 ${gridHtml}
