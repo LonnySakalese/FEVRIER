@@ -28,7 +28,7 @@ import { getRank } from './core/ranks.js';
 import {
     loadRankSettings, renderRanks, toggleRankEditMode,
     cancelRankEdit, saveRankSettings, resetRanksToDefault,
-    onPaletteChange, setOnRanksChanged
+    onPaletteChange, setOnRanksChanged, openRanksModal, closeRanksModal
 } from './core/ranks.js';
 
 // --- Core (XP) ---
@@ -658,7 +658,7 @@ Object.assign(window, {
 
     // Stats & Ranks
     toggleRankEditMode, cancelRankEdit, saveRankSettings,
-    resetRanksToDefault, onPaletteChange,
+    resetRanksToDefault, onPaletteChange, openRanksModal, closeRanksModal,
 
     // Calendar
     openCalendarModal, closeCalendarModal, changeCalendarMonth,

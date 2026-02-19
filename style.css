@@ -8943,3 +8943,145 @@ body.tour-active .header {
     margin-top: 4px;
     font-weight: 700;
 }
+
+/* ============================================================
+   RANKS MODAL
+   ============================================================ */
+.ranks-modal-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.7);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    padding: 20px;
+}
+.ranks-modal-overlay.active { opacity: 1; }
+
+.ranks-modal {
+    background: var(--card-bg, #1a1a1a);
+    border-radius: 20px;
+    width: 100%;
+    max-width: 360px;
+    padding: 24px;
+    transform: translateY(30px) scale(0.95);
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05);
+}
+.ranks-modal-overlay.active .ranks-modal {
+    transform: translateY(0) scale(1);
+}
+
+.ranks-modal-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.85rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+    color: var(--text-primary, #fff);
+    margin-bottom: 20px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.ranks-modal-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 18px;
+}
+
+.ranks-modal-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    transition: all 0.2s ease;
+}
+
+.ranks-modal-item.ranks-modal-current {
+    background: rgba(255,255,255,0.08);
+    border-color: var(--rank-color);
+    box-shadow: 0 0 20px rgba(255,255,255,0.05), inset 0 0 20px rgba(255,255,255,0.02);
+}
+
+.ranks-modal-icon {
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.ranks-modal-icon svg { color: var(--rank-color); }
+
+.ranks-modal-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--rank-color);
+    opacity: 0.5;
+}
+
+.ranks-modal-current .ranks-modal-dot { opacity: 1; }
+
+.ranks-modal-info { flex: 1; }
+
+.ranks-modal-name {
+    font-weight: 800;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+}
+
+.ranks-modal-range {
+    font-size: 0.7rem;
+    color: rgba(255,255,255,0.4);
+    margin-top: 2px;
+}
+
+.ranks-modal-you {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--rank-color);
+    letter-spacing: 1px;
+    animation: rankPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes rankPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+.ranks-modal-score {
+    text-align: center;
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 16px;
+}
+.ranks-modal-score strong { color: var(--text-primary, #fff); }
+
+.ranks-modal-close {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.08);
+    color: var(--text-primary, #fff);
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.ranks-modal-close:active { background: rgba(255,255,255,0.15); }
+
+.rank-card { cursor: pointer; }

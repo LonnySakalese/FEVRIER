@@ -323,6 +323,71 @@ export function saveRankSettings() {
     showPopup('Rangs personnalisés sauvegardés !', 'success');
 }
 
+// Ouvre une modal affichant tous les rangs avec le rang actuel mis en surbrillance
+export function openRanksModal() {
+    const avgScoreEl = document.getElementById('avgScore');
+    const avgScore = avgScoreEl ? parseInt(avgScoreEl.textContent) || 0 : 0;
+    const currentRank = getRank(avgScore);
+    
+    if (rankSettings.length === 0) loadRankSettings();
+    
+    const palette = colorPalettes.find(p => p.id === selectedPaletteId) || colorPalettes[6];
+    
+    let ranksHtml = rankSettings.map((rank, index) => {
+        const range = getRankScoreRange(index);
+        const isCurrent = rank.name === currentRank.name;
+        const isTop = rank.isTop || index === rankSettings.length - 1;
+        
+        return `
+            <div class="ranks-modal-item ${isCurrent ? 'ranks-modal-current' : ''}" style="--rank-color: ${rank.color};">
+                <div class="ranks-modal-icon">
+                    ${isCurrent ? '<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>' : '<div class="ranks-modal-dot"></div>'}
+                </div>
+                <div class="ranks-modal-info">
+                    <div class="ranks-modal-name" style="color: ${rank.color};">${rank.name}</div>
+                    <div class="ranks-modal-range">${range.min}% — ${range.max}%</div>
+                </div>
+                ${isCurrent ? '<span class="ranks-modal-you">← TOI</span>' : ''}
+            </div>
+        `;
+    }).join('');
+    
+    // Create modal
+    const overlay = document.createElement('div');
+    overlay.className = 'ranks-modal-overlay';
+    overlay.innerHTML = `
+        <div class="ranks-modal">
+            <div class="ranks-modal-header">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                <span>TOUS LES RANGS</span>
+            </div>
+            <div class="ranks-modal-list">
+                ${ranksHtml}
+            </div>
+            <div class="ranks-modal-score">Score moyen : <strong>${avgScore}%</strong></div>
+            <button class="ranks-modal-close" onclick="closeRanksModal()">Fermer</button>
+        </div>
+    `;
+    
+    overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) closeRanksModal();
+    });
+    
+    document.body.appendChild(overlay);
+    requestAnimationFrame(() => overlay.classList.add('active'));
+    
+    if (navigator.vibrate) navigator.vibrate(20);
+}
+
+// Ferme la modal des rangs
+export function closeRanksModal() {
+    const overlay = document.querySelector('.ranks-modal-overlay');
+    if (overlay) {
+        overlay.classList.remove('active');
+        setTimeout(() => overlay.remove(), 300);
+    }
+}
+
 // Réinitialiser les rangs par défaut
 export async function resetRanksToDefault() {
     const confirmed = await ConfirmModal.show({
