@@ -44,7 +44,7 @@ import { initInstallBanner, dismissInstallBanner, installApp, promptInstallFromS
 import { shareDay } from './ui/share.js';
 import { exportDataCSV } from './ui/export.js';
 import { showQRModal, closeQRModal, downloadQR } from './ui/qrcode.js';
-import { sendChatMessage, toggleRecording, cancelRecording, playAudio, handleTypingInput, showReactionPopup, selectReaction, toggleReaction, handleBubbleTouchStart, handleBubbleTouchEnd, handleBubbleTouchMove, setReplyTo, cancelReply, scrollToMessage, scrollChatToBottom } from './ui/chat.js';
+import { sendChatMessage, toggleRecording, cancelRecording, playAudio, handleTypingInput, showReactionPopup, selectReaction, toggleReaction, handleBubbleTouchStart, handleBubbleTouchEnd, handleBubbleTouchMove, setReplyTo, cancelReply, scrollToMessage, scrollChatToBottom, pinMessage, unpinMessage, scrollToPinnedMessage, updateGroupsNavBadge } from './ui/chat.js';
 import { openCreateChallengeModal, closeCreateChallengeModal, setChallengeDuration, createChallenge, renderChallenges, joinChallenge, leaveChallenge, openChallengeDetail } from './ui/challenges.js';
 // Lazy-loaded on navigation: analytics, streak-display, heatmap
 import './ui/auto-messages.js';
@@ -715,6 +715,7 @@ Object.assign(window, {
     handleTypingInput, showReactionPopup, selectReaction, toggleReaction,
     handleBubbleTouchStart, handleBubbleTouchEnd, handleBubbleTouchMove,
     setReplyTo, cancelReply, scrollToMessage, scrollChatToBottom,
+    pinMessage, unpinMessage, scrollToPinnedMessage,
 
     // Challenges
     openCreateChallengeModal, closeCreateChallengeModal, setChallengeDuration, createChallenge,
@@ -832,6 +833,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.getElementById('deleteItem').style.display = 'block';
                 showAppPage('today');
                 await initializeApp();
+                // Update groups nav badge
+                updateGroupsNavBadge();
+                setInterval(() => updateGroupsNavBadge(), 60000);
                 hideSplash();
                 if (needsOnboarding()) {
                     startOnboarding();

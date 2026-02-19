@@ -59,6 +59,11 @@ export function renderChatSection(groupId) {
                 <span class="chat-header-title">💬 CHAT</span>
                 <span class="chat-header-status" id="chatStatus">Connexion...</span>
             </div>
+            <div class="chat-pinned" id="chatPinnedMessage" style="display:none;" onclick="scrollToPinnedMessage()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="17" x2="12" y2="22"/><path d="M5 17h14v-1.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V6h1a2 2 0 0 0 0-4H8a2 2 0 0 0 0 4h1v4.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24Z"/></svg>
+                <span class="chat-pinned-text" id="chatPinnedText"></span>
+                <button class="chat-pinned-close" id="chatPinnedUnpin" onclick="event.stopPropagation();unpinMessage()" style="display:none;">✕</button>
+            </div>
             <div class="chat-messages-wrapper">
                 <div class="chat-messages" id="chatMessages">
                     <div class="chat-loading">⏳ Chargement des messages...</div>
@@ -114,6 +119,25 @@ export function startChatListener(groupId) {
 
     // Mark messages as read
     markGroupAsRead(groupId);
+
+    // Load pinned message
+    loadPinnedMessage(groupId);
+
+    // Update lastSeen for online presence
+    if (appState.currentUser) {
+        db.collection('groups').doc(groupId).collection('members').doc(appState.currentUser.uid).update({
+            lastSeen: firebase.firestore.FieldValue.serverTimestamp()
+        }).catch(() => {});
+        // Update lastSeen every 60s while chat is open
+        if (window._lastSeenInterval) clearInterval(window._lastSeenInterval);
+        window._lastSeenInterval = setInterval(() => {
+            if (currentChatGroupId && appState.currentUser) {
+                db.collection('groups').doc(currentChatGroupId).collection('members').doc(appState.currentUser.uid).update({
+                    lastSeen: firebase.firestore.FieldValue.serverTimestamp()
+                }).catch(() => {});
+            }
+        }, 60000);
+    }
 
     // Setup scroll detection
     setTimeout(() => {
@@ -192,6 +216,10 @@ export function stopChatListener() {
     currentChatGroupId = null;
     replyingTo = null;
     cancelRecording();
+    if (window._lastSeenInterval) {
+        clearInterval(window._lastSeenInterval);
+        window._lastSeenInterval = null;
+    }
 }
 
 // ============================================================
@@ -313,8 +341,13 @@ function renderMessages(docs) {
             html += `</div>`;
         }
 
-        // Reply button (small, subtle)
+        // Reply + Pin buttons
+        html += `<div class="chat-msg-actions">`;
         html += `<button class="chat-reply-btn" onclick="setReplyTo('${msgId}', '${escapeAttr(msg.senderPseudo || 'Anonyme')}', '${escapeAttr(msg.text || msg.type === 'audio' ? '🎵 Audio' : '')}')">↩</button>`;
+        if (isMe) {
+            html += `<button class="chat-pin-btn" onclick="pinMessage('${msgId}', '${escapeAttr(msg.text || '🎵 Audio')}')">📌</button>`;
+        }
+        html += `</div>`;
 
         // Sender pseudo at bottom (not me, last in group)
         if (!isMe && isLastInGroup) {
@@ -872,4 +905,118 @@ function escapeAttr(str) {
 function truncate(str, max) {
     if (!str) return '';
     return str.length > max ? str.substring(0, max) + '…' : str;
+}
+
+// ============================================================
+// PIN MESSAGE
+// ============================================================
+
+export async function pinMessage(msgId, text) {
+    if (!currentChatGroupId) return;
+    try {
+        await db.collection('groups').doc(currentChatGroupId).update({
+            pinnedMessage: { msgId, text: text.substring(0, 100) }
+        });
+        showPopup('📌 Message épinglé !', 'success');
+        loadPinnedMessage(currentChatGroupId);
+    } catch (e) {
+        console.error('Erreur pin:', e);
+        showPopup('Erreur', 'error');
+    }
+}
+
+export async function unpinMessage() {
+    if (!currentChatGroupId) return;
+    try {
+        await db.collection('groups').doc(currentChatGroupId).update({
+            pinnedMessage: firebase.firestore.FieldValue.delete()
+        });
+        const el = document.getElementById('chatPinnedMessage');
+        if (el) el.style.display = 'none';
+        showPopup('Message désépinglé', 'info');
+    } catch (e) {
+        console.error('Erreur unpin:', e);
+    }
+}
+
+export async function loadPinnedMessage(groupId) {
+    try {
+        const gDoc = await db.collection('groups').doc(groupId).get();
+        const data = gDoc.data();
+        const el = document.getElementById('chatPinnedMessage');
+        const textEl = document.getElementById('chatPinnedText');
+        const unpinBtn = document.getElementById('chatPinnedUnpin');
+        if (!el || !textEl) return;
+
+        if (data?.pinnedMessage) {
+            textEl.textContent = data.pinnedMessage.text;
+            el.style.display = 'flex';
+            // Show unpin button if user is creator
+            if (unpinBtn && data.creatorId === appState.currentUser?.uid) {
+                unpinBtn.style.display = 'block';
+            }
+        } else {
+            el.style.display = 'none';
+        }
+    } catch (e) { /* ignore */ }
+}
+
+export function scrollToPinnedMessage() {
+    // Just scroll to top of chat
+    const container = document.getElementById('chatMessages');
+    if (container) container.scrollTop = 0;
+}
+
+// ============================================================
+// GROUP GOAL / OBJECTIVE
+// ============================================================
+
+export function renderGroupGoal(groupId, groupData) {
+    const goalEl = document.getElementById('groupGoalSection');
+    if (!goalEl) return '';
+
+    if (groupData?.goal) {
+        const progress = groupData.goal.progress || 0;
+        return `
+            <div class="group-goal">
+                <div class="group-goal-header">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFB84D" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+                    <span class="group-goal-title">Objectif du groupe</span>
+                </div>
+                <div class="group-goal-text">${groupData.goal.text}</div>
+                <div class="group-goal-bar">
+                    <div class="group-goal-bar-fill" style="width: ${progress}%"></div>
+                </div>
+                <div class="group-goal-progress">${progress}%</div>
+            </div>`;
+    }
+    return '';
+}
+
+// ============================================================
+// UPDATE NAV BADGE
+// ============================================================
+
+export async function updateGroupsNavBadge() {
+    if (!isFirebaseConfigured || !appState.currentUser) return;
+    try {
+        const userDoc = await db.collection('users').doc(appState.currentUser.uid).get();
+        const groupIds = userDoc.data()?.groups || [];
+        let totalUnread = 0;
+        for (const gId of groupIds) {
+            try {
+                const count = await getUnreadCount(gId);
+                totalUnread += count;
+            } catch (e) { /* ignore */ }
+        }
+        const badge = document.getElementById('navGroupsBadge');
+        if (badge) {
+            if (totalUnread > 0) {
+                badge.textContent = totalUnread > 99 ? '99+' : totalUnread;
+                badge.style.display = 'flex';
+            } else {
+                badge.style.display = 'none';
+            }
+        }
+    } catch (e) { /* ignore */ }
 }

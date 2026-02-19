@@ -907,6 +907,11 @@
                     style="width: 100%; padding: 12px; background: var(--charcoal); border: 1px solid var(--steel); border-radius: 8px; color: var(--accent); font-size: 1rem; resize: none;"></textarea>
             </div>
             <div class="form-group">
+                <label>Objectif du groupe <span class="optional-label">(optionnel)</span></label>
+                <input type="text" id="createGroupGoal" placeholder="Ex: Tout le monde à 80% cette semaine" maxlength="80"
+                    style="width: 100%; padding: 12px; background: var(--charcoal); border: 1px solid var(--steel); border-radius: 8px; color: var(--accent); font-size: 0.9rem;">
+            </div>
+            <div class="form-group">
                 <label>Habitudes du groupe</label>
                 <div class="group-habits-select" id="createGroupHabits">
                     <!-- Rempli dynamiquement -->
@@ -1057,8 +1062,11 @@
         <div class="nav-add-btn" onclick="openManageHabitsModal()" tabindex="0" role="button" aria-label="Ajouter une habitude">
             <div class="nav-add-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
         </div>
-        <div class="nav-item" onclick="showPage('groups', event)" tabindex="0" role="button" aria-label="Groupes">
-            <div class="icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+        <div class="nav-item" onclick="showPage('groups', event)" tabindex="0" role="button" aria-label="Groupes" id="navGroupsItem">
+            <div class="icon" style="position:relative;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                <span class="nav-badge" id="navGroupsBadge" style="display:none;"></span>
+            </div>
             <div class="label" data-i18n="nav.groups">Groupes</div>
         </div>
         <div class="nav-item" onclick="showPage('profile', event)" tabindex="0" role="button" aria-label="Profil">

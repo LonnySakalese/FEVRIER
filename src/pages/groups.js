@@ -111,20 +111,51 @@ export async function renderGroups() {
                     unreadCount = await getUnreadCount(gId);
                 } catch (e) { /* ignore */ }
 
+                // Get last message preview
+                let lastMsgPreview = '';
+                let lastMsgTime = '';
+                try {
+                    const lastMsgSnap = await db.collection('groups').doc(gId).collection('messages')
+                        .orderBy('createdAt', 'desc').limit(1).get();
+                    if (!lastMsgSnap.empty) {
+                        const lastMsg = lastMsgSnap.docs[0].data();
+                        const sender = lastMsg.senderPseudo || 'Anonyme';
+                        const text = lastMsg.type === 'audio' ? '🎵 Audio' : (lastMsg.text || '');
+                        lastMsgPreview = `${sender}: ${text.length > 40 ? text.substring(0, 40) + '…' : text}`;
+                        if (lastMsg.createdAt) {
+                            const d = lastMsg.createdAt.toDate();
+                            lastMsgTime = d.getHours().toString().padStart(2,'0') + ':' + d.getMinutes().toString().padStart(2,'0');
+                        }
+                    }
+                } catch (e) { /* ignore */ }
+
+                // Get online members count (active in last 5 min)
+                let onlineCount = 0;
+                try {
+                    const fiveMinAgo = new Date(Date.now() - 5 * 60 * 1000);
+                    const onlineSnap = await db.collection('groups').doc(gId).collection('members')
+                        .where('lastSeen', '>', fiveMinAgo).get();
+                    onlineCount = onlineSnap.size;
+                } catch (e) { /* ignore */ }
+
                 cardsHtml += `
                     <div class="group-card" onclick="openGroupDetail('${gId}')">
                         <div class="group-card-header">
                             <div class="group-card-name">
                                 ${escapeHtml(g.name)}
-                                ${unreadCount > 0 ? `<span class="group-unread-badge">${unreadCount > 99 ? '99+' : unreadCount}</span>` : ''}
+                                ${unreadCount > 0 ? `<span class="group-unread-badge">${unreadCount}</span>` : ''}
                             </div>
-                            <div class="group-card-count">${g.memberCount || 0} membre${(g.memberCount || 0) > 1 ? 's' : ''}</div>
+                            <div class="group-card-meta">
+                                ${onlineCount > 0 ? `<span class="group-online-dot"></span><span class="group-online-count">${onlineCount}</span>` : ''}
+                                <span class="group-card-count">${g.memberCount || 0} 👥</span>
+                                ${lastMsgTime ? `<span class="group-card-time">${lastMsgTime}</span>` : ''}
+                            </div>
                         </div>
+                        ${lastMsgPreview ? `<div class="group-card-preview">${escapeHtml(lastMsgPreview)}</div>` : ''}
                         <div class="group-card-avatars">
                             ${avatars.map(a => `<span class="group-card-avatar">${a}</span>`).join('')}
                             ${(g.memberCount || 0) > 5 ? `<span class="group-card-avatar-more">+${g.memberCount - 5}</span>` : ''}
                         </div>
-                        ${g.description ? `<div class="group-card-desc">${escapeHtml(g.description)}</div>` : ''}
                     </div>`;
             } catch (e) {
                 console.warn('Erreur chargement groupe', gId, e);
@@ -226,8 +257,10 @@ export async function createGroup() {
         const userDoc = await db.collection('users').doc(userId).get();
         const userData = userDoc.data() || {};
 
+        const goal = (document.getElementById('createGroupGoal')?.value || '').trim();
+
         // Create group document
-        const groupRef = await db.collection('groups').add({
+        const groupData = {
             name,
             description,
             code,
@@ -235,7 +268,10 @@ export async function createGroup() {
             createdAt: firebase.firestore.FieldValue.serverTimestamp(),
             habitNames,
             memberCount: 1
-        });
+        };
+        if (goal) groupData.goal = { text: goal, progress: 0 };
+
+        const groupRef = await db.collection('groups').add(groupData);
         console.log('✅ Groupe créé:', groupRef.id);
 
         // Add creator as member
@@ -454,6 +490,16 @@ export async function openGroupDetail(groupId) {
                     </div>
                     <div class="group-detail-count">${g.memberCount || members.length} membre${(g.memberCount || members.length) > 1 ? 's' : ''}</div>
                 </div>
+
+                ${g.goal ? `
+                <div class="group-goal">
+                    <div class="group-goal-header">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFB84D" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+                        <span class="group-goal-title">Objectif</span>
+                    </div>
+                    <div class="group-goal-text">${escapeHtml(g.goal.text)}</div>
+                    <div class="group-goal-bar"><div class="group-goal-bar-fill" style="width: ${g.goal.progress || 0}%"></div></div>
+                </div>` : ''}
 
                 <div class="group-detail-habits">
                     <div class="group-detail-habits-title">Habitudes du groupe</div>
