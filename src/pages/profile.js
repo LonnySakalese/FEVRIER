@@ -5,7 +5,7 @@
 import { appState } from '../services/state.js';
 import { getData, saveData } from '../services/storage.js';
 import { auth, db, isFirebaseConfigured } from '../config/firebase.js';
-import { getAvgScore, getBestStreak, getPerfectDays } from '../core/scores.js';
+import { getAvgScore, getBestStreak, getPerfectDays, getTotalWins, getStreak } from '../core/scores.js';
 import { getRank } from '../core/ranks.js';
 import { showPopup } from '../ui/toast.js';
 import { loadBadges, BADGES } from '../core/badges.js';
@@ -116,6 +116,13 @@ export function renderProfile() {
         rankEl.textContent = rank.name;
         rankEl.style.color = rank.color;
     }
+
+    // Stats fun
+    const totalWinsEl = document.getElementById('profileTotalWins');
+    if (totalWinsEl) totalWinsEl.textContent = getTotalWins();
+    
+    const currentStreakEl = document.getElementById('profileCurrentStreak');
+    if (currentStreakEl) currentStreakEl.textContent = getStreak();
 
     // Membre depuis
     const memberSinceEl = document.getElementById('profileMemberSince');

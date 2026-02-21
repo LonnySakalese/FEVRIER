@@ -76,7 +76,7 @@ import {
 } from './pages/profile.js';
 import {
     renderGroups, openCreateGroupModal, closeCreateGroupModal, createGroup,
-    openJoinGroupModal, closeJoinGroupModal, joinGroup,
+    openJoinGroupModal, closeJoinGroupModal, joinGroup, toggleQRScanner,
     openGroupDetail, closeGroupDetail, leaveGroup, deleteGroup, copyGroupCode,
     renderProfileGroups, switchGroupTab
 } from './pages/groups.js';
@@ -704,7 +704,7 @@ Object.assign(window, {
 
     // Groups
     openCreateGroupModal, closeCreateGroupModal, createGroup,
-    openJoinGroupModal, closeJoinGroupModal, joinGroup,
+    openJoinGroupModal, closeJoinGroupModal, joinGroup, toggleQRScanner,
     openGroupDetail, closeGroupDetail, leaveGroup, deleteGroup, copyGroupCode,
 
     // QR Code

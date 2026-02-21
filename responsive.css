@@ -1028,3 +1028,43 @@ select,
         padding-bottom: 0;
     }
 }
+
+/* ============================================================
+   CHAT MOBILE — RESPONSIVE FIXES
+   ============================================================ */
+@media (max-width: 480px) {
+    .chat-messages {
+        height: 50vh;
+        min-height: 250px;
+    }
+    .chat-bubble {
+        max-width: 85%;
+    }
+    .chat-msg-more-btn {
+        opacity: 0.6;
+        width: 24px;
+        height: 24px;
+        font-size: 0.85rem;
+    }
+    .chat-msg-menu button {
+        padding: 6px 10px;
+        font-size: 0.7rem;
+    }
+    .chat-input-row {
+        gap: 6px;
+    }
+    .chat-audio-preview {
+        gap: 6px;
+    }
+    .group-tab-buttons {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        gap: 4px;
+    }
+    .group-tab-btn {
+        flex-shrink: 0;
+        font-size: 0.7rem;
+        padding: 8px 10px;
+    }
+}

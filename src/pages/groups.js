@@ -313,6 +313,89 @@ export function openJoinGroupModal() {
 export function closeJoinGroupModal() {
     const modal = document.getElementById('joinGroupModal');
     if (modal) modal.classList.remove('active');
+    stopQRScanner();
+}
+
+// ============================================================
+// QR CODE SCANNER
+// ============================================================
+
+let qrScannerStream = null;
+let qrScannerInterval = null;
+
+export function toggleQRScanner() {
+    const container = document.getElementById('qrScannerContainer');
+    if (!container) return;
+    
+    if (container.style.display === 'none') {
+        startQRScanner();
+    } else {
+        stopQRScanner();
+    }
+}
+
+async function startQRScanner() {
+    const container = document.getElementById('qrScannerContainer');
+    const video = document.getElementById('qrScannerVideo');
+    if (!container || !video) return;
+
+    // Check BarcodeDetector support
+    if (!('BarcodeDetector' in window)) {
+        showPopup('Scanner non supporté sur ce navigateur', 'warning');
+        return;
+    }
+
+    try {
+        qrScannerStream = await navigator.mediaDevices.getUserMedia({
+            video: { facingMode: 'environment' }
+        });
+        video.srcObject = qrScannerStream;
+        container.style.display = 'block';
+
+        const detector = new BarcodeDetector({ formats: ['qr_code'] });
+        
+        qrScannerInterval = setInterval(async () => {
+            if (video.readyState < 2) return;
+            try {
+                const barcodes = await detector.detect(video);
+                if (barcodes.length > 0) {
+                    const value = barcodes[0].rawValue;
+                    // Extract group code — could be a URL or raw code
+                    let code = value;
+                    if (value.includes('join=')) {
+                        code = value.split('join=')[1].substring(0, 6);
+                    } else if (value.length === 6) {
+                        code = value;
+                    }
+                    
+                    const input = document.getElementById('joinGroupCode');
+                    if (input) input.value = code.toUpperCase();
+                    
+                    stopQRScanner();
+                    showPopup('QR code scanné !', 'success');
+                    if (navigator.vibrate) navigator.vibrate(100);
+                }
+            } catch (e) { /* scan error, continue */ }
+        }, 300);
+
+    } catch (err) {
+        console.error('QR Scanner error:', err);
+        showPopup('Accès caméra refusé', 'error');
+    }
+}
+
+function stopQRScanner() {
+    const container = document.getElementById('qrScannerContainer');
+    if (container) container.style.display = 'none';
+    
+    if (qrScannerStream) {
+        qrScannerStream.getTracks().forEach(t => t.stop());
+        qrScannerStream = null;
+    }
+    if (qrScannerInterval) {
+        clearInterval(qrScannerInterval);
+        qrScannerInterval = null;
+    }
 }
 
 export async function joinGroup() {
