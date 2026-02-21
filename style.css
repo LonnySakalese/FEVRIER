@@ -3643,9 +3643,17 @@ canvas {
 }
 
 .badge-icon {
-    font-size: 2.5rem;
     margin-bottom: 8px;
     transition: transform 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent-dim);
+}
+
+.badge-icon svg {
+    width: 32px;
+    height: 32px;
 }
 
 .badge-card.unlocked:hover .badge-icon {
@@ -3654,7 +3662,11 @@ canvas {
 
 .badge-icon.grayscale {
     filter: grayscale(100%);
-    opacity: 0.4;
+    opacity: 0.3;
+}
+
+.badge-card.unlocked .badge-icon {
+    filter: drop-shadow(0 0 6px currentColor);
 }
 
 .badge-name {
