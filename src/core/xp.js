@@ -19,9 +19,9 @@ export function setOnLevelUp(callback) {
 const MAX_LEVEL = 50;
 const FATIGUE_THRESHOLD = 70; // Score minimum de la veille pour éviter la fatigue
 
-// XP total requis pour atteindre le niveau N = N × (N+1) × 50
+// XP total requis pour atteindre le niveau N = N × (N+1) × 75 (harder curve)
 export function getXPForLevel(level) {
-    return level * (level + 1) * 50;
+    return level * (level + 1) * 75;
 }
 
 // Calcule le niveau à partir du XP total
@@ -145,7 +145,7 @@ export function awardHabitXP(habitId) {
         saveData(data);
     }
     
-    return addXP(10, 'habit_validated');
+    return addXP(5, 'habit_validated');
 }
 
 // Bonus XP selon le score de la journée validée (1 fois par jour)
@@ -165,14 +165,14 @@ export function awardDayValidatedXP(score) {
     
     let totalAwarded = 0;
 
-    // Journée validée = +50 XP bonus
-    addXP(50, 'day_validated');
-    totalAwarded += 50;
+    // Journée validée = +25 XP bonus
+    addXP(25, 'day_validated');
+    totalAwarded += 25;
 
-    // Journée parfaite (100%) = +100 XP bonus supplémentaire
+    // Journée parfaite (100%) = +50 XP bonus supplémentaire
     if (score === 100) {
-        addXP(100, 'perfect_day');
-        totalAwarded += 100;
+        addXP(50, 'perfect_day');
+        totalAwarded += 50;
     }
 
     return totalAwarded;

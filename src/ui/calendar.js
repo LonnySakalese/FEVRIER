@@ -62,14 +62,7 @@ export function renderCalendarGrid() {
 
     const data = getData();
 
-    const habitsToShow = (typeof habits !== 'undefined' && habits.length > 0) ? habits : [
-        { id: 'coldshower', name: 'DOUCHE FROIDE', icon: '🧊' },
-        { id: 'reading', name: 'LECTURE (30 min)', icon: '📚' },
-        { id: 'nutrition', name: 'NUTRITION CLEAN', icon: '🥗' },
-        { id: 'sleep', name: 'SOMMEIL 8H+', icon: '😴' },
-        { id: 'hydration', name: 'HYDRATATION 2L+', icon: '💧' },
-        { id: 'wakeup', name: 'RÉVEIL 5H-6H', icon: '⏰' }
-    ];
+    const habitsToShow = (typeof habits !== 'undefined' && habits.length > 0) ? habits : [];
 
     let calendarData = data;
 

@@ -14,17 +14,17 @@ import { triggerConfetti } from '../ui/confetti.js';
 export const BADGES = [
     // Badges de progression
     { id: 'first_step', name: 'Premier Pas', desc: 'Compléter 1 habitude', icon: '👣', condition: 'totalWins', value: 1, rarity: 'common' },
-    { id: 'beginner', name: 'Débutant', desc: '10 victoires', icon: '🌱', condition: 'totalWins', value: 10, rarity: 'common' },
-    { id: 'committed', name: 'Engagé', desc: '50 victoires', icon: '💪', condition: 'totalWins', value: 50, rarity: 'uncommon' },
-    { id: 'dedicated', name: 'Dévoué', desc: '100 victoires', icon: '🔥', condition: 'totalWins', value: 100, rarity: 'uncommon' },
-    { id: 'champion', name: 'Champion', desc: '500 victoires', icon: '⚡', condition: 'totalWins', value: 500, rarity: 'rare' },
-    { id: 'legend', name: 'Légende', desc: '1000 victoires', icon: '👑', condition: 'totalWins', value: 1000, rarity: 'epic' },
+    { id: 'beginner', name: 'Débutant', desc: '50 victoires', icon: '🌱', condition: 'totalWins', value: 50, rarity: 'common' },
+    { id: 'committed', name: 'Engagé', desc: '200 victoires', icon: '💪', condition: 'totalWins', value: 200, rarity: 'uncommon' },
+    { id: 'dedicated', name: 'Dévoué', desc: '500 victoires', icon: '🔥', condition: 'totalWins', value: 500, rarity: 'uncommon' },
+    { id: 'champion', name: 'Champion', desc: '1500 victoires', icon: '⚡', condition: 'totalWins', value: 1500, rarity: 'rare' },
+    { id: 'legend', name: 'Légende', desc: '5000 victoires', icon: '👑', condition: 'totalWins', value: 5000, rarity: 'epic' },
 
     // Badges de perfection
     { id: 'first_perfect', name: 'Journée Parfaite', desc: 'Premier jour à 100%', icon: '⭐', condition: 'perfectDays', value: 1, rarity: 'common' },
-    { id: 'perfectionist', name: 'Perfectionniste', desc: '10 jours parfaits', icon: '✨', condition: 'perfectDays', value: 10, rarity: 'uncommon' },
-    { id: 'master_perfect', name: 'Maître de la Perfection', desc: '30 jours parfaits', icon: '🌟', condition: 'perfectDays', value: 30, rarity: 'rare' },
-    { id: 'flawless', name: 'Impeccable', desc: '100 jours parfaits', icon: '💎', condition: 'perfectDays', value: 100, rarity: 'epic' },
+    { id: 'perfectionist', name: 'Perfectionniste', desc: '30 jours parfaits', icon: '✨', condition: 'perfectDays', value: 30, rarity: 'uncommon' },
+    { id: 'master_perfect', name: 'Maître de la Perfection', desc: '100 jours parfaits', icon: '🌟', condition: 'perfectDays', value: 100, rarity: 'rare' },
+    { id: 'flawless', name: 'Impeccable', desc: '365 jours parfaits', icon: '💎', condition: 'perfectDays', value: 365, rarity: 'epic' },
 
     // Badges de streaks
     { id: 'streak_3', name: 'Série de 3', desc: '3 jours consécutifs', icon: '🔥', condition: 'bestStreak', value: 3, rarity: 'common' },

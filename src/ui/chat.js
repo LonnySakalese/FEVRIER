@@ -18,6 +18,11 @@ let recordingTimer = null;
 let recordingSeconds = 0;
 const MAX_RECORDING_SECONDS = 120;
 
+// Audio preview state (recorded but not yet sent)
+let pendingAudioBase64 = null;
+let pendingAudioDuration = null;
+let pendingAudioGroupId = null;
+
 // Typing indicator state
 let typingTimeout = null;
 let isTyping = false;
@@ -94,8 +99,10 @@ export function renderChatSection(groupId) {
                     <input type="text" class="chat-text-input" id="chatTextInput" 
                            placeholder="Message..." maxlength="500"
                            onkeydown="if(event.key==='Enter')sendChatMessage('${groupId}')"
-                           oninput="handleTypingInput('${groupId}')">
-                    <button class="chat-send-btn" id="chatSendBtn" onclick="sendChatMessage('${groupId}')">➤</button>
+                           oninput="handleTypingInput('${groupId}'); updateSendBtnState()">
+                    <button class="chat-send-btn chat-send-btn-disabled" id="chatSendBtn" onclick="sendChatMessage('${groupId}')">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                    </button>
                 </div>
             </div>
         </div>
@@ -341,13 +348,14 @@ function renderMessages(docs) {
             html += `</div>`;
         }
 
-        // Reply + Pin buttons
-        html += `<div class="chat-msg-actions">`;
-        html += `<button class="chat-reply-btn" onclick="setReplyTo('${msgId}', '${escapeAttr(msg.senderPseudo || 'Anonyme')}', '${escapeAttr(msg.text || msg.type === 'audio' ? '🎵 Audio' : '')}')">↩</button>`;
-        if (isMe) {
-            html += `<button class="chat-pin-btn" onclick="pinMessage('${msgId}', '${escapeAttr(msg.text || '🎵 Audio')}')">📌</button>`;
-        }
-        html += `</div>`;
+        // "..." menu button (replaces hover actions)
+        const msgTextForAttr = escapeAttr(msg.text || (msg.type === 'audio' ? '🎵 Audio' : ''));
+        const senderForAttr = escapeAttr(msg.senderPseudo || 'Anonyme');
+        html += `<button class="chat-msg-more-btn" onclick="toggleMsgMenu(event, '${msgId}', '${senderForAttr}', '${msgTextForAttr}', ${isMe})">⋯</button>`;
+        html += `<div class="chat-msg-menu" id="msgMenu-${msgId}" style="display:none;">
+            <button onclick="setReplyTo('${msgId}', '${senderForAttr}', '${msgTextForAttr}'); closeMsgMenus()">↩ Répondre</button>
+            ${isMe ? `<button onclick="pinMessage('${msgId}', '${msgTextForAttr}'); closeMsgMenus()">📌 Épingler</button>` : ''}
+        </div>`;
 
         // Sender pseudo at bottom (not me, last in group)
         if (!isMe && isLastInGroup) {
@@ -726,34 +734,11 @@ async function startRecording(groupId) {
             const base64 = await blobToBase64(blob);
             const duration = formatDuration(recordingSeconds);
 
-            try {
-                const userDoc = await db.collection('users').doc(appState.currentUser.uid).get();
-                const userData = userDoc.data() || {};
-
-                const messageData = {
-                    type: 'audio',
-                    audioData: base64,
-                    audioDuration: duration,
-                    senderId: appState.currentUser.uid,
-                    senderPseudo: userData.pseudo || 'Anonyme',
-                    senderAvatar: userData.avatar || '👤',
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                };
-
-                if (replyingTo) {
-                    messageData.replyTo = {
-                        messageId: replyingTo.messageId,
-                        senderPseudo: replyingTo.senderPseudo,
-                        text: replyingTo.text
-                    };
-                    cancelReply();
-                }
-
-                await db.collection('groups').doc(groupId).collection('messages').add(messageData);
-            } catch (err) {
-                console.error('Erreur envoi audio:', err);
-                showPopup('Erreur envoi audio', 'error');
-            }
+            // Don't auto-send — show preview instead
+            pendingAudioBase64 = base64;
+            pendingAudioDuration = duration;
+            pendingAudioGroupId = groupId;
+            showAudioPreview(duration);
         };
 
         mediaRecorder.start(250);
@@ -798,23 +783,109 @@ function stopRecording(groupId) {
 }
 
 export function cancelRecording() {
-    if (!isRecording) return;
+    if (isRecording) {
+        isRecording = false;
+        clearInterval(recordingTimer);
 
-    isRecording = false;
-    clearInterval(recordingTimer);
-
-    if (mediaRecorder && mediaRecorder.state !== 'inactive') {
-        audioChunks = [];
-        mediaRecorder.onstop = () => {
-            mediaRecorder.stream?.getTracks().forEach(t => t.stop());
-        };
-        mediaRecorder.stop();
+        if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+            audioChunks = [];
+            mediaRecorder.onstop = () => {
+                mediaRecorder.stream?.getTracks().forEach(t => t.stop());
+            };
+            mediaRecorder.stop();
+        }
     }
+
+    // Also clear any pending audio preview
+    clearAudioPreview();
 
     const recordBar = document.getElementById('chatRecordingBar');
     const micBtn = document.getElementById('chatMicBtn');
     if (recordBar) recordBar.style.display = 'none';
     if (micBtn) { micBtn.textContent = '🎙️'; micBtn.classList.remove('recording'); }
+}
+
+function showAudioPreview(duration) {
+    const inputRow = document.getElementById('chatInputRow');
+    if (!inputRow) return;
+    
+    // Hide normal input, show audio preview
+    inputRow.innerHTML = `
+        <div class="chat-audio-preview">
+            <button class="chat-audio-preview-delete" onclick="cancelRecording()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+            <div class="chat-audio-preview-wave">
+                <span class="chat-audio-preview-icon">🎙️</span>
+                <span class="chat-audio-preview-duration">${duration}</span>
+            </div>
+            <button class="chat-audio-preview-send" onclick="sendPendingAudio()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            </button>
+        </div>
+    `;
+}
+
+function clearAudioPreview() {
+    pendingAudioBase64 = null;
+    pendingAudioDuration = null;
+    pendingAudioGroupId = null;
+    restoreChatInputRow();
+}
+
+function restoreChatInputRow() {
+    const inputRow = document.getElementById('chatInputRow');
+    if (!inputRow || !currentChatGroupId) return;
+    
+    inputRow.innerHTML = `
+        <button class="chat-mic-btn" id="chatMicBtn" onclick="toggleRecording('${currentChatGroupId}')">🎙️</button>
+        <input type="text" class="chat-text-input" id="chatTextInput" 
+               placeholder="Message..." maxlength="500"
+               onkeydown="if(event.key==='Enter')sendChatMessage('${currentChatGroupId}')"
+               oninput="handleTypingInput('${currentChatGroupId}'); updateSendBtnState()">
+        <button class="chat-send-btn chat-send-btn-disabled" id="chatSendBtn" onclick="sendChatMessage('${currentChatGroupId}')">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        </button>
+    `;
+}
+
+export async function sendPendingAudio() {
+    if (!pendingAudioBase64 || !pendingAudioGroupId || !appState.currentUser) return;
+    
+    const groupId = pendingAudioGroupId;
+    const base64 = pendingAudioBase64;
+    const duration = pendingAudioDuration;
+    
+    clearAudioPreview();
+    
+    try {
+        const userDoc = await db.collection('users').doc(appState.currentUser.uid).get();
+        const userData = userDoc.data() || {};
+
+        const messageData = {
+            type: 'audio',
+            audioData: base64,
+            audioDuration: duration,
+            senderId: appState.currentUser.uid,
+            senderPseudo: userData.pseudo || 'Anonyme',
+            senderAvatar: userData.avatar || '👤',
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        };
+
+        if (replyingTo) {
+            messageData.replyTo = {
+                messageId: replyingTo.messageId,
+                senderPseudo: replyingTo.senderPseudo,
+                text: replyingTo.text
+            };
+            cancelReply();
+        }
+
+        await db.collection('groups').doc(groupId).collection('messages').add(messageData);
+    } catch (err) {
+        console.error('Erreur envoi audio:', err);
+        showPopup('Erreur envoi audio', 'error');
+    }
 }
 
 // ============================================================
@@ -962,9 +1033,61 @@ export async function loadPinnedMessage(groupId) {
 }
 
 export function scrollToPinnedMessage() {
-    // Just scroll to top of chat
-    const container = document.getElementById('chatMessages');
-    if (container) container.scrollTop = 0;
+    // Scroll to the actual pinned message
+    if (!currentChatGroupId || !db) {
+        const container = document.getElementById('chatMessages');
+        if (container) container.scrollTop = 0;
+        return;
+    }
+    
+    db.collection('groups').doc(currentChatGroupId).get().then(gDoc => {
+        const data = gDoc.data();
+        if (data?.pinnedMessage?.msgId) {
+            scrollToMessage(data.pinnedMessage.msgId);
+        }
+    }).catch(() => {});
+}
+
+// ============================================================
+// MESSAGE MENU (replaces hover actions)
+// ============================================================
+
+export function toggleMsgMenu(event, msgId, sender, text, isMe) {
+    event.stopPropagation();
+    
+    // Close any open menus first
+    closeMsgMenus();
+    
+    const menu = document.getElementById(`msgMenu-${msgId}`);
+    if (menu) {
+        menu.style.display = 'flex';
+        // Close on outside click
+        setTimeout(() => {
+            document.addEventListener('click', closeMsgMenus, { once: true });
+        }, 10);
+    }
+}
+
+export function closeMsgMenus() {
+    document.querySelectorAll('.chat-msg-menu').forEach(m => m.style.display = 'none');
+}
+
+// ============================================================
+// SEND BUTTON STATE
+// ============================================================
+
+export function updateSendBtnState() {
+    const input = document.getElementById('chatTextInput');
+    const btn = document.getElementById('chatSendBtn');
+    if (!input || !btn) return;
+    
+    if (input.value.trim().length > 0) {
+        btn.classList.add('chat-send-btn-active');
+        btn.classList.remove('chat-send-btn-disabled');
+    } else {
+        btn.classList.remove('chat-send-btn-active');
+        btn.classList.add('chat-send-btn-disabled');
+    }
 }
 
 // ============================================================
