@@ -9280,3 +9280,77 @@ body.tour-active .header {
     /* Touch "..." always visible on hover for desktop */
     .chat-bubble:hover .chat-msg-more-btn { opacity: 1; }
 }
+
+/* ============================================================
+   SCORE BANNER — Full width on Habitudes page
+   ============================================================ */
+.score-banner {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 15px;
+    padding: 16px 20px;
+    background: var(--charcoal);
+    border: 1px solid var(--steel);
+    border-radius: 16px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.04);
+}
+.score-banner::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #2ECC71, #27AE60);
+    border-radius: 0 0 4px 4px;
+}
+.score-banner-icon {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: rgba(46, 204, 113, 0.1);
+    color: #2ECC71;
+}
+.score-banner-info {
+    flex: 1;
+    min-width: 0;
+}
+.score-banner-label {
+    font-size: 0.65rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+    color: rgba(255,255,255,0.5);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+}
+.score-banner-bar {
+    width: 100%;
+    height: 8px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 4px;
+    overflow: hidden;
+}
+.score-banner-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #2ECC71, #27AE60);
+    border-radius: 4px;
+    transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 0 8px rgba(46, 204, 113, 0.4);
+}
+.score-banner-value {
+    flex-shrink: 0;
+    font-size: 2rem;
+    font-weight: 900;
+    color: #2ECC71;
+    text-shadow: 0 0 15px rgba(46, 204, 113, 0.4);
+    min-width: 70px;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+}

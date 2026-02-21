@@ -293,6 +293,10 @@ export function updateKPIs() {
                 if (score < prevScore) pulseElement(dailyScoreEl);
             }
             _lastScore = score;
+            
+            // Update score banner bar
+            const scoreFill = document.getElementById('scoreBannerFill');
+            if (scoreFill) scoreFill.style.width = score + '%';
         }
 
         // Animate completed count
