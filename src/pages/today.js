@@ -265,6 +265,58 @@ function spawnScoreParticles(el) {
     }
 }
 
+// Renders the week dots overview (Mon-Sun)
+function renderWeekDots() {
+    const container = document.getElementById('weekDots');
+    if (!container) return;
+    
+    const currentDate = getCurrentDate();
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
+    // Get Monday of current week
+    const day = currentDate.getDay();
+    const monday = new Date(currentDate);
+    monday.setDate(monday.getDate() - ((day + 6) % 7));
+    monday.setHours(0, 0, 0, 0);
+    
+    const labels = ['L', 'M', 'M', 'J', 'V', 'S', 'D'];
+    let html = '';
+    
+    for (let i = 0; i < 7; i++) {
+        const d = new Date(monday);
+        d.setDate(d.getDate() + i);
+        d.setHours(0, 0, 0, 0);
+        
+        const isToday = d.getTime() === today.getTime();
+        const isCurrent = d.toDateString() === currentDate.toDateString();
+        const isFuture = d > today;
+        
+        let dotClass = 'week-dot';
+        if (isCurrent) dotClass += ' week-dot-current';
+        
+        if (!isFuture) {
+            const score = getDayScore(d);
+            const scheduled = habits.filter(h => isHabitScheduledForDate(h, d));
+            if (scheduled.length === 0) {
+                dotClass += ' week-dot-rest';
+            } else if (score >= 80) {
+                dotClass += ' week-dot-good';
+            } else if (score > 0) {
+                dotClass += ' week-dot-partial';
+            } else if (!isToday) {
+                dotClass += ' week-dot-missed';
+            }
+        } else {
+            dotClass += ' week-dot-future';
+        }
+        
+        html += `<div class="${dotClass}"><span class="week-dot-label">${labels[i]}</span><span class="week-dot-indicator"></span></div>`;
+    }
+    
+    container.innerHTML = html;
+}
+
 // Met à jour les KPIs (score, streak, etc.) sur la page "Aujourd'hui"
 export function updateKPIs() {
     try {
@@ -294,10 +346,15 @@ export function updateKPIs() {
             }
             _lastScore = score;
             
-            // Update score banner bar
+            // Update score banner bar + count
             const scoreFill = document.getElementById('scoreBannerFill');
             if (scoreFill) scoreFill.style.width = score + '%';
+            const scoreCount = document.getElementById('scoreBannerCount');
+            if (scoreCount) scoreCount.textContent = `${completed}/${scheduledToday.length}`;
         }
+        
+        // Week dots
+        renderWeekDots();
 
         // Animate completed count
         if (completedCountEl) {

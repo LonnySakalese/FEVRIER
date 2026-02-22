@@ -168,13 +168,19 @@
             </button>
         </div>
 
+        <!-- Week overview dots -->
+        <div class="week-dots" id="weekDots"></div>
+
         <!-- Score du jour — full width -->
         <div class="score-banner">
             <div class="score-banner-icon">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
             </div>
             <div class="score-banner-info">
-                <div class="score-banner-label" data-i18n="today.score">SCORE DU JOUR</div>
+                <div class="score-banner-top">
+                    <span class="score-banner-label" data-i18n="today.score">SCORE DU JOUR</span>
+                    <span class="score-banner-count" id="scoreBannerCount">0/0</span>
+                </div>
                 <div class="score-banner-bar">
                     <div class="score-banner-bar-fill" id="scoreBannerFill" style="width: 0%"></div>
                 </div>

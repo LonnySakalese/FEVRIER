@@ -9423,3 +9423,72 @@ body.tour-active .header {
     0%, 100% { box-shadow: 0 0 0 0 rgba(243, 156, 18, 0.2); }
     50% { box-shadow: 0 0 12px 4px rgba(243, 156, 18, 0.15); }
 }
+
+/* ============================================================
+   WEEK DOTS — Overview on Habitudes page
+   ============================================================ */
+.week-dots {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    padding: 10px 15px 0;
+}
+.week-dot {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    flex: 1;
+    max-width: 44px;
+}
+.week-dot-label {
+    font-size: 0.6rem;
+    font-weight: 700;
+    color: rgba(255,255,255,0.3);
+    letter-spacing: 0.5px;
+}
+.week-dot-indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.08);
+    transition: all 0.3s ease;
+}
+.week-dot-current .week-dot-label {
+    color: var(--accent-green, #2ECC71);
+    font-weight: 800;
+}
+.week-dot-current .week-dot-indicator {
+    width: 10px;
+    height: 10px;
+    box-shadow: 0 0 8px rgba(46, 204, 113, 0.4);
+}
+.week-dot-good .week-dot-indicator {
+    background: #2ECC71;
+    box-shadow: 0 0 6px rgba(46, 204, 113, 0.3);
+}
+.week-dot-partial .week-dot-indicator {
+    background: #F39C12;
+}
+.week-dot-missed .week-dot-indicator {
+    background: rgba(231, 76, 60, 0.5);
+}
+.week-dot-rest .week-dot-indicator {
+    background: rgba(255,255,255,0.12);
+}
+.week-dot-future .week-dot-indicator {
+    background: rgba(255,255,255,0.05);
+}
+
+.score-banner-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+}
+.score-banner-count {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: rgba(46, 204, 113, 0.7);
+    font-variant-numeric: tabular-nums;
+}
