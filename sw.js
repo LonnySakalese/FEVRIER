@@ -3,7 +3,7 @@
 // --- CONFIGURATION DU CACHE ---
 
 // Nom du cache. Changer cette valeur invalidera le cache existant et en créera un nouveau.
-const CACHE_NAME = 'warrior-tracker-v34';
+const CACHE_NAME = 'warrior-tracker-v35';
 
 // Liste des fichiers essentiels à mettre en cache pour que l'application fonctionne hors ligne.
 const urlsToCache = [
@@ -54,6 +54,8 @@ const urlsToCache = [
   './src/utils/lazy.js',
   './apple-shortcut.html',
   './offline.html',
+  './cgu.html',
+  './privacy.html',
   // Firebase SDK
   'https://www.gstatic.com/firebasejs/9.17.1/firebase-app-compat.js',
   'https://www.gstatic.com/firebasejs/9.17.1/firebase-auth-compat.js',

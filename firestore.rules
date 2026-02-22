@@ -1,55 +1,53 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Users
+    
+    // Users collection
     match /users/{userId} {
       allow read: if request.auth != null;
       allow write: if request.auth != null && request.auth.uid == userId;
-      
-      match /habits/{habitId} {
-        allow read: if request.auth != null;
-        allow write: if request.auth != null && request.auth.uid == userId;
-      }
-      match /completions/{completionId} {
-        allow read: if request.auth != null;
-        allow write: if request.auth != null && request.auth.uid == userId;
-      }
-      match /stats/{statId} {
-        allow read: if request.auth != null;
-        allow write: if request.auth != null && request.auth.uid == userId;
-      }
     }
     
-    // Groups
+    // Groups collection
     match /groups/{groupId} {
       allow read: if request.auth != null;
       allow create: if request.auth != null;
       allow update: if request.auth != null;
-      allow delete: if request.auth != null;
+      allow delete: if request.auth != null 
+        && resource.data.creatorId == request.auth.uid;
       
-      match /members/{memberId} {
-        allow read: if request.auth != null;
-        allow write: if request.auth != null;
-      }
+      // Messages subcollection
       match /messages/{messageId} {
         allow read: if request.auth != null;
         allow create: if request.auth != null;
         allow update: if request.auth != null;
-        allow delete: if false;
+        allow delete: if request.auth != null 
+          && resource.data.senderId == request.auth.uid;
       }
-      match /typing/{typingId} {
+      
+      // Members subcollection
+      match /members/{memberId} {
         allow read: if request.auth != null;
         allow write: if request.auth != null;
       }
+      
+      // Typing indicators subcollection
+      match /typing/{userId} {
+        allow read: if request.auth != null;
+        allow write: if request.auth != null && request.auth.uid == userId;
+      }
+      
+      // Challenges subcollection
       match /challenges/{challengeId} {
         allow read: if request.auth != null;
         allow create: if request.auth != null;
         allow update: if request.auth != null;
-        allow delete: if false;
-        match /participants/{participantId} {
-          allow read: if request.auth != null;
-          allow write: if request.auth != null;
-        }
+      }
+      
+      // Challenge participants
+      match /challenges/{challengeId}/participants/{userId} {
+        allow read: if request.auth != null;
+        allow write: if request.auth != null && request.auth.uid == userId;
       }
     }
   }
