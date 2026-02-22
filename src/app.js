@@ -628,8 +628,15 @@ document.getElementById('manageHabitsModal')?.addEventListener('click', function
     }
 });
 
+// --- Ranked teaser ---
+function showRankedTeaser() {
+    showPopup('🏆 Mode Ranked — Bientôt disponible ! Saisons, classements et badges exclusifs arrivent...', 'info', 4000);
+    if (navigator.vibrate) navigator.vibrate([50, 30, 50]);
+}
+
 // --- Expose functions to window for onclick handlers in HTML ---
 Object.assign(window, {
+    showRankedTeaser,
     // Auth
     showAuthTab, handleSignup, handleLogin, handleLogout, handleForgotPassword,
     handleDeleteAccount, closeDeleteAccountModal, confirmDeleteAccount,
@@ -892,9 +899,9 @@ document.addEventListener('DOMContentLoaded', () => {
     function activateMaxDemo() {
         const data = getData();
 
-        // XP Level 50 max
+        // XP Level 50 max (formula: N × (N+1) × 75)
         data.xp = {
-            total: 50 * 51 * 50,
+            total: 50 * 51 * 75,
             level: 50,
             todayXP: 500,
             lastDate: getDateKey(new Date()),

@@ -9354,3 +9354,72 @@ body.tour-active .header {
     text-align: right;
     font-variant-numeric: tabular-nums;
 }
+
+/* ============================================================
+   MODE RANKED — COMING SOON CARD
+   ============================================================ */
+.ranked-coming-soon {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 15px;
+    padding: 16px 18px;
+    background: linear-gradient(135deg, rgba(243, 156, 18, 0.08), rgba(231, 76, 60, 0.08));
+    border: 1px solid rgba(243, 156, 18, 0.2);
+    border-radius: 16px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+    overflow: hidden;
+}
+.ranked-coming-soon::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #F39C12, #E74C3C, #9B59B6);
+}
+.ranked-coming-soon:active {
+    transform: scale(0.98);
+}
+.ranked-coming-soon-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    background: rgba(243, 156, 18, 0.12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #F39C12;
+    flex-shrink: 0;
+}
+.ranked-coming-soon-content { flex: 1; }
+.ranked-coming-soon-title {
+    font-size: 0.9rem;
+    font-weight: 900;
+    letter-spacing: 2px;
+    color: #F39C12;
+    text-shadow: 0 0 12px rgba(243, 156, 18, 0.3);
+}
+.ranked-coming-soon-desc {
+    font-size: 0.7rem;
+    color: rgba(255,255,255,0.4);
+    margin-top: 3px;
+    letter-spacing: 0.5px;
+}
+.ranked-coming-soon-badge {
+    flex-shrink: 0;
+    padding: 5px 10px;
+    border-radius: 8px;
+    background: rgba(243, 156, 18, 0.15);
+    color: #F39C12;
+    font-size: 0.6rem;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    border: 1px solid rgba(243, 156, 18, 0.3);
+    animation: rankedPulse 2s ease-in-out infinite;
+}
+@keyframes rankedPulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(243, 156, 18, 0.2); }
+    50% { box-shadow: 0 0 12px 4px rgba(243, 156, 18, 0.15); }
+}
