@@ -121,8 +121,22 @@ export function renderProfile() {
     const totalWinsEl = document.getElementById('profileTotalWins');
     if (totalWinsEl) totalWinsEl.textContent = getTotalWins();
     
+    const currentStreak = getStreak();
     const currentStreakEl = document.getElementById('profileCurrentStreak');
-    if (currentStreakEl) currentStreakEl.textContent = getStreak();
+    if (currentStreakEl) currentStreakEl.textContent = currentStreak;
+    
+    const streakLabel = document.getElementById('streakCardLabel');
+    if (streakLabel) streakLabel.textContent = currentStreak === 0 ? 'Commence ta série !' : 'Streak actuel';
+    
+    const streakIcon = document.getElementById('streakFlameIcon');
+    if (streakIcon) {
+        if (currentStreak >= 30) streakIcon.textContent = '💎';
+        else if (currentStreak >= 7) streakIcon.textContent = '⭐';
+        else streakIcon.textContent = '🔥';
+    }
+    
+    const bestStreakFun = document.getElementById('profileBestStreakFun');
+    if (bestStreakFun) bestStreakFun.textContent = getBestStreak();
 
     // Membre depuis
     const memberSinceEl = document.getElementById('profileMemberSince');

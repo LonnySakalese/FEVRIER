@@ -9492,3 +9492,8 @@ body.tour-active .header {
     color: rgba(46, 204, 113, 0.7);
     font-variant-numeric: tabular-nums;
 }
+
+/* 3-column stats grid for Stats Fun */
+.stats-grid-3 {
+    grid-template-columns: repeat(3, 1fr) !important;
+}

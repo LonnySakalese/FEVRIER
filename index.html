@@ -806,9 +806,6 @@
     <!-- Page "Profil" : profil utilisateur -->
     <div id="page-profile" class="page" role="main">
         <div class="profile-container">
-            <!-- Streak Display Widget -->
-            <div id="streakDisplay"></div>
-
             <!-- Avatar -->
             <div class="profile-avatar-section">
                 <div class="profile-avatar" id="profileAvatar">🦁</div>
@@ -856,14 +853,21 @@
 
             <!-- Stats fun -->
             <div class="section-title">🎮 STATS FUN</div>
-            <div class="stats-grid">
-                <div class="stat-card">
+            <div class="stats-grid stats-grid-3">
+                <div class="stat-card stat-card-orange">
+                    <div class="stat-card-icon" id="streakFlameIcon">🔥</div>
+                    <div class="stat-value" id="profileCurrentStreak">0</div>
+                    <div class="stat-label" id="streakCardLabel">Streak actuel</div>
+                </div>
+                <div class="stat-card stat-card-purple">
+                    <div class="stat-card-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5C7 4 7 7 7 7"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5C17 4 17 7 17 7"/><path d="M4 22h16"/><path d="M10 22V8h4v14"/><path d="M6 14h12"/></svg></div>
                     <div class="stat-value" id="profileTotalWins">0</div>
                     <div class="stat-label">Victoires totales</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-value" id="profileCurrentStreak">0</div>
-                    <div class="stat-label">Streak actuel</div>
+                    <div class="stat-card-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
+                    <div class="stat-value" id="profileBestStreakFun">0</div>
+                    <div class="stat-label">Record streak</div>
                 </div>
             </div>
 
