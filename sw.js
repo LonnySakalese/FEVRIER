@@ -1,9 +1,49 @@
 // Service Worker pour Warrior Habit Tracker
 
+// --- FIREBASE CLOUD MESSAGING (background) ---
+importScripts('https://www.gstatic.com/firebasejs/9.17.1/firebase-app-compat.js');
+importScripts('https://www.gstatic.com/firebasejs/9.17.1/firebase-messaging-compat.js');
+
+firebase.initializeApp({
+    apiKey: "AIzaSyAS0RofOjkTjaDjYhlLc1wISqCgozDOjNY",
+    authDomain: "warrior-habit-tracker.firebaseapp.com",
+    projectId: "warrior-habit-tracker",
+    storageBucket: "warrior-habit-tracker.appspot.com",
+    messagingSenderId: "986537173596",
+    appId: "1:986537173596:web:1ba2b4ec5e8991def47c99"
+});
+
+const messaging = firebase.messaging();
+
+messaging.onBackgroundMessage((payload) => {
+    const { title, body, icon } = payload.notification || {};
+    if (title) {
+        self.registration.showNotification(title, {
+            body: body || '',
+            icon: icon || './icons/icon-192.png',
+            badge: './icons/icon-192.png',
+            vibrate: [100, 50, 100],
+            data: payload.data
+        });
+    }
+});
+
+self.addEventListener('notificationclick', (event) => {
+    event.notification.close();
+    event.waitUntil(
+        clients.matchAll({ type: 'window', includeUncontrolled: true }).then(clientList => {
+            if (clientList.length > 0) {
+                return clientList[0].focus();
+            }
+            return clients.openWindow('./');
+        })
+    );
+});
+
 // --- CONFIGURATION DU CACHE ---
 
 // Nom du cache. Changer cette valeur invalidera le cache existant et en créera un nouveau.
-const CACHE_NAME = 'warrior-tracker-v46';
+const CACHE_NAME = 'warrior-tracker-v47';
 
 // Liste des fichiers essentiels à mettre en cache pour que l'application fonctionne hors ligne.
 const urlsToCache = [
@@ -51,6 +91,9 @@ const urlsToCache = [
   './src/ui/qrcode.js',
   './src/core/xp.js',
   './src/services/i18n.js',
+  './src/services/notifications.js',
+  './src/pages/admin.js',
+  './src/core/admin.js',
   './src/utils/lazy.js',
   './apple-shortcut.html',
   './offline.html',
@@ -59,7 +102,8 @@ const urlsToCache = [
   // Firebase SDK
   'https://www.gstatic.com/firebasejs/9.17.1/firebase-app-compat.js',
   'https://www.gstatic.com/firebasejs/9.17.1/firebase-auth-compat.js',
-  'https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore-compat.js'
+  'https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore-compat.js',
+  'https://www.gstatic.com/firebasejs/9.17.1/firebase-messaging-compat.js'
 ];
 
 

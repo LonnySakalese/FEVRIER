@@ -53,6 +53,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-messaging-compat.js"></script>
     <!-- Inclusion des bibliothèques Firebase pour l'authentification et la base de données -->
 
     <link rel="stylesheet" href="style.css">
@@ -527,6 +528,17 @@
                             <button class="settings-btn danger" onclick="resetAllData()" data-i18n="settings.resetBtn">Effacer</button>
                         </div>
                     </div>
+                </div>
+            </div>
+
+            <!-- Catégorie : Notifications -->
+            <div class="settings-category">
+                <div class="settings-category-header">
+                    <span class="settings-category-icon">🔔</span>
+                    <span class="settings-category-title">Notifications</span>
+                </div>
+                <div class="settings-category-content">
+                    <div id="notifSettingsContainer"></div>
                 </div>
             </div>
 

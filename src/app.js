@@ -68,6 +68,7 @@ import {
 import { updateStats, toggleBadgesVisibility } from './pages/stats.js';
 import { quotes, displayRandomQuote, getGreeting } from './pages/motivation.js';
 import { checkAdminButton, loadAdminPanel } from './pages/admin.js';
+import { initNotifications, renderNotifSettings, checkDailyReminder } from './services/notifications.js';
 import {
     renderProfile, openAvatarPicker, closeAvatarPicker, selectAvatar,
     openEditPseudoModal, closeEditPseudoModal, saveProfilePseudo,
@@ -572,6 +573,7 @@ function showPage(page, event) {
         import('./ui/analytics.js').then(m => m.renderAnalytics('analyticsContainer')).catch(e => console.warn('Analytics load error:', e));
     } else if (page === 'motivation') {
         displayRandomQuote();
+        renderNotifSettings('notifSettingsContainer');
     } else if (page === 'profile') {
         // Lazy-load streak display
         import('./ui/streak-display.js').then(m => m.renderStreakDisplay('streakDisplay')).catch(e => console.warn('Streak display load error:', e));
@@ -852,6 +854,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Update groups nav badge
                 updateGroupsNavBadge();
                 setInterval(() => updateGroupsNavBadge(), 60000);
+                // Notifications
+                initNotifications().catch(e => console.warn('Notif init:', e));
+                checkDailyReminder().catch(e => console.warn('Daily reminder:', e));
+                setInterval(() => checkDailyReminder().catch(() => {}), 3600000); // Check every hour
                 hideSplash();
                 if (needsOnboarding()) {
                     startOnboarding();
