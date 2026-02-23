@@ -9497,3 +9497,19 @@ body.tour-active .header {
 .stats-grid-3 {
     grid-template-columns: repeat(3, 1fr) !important;
 }
+
+/* Rank card in profile — ensure text visibility */
+.stat-card-rank {
+    cursor: pointer;
+    text-align: center;
+}
+.stat-card-rank::before {
+    background: linear-gradient(90deg, #F39C12, #E67E22) !important;
+}
+.stat-card-rank .stat-card-icon svg {
+    stroke: #F39C12;
+}
+.stat-card-rank .stat-value {
+    text-shadow: 0 0 12px currentColor, 0 1px 2px rgba(0,0,0,0.8) !important;
+    font-weight: 900 !important;
+}

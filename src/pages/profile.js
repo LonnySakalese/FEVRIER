@@ -114,7 +114,19 @@ export function renderProfile() {
     const rankEl = document.getElementById('profileRank');
     if (rankEl) {
         rankEl.textContent = rank.name;
-        rankEl.style.color = rank.color;
+        // Ensure rank color is visible on dark bg (lighten if too dark)
+        let color = rank.color;
+        if (color) {
+            const r = parseInt(color.slice(1,3), 16) || 0;
+            const g = parseInt(color.slice(3,5), 16) || 0;
+            const b = parseInt(color.slice(5,7), 16) || 0;
+            const luminance = (r * 0.299 + g * 0.587 + b * 0.114);
+            if (luminance < 80) {
+                // Too dark — use a lighter version
+                color = `rgb(${Math.min(255, r + 120)}, ${Math.min(255, g + 120)}, ${Math.min(255, b + 120)})`;
+            }
+        }
+        rankEl.style.color = color;
     }
 
     // Stats fun
