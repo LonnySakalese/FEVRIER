@@ -557,7 +557,9 @@ function showPage(page, event) {
     const pageElement = document.getElementById('page-' + page);
     if (pageElement) {
         pageElement.classList.add('active');
+        pageElement.scrollTop = 0;
     }
+    window.scrollTo(0, 0);
 
     if (event && event.currentTarget) {
         event.currentTarget.classList.add('active');
@@ -587,7 +589,9 @@ function showAppPage(pageName) {
     const pageElement = document.getElementById('page-' + pageName);
     if (pageElement) {
         pageElement.classList.add('active');
+        pageElement.scrollTop = 0;
     }
+    window.scrollTo(0, 0);
     const navItem = document.querySelector(`.nav-item[onclick*="'${pageName}'"]`);
     if (navItem) {
         navItem.classList.add('active');
