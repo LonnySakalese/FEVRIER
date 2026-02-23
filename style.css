@@ -9646,6 +9646,43 @@ body.tour-active .header {
 }
 .admin-container { padding: 0 16px 100px; }
 
+/* Admin menu cards */
+.admin-menu { display: flex; flex-direction: column; gap: 12px; }
+.admin-menu-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 18px 16px;
+    border-radius: 16px;
+    border: 1px solid rgba(255,255,255,0.08);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+.admin-menu-card:active { transform: scale(0.97); }
+.admin-menu-card svg { color: var(--accent-dim); flex-shrink: 0; }
+.admin-menu-green { background: linear-gradient(135deg, rgba(46,204,113,0.12), rgba(46,204,113,0.03)); border-color: rgba(46,204,113,0.2); }
+.admin-menu-orange { background: linear-gradient(135deg, rgba(243,156,18,0.12), rgba(243,156,18,0.03)); border-color: rgba(243,156,18,0.2); }
+.admin-menu-purple { background: linear-gradient(135deg, rgba(155,89,182,0.12), rgba(155,89,182,0.03)); border-color: rgba(155,89,182,0.2); }
+.admin-menu-icon { font-size: 2rem; width: 48px; text-align: center; flex-shrink: 0; }
+.admin-menu-info { flex: 1; }
+.admin-menu-label { font-weight: 800; font-size: 1rem; color: var(--accent); letter-spacing: 1px; }
+.admin-menu-count { font-size: 0.8rem; color: var(--accent-dim); margin-top: 2px; }
+
+/* Admin detail */
+.admin-detail-back {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: none;
+    border: none;
+    color: var(--accent-dim);
+    font-size: 0.85rem;
+    cursor: pointer;
+    padding: 8px 0;
+    margin-bottom: 8px;
+}
+.admin-detail-back:active { opacity: 0.6; }
+
 .admin-user-card, .admin-group-card {
     display: flex;
     align-items: center;

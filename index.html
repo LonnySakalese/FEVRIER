@@ -354,38 +354,42 @@
             <h2 class="admin-title">🛡️ ADMIN PANEL</h2>
         </div>
         <div class="admin-container">
-            <!-- Stats globales -->
-            <div class="section-title">📊 STATS GLOBALES</div>
-            <div class="stats-grid">
-                <div class="stat-card stat-card-green">
-                    <div class="stat-card-icon">👥</div>
-                    <div class="stat-value" id="adminTotalUsers">-</div>
-                    <div class="stat-label">Utilisateurs</div>
+            <!-- Menu principal admin -->
+            <div id="adminMenu" class="admin-menu">
+                <div class="admin-menu-card admin-menu-green" onclick="openAdminSection('users')">
+                    <div class="admin-menu-icon">👥</div>
+                    <div class="admin-menu-info">
+                        <div class="admin-menu-label">Utilisateurs</div>
+                        <div class="admin-menu-count" id="adminTotalUsers">-</div>
+                    </div>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
                 </div>
-                <div class="stat-card stat-card-orange">
-                    <div class="stat-card-icon">🏘️</div>
-                    <div class="stat-value" id="adminTotalGroups">-</div>
-                    <div class="stat-label">Groupes</div>
+                <div class="admin-menu-card admin-menu-orange" onclick="openAdminSection('groups')">
+                    <div class="admin-menu-icon">🏘️</div>
+                    <div class="admin-menu-info">
+                        <div class="admin-menu-label">Groupes</div>
+                        <div class="admin-menu-count" id="adminTotalGroups">-</div>
+                    </div>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
                 </div>
-                <div class="stat-card stat-card-purple">
-                    <div class="stat-card-icon">⚔️</div>
-                    <div class="stat-value" id="adminTotalChallenges">-</div>
-                    <div class="stat-label">Challenges</div>
+                <div class="admin-menu-card admin-menu-purple" onclick="openAdminSection('challenges')">
+                    <div class="admin-menu-icon">⚔️</div>
+                    <div class="admin-menu-info">
+                        <div class="admin-menu-label">Challenges</div>
+                        <div class="admin-menu-count" id="adminTotalChallenges">-</div>
+                    </div>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
                 </div>
             </div>
 
-            <!-- Liste utilisateurs -->
-            <div class="section-title">👥 UTILISATEURS</div>
-            <div id="adminUsersList" class="admin-users-list">
-                <div class="skeleton-loader" style="height: 60px; margin-bottom: 8px; border-radius: 12px;"></div>
-                <div class="skeleton-loader" style="height: 60px; margin-bottom: 8px; border-radius: 12px;"></div>
-                <div class="skeleton-loader" style="height: 60px; margin-bottom: 8px; border-radius: 12px;"></div>
-            </div>
-
-            <!-- Liste groupes -->
-            <div class="section-title">🏘️ GROUPES</div>
-            <div id="adminGroupsList" class="admin-groups-list">
-                <div class="skeleton-loader" style="height: 60px; margin-bottom: 8px; border-radius: 12px;"></div>
+            <!-- Section détail (cachée par défaut) -->
+            <div id="adminDetail" class="admin-detail" style="display:none;">
+                <button class="admin-detail-back" onclick="closeAdminSection()">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+                    <span>Retour</span>
+                </button>
+                <div class="section-title" id="adminDetailTitle"></div>
+                <div id="adminDetailContent"></div>
             </div>
         </div>
     </div>
