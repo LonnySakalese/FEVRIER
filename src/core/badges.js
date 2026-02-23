@@ -262,8 +262,6 @@ export function renderBadges() {
         gridHtml += '</div>';
 
         const progress = Math.round((unlockedBadges.length / BADGES.length) * 100);
-        const isMobile = window.innerWidth <= 768;
-
         let html = `
             <div class="badges-header">
                 <div class="badges-title">🏆 ACHIEVEMENTS</div>
@@ -274,11 +272,11 @@ export function renderBadges() {
                     </div>
                 </div>
             </div>
-            <button id="toggleBadgesBtn" class="action-btn action-btn-secondary" onclick="toggleBadgesVisibility()" style="width: 100%; margin-bottom: 10px; display: ${isMobile ? 'flex' : 'none'};">
+            <button id="toggleBadgesBtn" class="action-btn action-btn-secondary" onclick="toggleBadgesVisibility()" style="width: 100%; margin-bottom: 10px;">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>
                 <span>Voir les badges</span>
             </button>
-            <div id="badgesGridWrapper" style="display: ${isMobile ? 'none' : 'block'};">
+            <div id="badgesGridWrapper" style="display: none;">
                 ${gridHtml}
             </div>
         `;
