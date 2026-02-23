@@ -823,20 +823,25 @@ export async function renderProfileGroups() {
             return;
         }
 
-        let html = '<div class="profile-groups-list">';
+        let html = '';
         for (const gId of groupIds) {
             try {
                 const gDoc = await db.collection('groups').doc(gId).get();
                 if (!gDoc.exists) continue;
                 const g = gDoc.data();
                 html += `
-                    <div class="profile-group-item" onclick="openGroupDetail('${gId}')">
-                        <span class="profile-group-name">${escapeHtml(g.name)}</span>
-                        <span class="profile-group-count">${g.memberCount || 0} 👥</span>
+                    <div class="profile-group-card" onclick="openGroupDetail('${gId}')">
+                        <div class="profile-group-card-icon">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                        </div>
+                        <div class="profile-group-card-info">
+                            <div class="profile-group-card-name">${escapeHtml(g.name)}</div>
+                            <div class="profile-group-card-members">${g.memberCount || 0} membres</div>
+                        </div>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color:rgba(255,255,255,0.3);flex-shrink:0;"><polyline points="9 18 15 12 9 6"/></svg>
                     </div>`;
             } catch (e) { /* skip */ }
         }
-        html += '</div>';
         container.innerHTML = html;
 
     } catch (err) {

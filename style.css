@@ -9529,3 +9529,91 @@ body.tour-active .header {
     text-shadow: 0 0 12px currentColor, 0 1px 2px rgba(0,0,0,0.8) !important;
     font-weight: 900 !important;
 }
+
+/* ============================================================
+   PROFILE — GROUPS + FOOTER (premium redesign)
+   ============================================================ */
+.profile-groups-container {
+    padding: 0 15px;
+}
+.profile-groups-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 20px;
+    background: var(--charcoal);
+    border: 1px solid var(--steel);
+    border-radius: 14px;
+    color: rgba(255,255,255,0.3);
+    font-size: 0.8rem;
+}
+.profile-group-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    background: var(--charcoal);
+    border: 1px solid var(--steel);
+    border-radius: 14px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.04);
+}
+.profile-group-card:active { transform: scale(0.98); }
+.profile-group-card-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background: rgba(155, 89, 182, 0.12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #9B59B6;
+    flex-shrink: 0;
+}
+.profile-group-card-info { flex: 1; min-width: 0; }
+.profile-group-card-name {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--accent, #F5F5F0);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.profile-group-card-members {
+    font-size: 0.7rem;
+    color: rgba(255,255,255,0.4);
+    margin-top: 2px;
+}
+
+/* Profile footer */
+.profile-footer-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    margin-top: 24px;
+    padding: 0 15px 100px;
+}
+.profile-member-since {
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.3);
+}
+.profile-settings-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    background: var(--charcoal);
+    border: 1px solid var(--steel);
+    border-radius: 12px;
+    color: var(--accent, #F5F5F0);
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+.profile-settings-btn:active { transform: scale(0.96); background: rgba(255,255,255,0.06); }
