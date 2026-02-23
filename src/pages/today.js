@@ -4,7 +4,8 @@
 
 import { habits, getCurrentDate, setCurrentDate } from '../services/state.js';
 import { getData, saveData, getDayData, getDateKey } from '../services/storage.js';
-import { getDayScore, getStreak, getPerfectDays, getHabitStreak, getHabitMonthProgress, formatDate, isToday, canEditDate, isDayValidated } from '../core/scores.js';
+import { getDayScore, getStreak, getPerfectDays, getHabitStreak, getHabitMonthProgress, formatDate, isToday, canEditDate, isDayValidated, getAvgScore } from '../core/scores.js';
+import { getRank, rankSettings as _rankSettings } from '../core/ranks.js';
 import { isHabitScheduledForDate, getHabitDisplayName, openManageHabitsModal, getActiveFilter, HABIT_CATEGORIES } from '../core/habits.js';
 import { playSuccessSound, playUndoSound } from '../ui/sounds.js';
 import { triggerConfetti } from '../ui/confetti.js';
@@ -444,6 +445,17 @@ export function confirmValidateDay() {
     completedForXP.forEach(h => awardHabitXP(h.id));
     // +50 XP day validated + bonus 100 XP if perfect
     awardDayValidatedXP(score);
+    
+    // Track rank master days for "Légende Vivante" badge
+    try {
+        const avgScoreVal = getAvgScore();
+        const currentRank = getRank(avgScoreVal);
+        if (_rankSettings.length > 0 && currentRank.name === _rankSettings[_rankSettings.length - 1].name) {
+            const data2 = getData();
+            data2.rankMasterDays = (data2.rankMasterDays || 0) + 1;
+            saveData(data2);
+        }
+    } catch (e) { /* ignore */ }
     if (window.updateXPDisplay) window.updateXPDisplay();
 
     if (navigator.vibrate) navigator.vibrate([100, 50, 100, 50, 100]);

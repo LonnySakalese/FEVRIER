@@ -63,23 +63,19 @@ export const BADGES = [
     { id: 'flawless', name: 'Impeccable', desc: '365 jours parfaits', icon: BADGE_ICONS.diamond, condition: 'perfectDays', value: 365, rarity: 'epic' },
 
     // Badges de streaks
-    { id: 'streak_3', name: 'Série de 3', desc: '3 jours consécutifs', icon: BADGE_ICONS.flame2, condition: 'bestStreak', value: 3, rarity: 'common' },
     { id: 'streak_7', name: 'Semaine Complète', desc: '7 jours consécutifs', icon: BADGE_ICONS.calendar, condition: 'bestStreak', value: 7, rarity: 'uncommon' },
     { id: 'streak_30', name: 'Mois Complet', desc: '30 jours consécutifs', icon: BADGE_ICONS.calcheck, condition: 'bestStreak', value: 30, rarity: 'rare' },
     { id: 'streak_100', name: 'Centurion', desc: '100 jours consécutifs', icon: BADGE_ICONS.columns, condition: 'bestStreak', value: 100, rarity: 'epic' },
     { id: 'streak_365', name: 'Année Complète', desc: '365 jours consécutifs', icon: BADGE_ICONS.target, condition: 'bestStreak', value: 365, rarity: 'legendary' },
 
     // Badges de rangs
-    { id: 'rank_warrior', name: 'Guerrier', desc: 'Atteindre le rang Guerrier', icon: BADGE_ICONS.swords, condition: 'rank', value: 'CONFIRMÉ', rarity: 'uncommon' },
-    { id: 'rank_elite', name: 'Elite', desc: 'Atteindre le rang Elite', icon: BADGE_ICONS.shield, condition: 'rank', value: 'EXPERT', rarity: 'rare' },
-    { id: 'rank_legend', name: 'Légende Vivante', desc: 'Atteindre le rang maximum', icon: BADGE_ICONS.trophy, condition: 'rank', value: 'MAÎTRE', rarity: 'epic' },
+    { id: 'rank_legend', name: 'Légende Vivante', desc: 'Rang maximum pendant 7 jours', icon: BADGE_ICONS.trophy, condition: 'rankMasterDays', value: 7, rarity: 'epic' },
 
     // Badges de personnalisation
     { id: 'customizer', name: 'Personnalisateur', desc: 'Créer 5 habitudes', icon: BADGE_ICONS.palette, condition: 'customHabits', value: 5, rarity: 'common' },
     { id: 'architect', name: 'Architecte', desc: 'Créer 10 habitudes', icon: BADGE_ICONS.layers, condition: 'customHabits', value: 10, rarity: 'uncommon' },
 
     // Badges spéciaux
-    { id: 'early_bird', name: 'Lève-Tôt', desc: 'Valider 7 jours avant 8h', icon: BADGE_ICONS.sunrise, condition: 'earlyValidations', value: 7, rarity: 'rare' },
     { id: 'night_owl', name: 'Oiseau de Nuit', desc: 'Valider 7 jours après 22h', icon: BADGE_ICONS.moon, condition: 'lateValidations', value: 7, rarity: 'rare' },
     { id: 'collector', name: 'Collectionneur', desc: 'Débloquer 10 badges', icon: BADGE_ICONS.award, condition: 'badgesUnlocked', value: 10, rarity: 'epic' },
     { id: 'completionist', name: 'Complétionniste', desc: 'Débloquer tous les badges', icon: BADGE_ICONS.medal, condition: 'allBadges', value: true, rarity: 'legendary' }
@@ -163,6 +159,9 @@ export function checkAndUnlockBadges() {
                     break;
                 case 'rank':
                     unlocked = currentRank.name === badge.value;
+                    break;
+                case 'rankMasterDays':
+                    unlocked = (data.rankMasterDays || 0) >= badge.value;
                     break;
                 case 'earlyValidations':
                     unlocked = earlyValidations >= badge.value;
