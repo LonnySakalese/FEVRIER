@@ -67,6 +67,7 @@ import {
 } from './pages/today.js';
 import { updateStats, toggleBadgesVisibility } from './pages/stats.js';
 import { quotes, displayRandomQuote, getGreeting } from './pages/motivation.js';
+import { checkAdminButton, loadAdminPanel } from './pages/admin.js';
 import {
     renderProfile, openAvatarPicker, closeAvatarPicker, selectAvatar,
     openEditPseudoModal, closeEditPseudoModal, saveProfilePseudo,
@@ -577,8 +578,11 @@ function showPage(page, event) {
         renderProfile();
         renderProfileGroups();
         renderThemeSelector();
+        checkAdminButton();
     } else if (page === 'groups') {
         renderGroups();
+    } else if (page === 'admin') {
+        loadAdminPanel();
     }
 }
 
