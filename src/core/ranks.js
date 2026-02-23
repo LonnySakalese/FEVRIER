@@ -52,7 +52,7 @@ export const colorPalettes = [
     {
         id: 'samourai',
         name: 'Guerrier Samouraï',
-        colors: ['#2C2C2C', '#4B5D67', '#8B0000', '#D4AF37', '#FFFAF0']
+        colors: ['#7B8FA1', '#4B9CD3', '#E74C3C', '#FFD700', '#FFFAF0']
     }
 ];
 
@@ -138,7 +138,7 @@ export function getRank(score) {
         };
     }
 
-    return { name: 'DÉBUTANT', color: '#5A5A55' };
+    return { name: 'DÉBUTANT', color: '#7B8FA1' };
 }
 
 // Génère l'aperçu d'une palette

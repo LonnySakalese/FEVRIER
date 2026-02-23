@@ -22,7 +22,7 @@ export function updateStats() {
         const totalWinsEl = document.getElementById('totalWins');
         const avgScoreEl = document.getElementById('avgScore');
 
-        if (rankNameEl) { rankNameEl.textContent = rank.name; rankNameEl.style.color = rank.color; }
+        if (rankNameEl) { rankNameEl.textContent = rank.name; rankNameEl.style.color = rank.color; rankNameEl.style.textShadow = `0 0 15px ${rank.color}80, 0 0 30px ${rank.color}40`; }
         if (rankProgressEl) rankProgressEl.style.width = avgScore + '%';
         if (monthScoreEl) monthScoreEl.textContent = getMonthScore() + '%';
         if (bestStreakEl) bestStreakEl.textContent = getBestStreak();
