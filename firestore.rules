@@ -50,5 +50,12 @@ service cloud.firestore {
         allow write: if request.auth != null && request.auth.uid == userId;
       }
     }
+    
+    // Config collection (admin settings)
+    match /config/{docId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null 
+        && get(/databases/$(database)/documents/config/admins).data.uids.hasAny([request.auth.uid]);
+    }
   }
 }
