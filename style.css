@@ -9430,21 +9430,24 @@ body.tour-active .header {
 .week-dots {
     display: flex;
     justify-content: center;
-    gap: 6px;
+    gap: 4px;
     padding: 10px 15px 0;
 }
 .week-dot {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 5px;
+    gap: 4px;
     flex: 1;
-    max-width: 44px;
+    max-width: 48px;
+    padding: 6px 2px;
+    border-radius: 10px;
+    transition: all 0.2s ease;
 }
 .week-dot-label {
-    font-size: 0.6rem;
+    font-size: 0.65rem;
     font-weight: 700;
-    color: rgba(255,255,255,0.3);
+    color: rgba(255,255,255,0.35);
     letter-spacing: 0.5px;
 }
 .week-dot-indicator {
@@ -9454,25 +9457,38 @@ body.tour-active .header {
     background: rgba(255,255,255,0.08);
     transition: all 0.3s ease;
 }
+
+/* TODAY — highlighted background */
+.week-dot-current {
+    background: rgba(46, 204, 113, 0.12);
+    border: 1px solid rgba(46, 204, 113, 0.25);
+}
 .week-dot-current .week-dot-label {
-    color: var(--accent-green, #2ECC71);
-    font-weight: 800;
+    color: #2ECC71;
+    font-weight: 900;
+    font-size: 0.7rem;
 }
 .week-dot-current .week-dot-indicator {
     width: 10px;
     height: 10px;
-    box-shadow: 0 0 8px rgba(46, 204, 113, 0.4);
+    background: #2ECC71;
+    box-shadow: 0 0 10px rgba(46, 204, 113, 0.5);
 }
+
+/* Past days — colored dots */
 .week-dot-good .week-dot-indicator {
     background: #2ECC71;
     box-shadow: 0 0 6px rgba(46, 204, 113, 0.3);
 }
+.week-dot-good .week-dot-label { color: rgba(46, 204, 113, 0.6); }
 .week-dot-partial .week-dot-indicator {
     background: #F39C12;
 }
+.week-dot-partial .week-dot-label { color: rgba(243, 156, 18, 0.5); }
 .week-dot-missed .week-dot-indicator {
-    background: rgba(231, 76, 60, 0.5);
+    background: rgba(231, 76, 60, 0.6);
 }
+.week-dot-missed .week-dot-label { color: rgba(231, 76, 60, 0.4); }
 .week-dot-rest .week-dot-indicator {
     background: rgba(255,255,255,0.12);
 }
