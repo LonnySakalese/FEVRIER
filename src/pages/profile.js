@@ -8,6 +8,7 @@ import { auth, db, isFirebaseConfigured } from '../config/firebase.js';
 import { getAvgScore, getBestStreak, getPerfectDays, getTotalWins, getStreak } from '../core/scores.js';
 import { getRank } from '../core/ranks.js';
 import { showPopup } from '../ui/toast.js';
+import { validatePseudo } from '../services/pseudo-validator.js';
 import { loadBadges, BADGES } from '../core/badges.js';
 
 // Liste d'emojis pour l'avatar
@@ -215,13 +216,14 @@ export function saveProfilePseudo() {
     const input = document.getElementById('editPseudoInput');
     const pseudo = input.value.trim();
 
-    if (!pseudo) {
-        showPopup('Le pseudo ne peut pas être vide', 'warning');
-        return;
-    }
-
-    if (pseudo.length < 2) {
-        showPopup('Le pseudo doit contenir au moins 2 caractères', 'warning');
+    // Validation anti-toxicité
+    const validation = validatePseudo(pseudo);
+    if (!validation.is_valid) {
+        let msg = validation.reason;
+        if (validation.suggested_alternatives.length > 0) {
+            msg += '\n💡 Suggestions : ' + validation.suggested_alternatives.join(', ');
+        }
+        showPopup(msg, 'warning');
         return;
     }
 
@@ -283,8 +285,14 @@ export function saveSetupPseudo() {
         return;
     }
 
-    if (pseudo.length < 2) {
-        showPopup('Le pseudo doit contenir au moins 2 caractères', 'warning');
+    // Validation anti-toxicité
+    const validation = validatePseudo(pseudo);
+    if (!validation.is_valid) {
+        let msg = validation.reason;
+        if (validation.suggested_alternatives.length > 0) {
+            msg += '\n💡 Suggestions : ' + validation.suggested_alternatives.join(', ');
+        }
+        showPopup(msg, 'warning');
         return;
     }
 

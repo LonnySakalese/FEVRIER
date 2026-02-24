@@ -43,7 +43,7 @@ self.addEventListener('notificationclick', (event) => {
 // --- CONFIGURATION DU CACHE ---
 
 // Nom du cache. Changer cette valeur invalidera le cache existant et en créera un nouveau.
-const CACHE_NAME = 'warrior-tracker-v48';
+const CACHE_NAME = 'warrior-tracker-v49';
 
 // Liste des fichiers essentiels à mettre en cache pour que l'application fonctionne hors ligne.
 const urlsToCache = [
@@ -91,9 +91,7 @@ const urlsToCache = [
   './src/ui/qrcode.js',
   './src/core/xp.js',
   './src/services/i18n.js',
-  './src/services/notifications.js',
-  './src/pages/admin.js',
-  './src/core/admin.js',
+  './src/services/pseudo-validator.js',
   './src/utils/lazy.js',
   './apple-shortcut.html',
   './offline.html',
