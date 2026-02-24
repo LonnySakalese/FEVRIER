@@ -43,8 +43,10 @@ export function getStreak() {
 // Compte le nombre total de jours parfaits (100%)
 export function getPerfectDays() {
     const data = getData();
+    const validatedDays = data.validatedDays || [];
     let count = 0;
-    for (const key in data.days) {
+    for (const key of validatedDays) {
+        if (!data.days[key]) continue;
         const [year, month, day] = key.split('-').map(Number);
         const date = new Date(year, month - 1, day);
 
@@ -107,8 +109,10 @@ export function getMonthScore() {
 // Calcule le nombre total d'habitudes complétées ("victoires")
 export function getTotalWins() {
     const data = getData();
+    const validatedDays = data.validatedDays || [];
     let wins = 0;
-    for (const key in data.days) {
+    for (const key of validatedDays) {
+        if (!data.days[key]) continue;
         const dayData = data.days[key];
         wins += habits.filter(h => dayData[h.id]).length;
     }
