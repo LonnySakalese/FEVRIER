@@ -2048,35 +2048,187 @@ canvas {
     gap: 5px;
 }
 
-.habit-action-btn {
+/* ===== HABIT MANAGEMENT CARDS (premium redesign) ===== */
+.hm-card {
+    position: relative;
+    background: linear-gradient(145deg, rgba(30,30,30,0.95), rgba(20,20,20,0.9));
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 16px;
+    margin-bottom: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.04);
+    transition: all 0.3s ease;
+}
+.hm-card:active { transform: scale(0.99); }
+.hm-card-accent {
+    height: 3px;
+    width: 100%;
+    border-radius: 0 0 4px 4px;
+    opacity: 0.8;
+}
+.hm-card-body { padding: 14px 16px 12px; }
+
+.hm-card-top {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.hm-card-icon {
+    font-size: 1.8rem;
+    width: 44px;
+    height: 44px;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 40px;
-    height: 40px;
-    padding: 0;
-    border: 1px solid var(--steel);
-    background: var(--charcoal);
+    background: rgba(255,255,255,0.04);
+    border-radius: 12px;
+    flex-shrink: 0;
+}
+.hm-card-fields {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+.hm-input {
+    width: 100%;
+    padding: 8px 12px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 8px;
     color: var(--accent);
-    border-radius: 10px;
+    font-family: inherit;
+    font-size: 0.9rem;
+    transition: border-color 0.2s;
+    box-sizing: border-box;
+}
+.hm-input:focus {
+    outline: none;
+    border-color: rgba(255,255,255,0.2);
+    background: rgba(255,255,255,0.06);
+}
+.hm-input-name { font-weight: 700; }
+.hm-input-desc { font-size: 0.8rem; color: var(--accent-dim); }
+.hm-input-desc::placeholder { color: rgba(255,255,255,0.2); }
+
+.hm-card-order {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex-shrink: 0;
+}
+.hm-order-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 8px;
+    color: var(--accent-dim);
+    cursor: pointer;
+    transition: all 0.2s;
+    padding: 0;
+}
+.hm-order-btn:active { transform: scale(0.85); background: rgba(255,255,255,0.1); }
+.hm-order-btn:disabled { opacity: 0.2; cursor: default; }
+
+.hm-card-bottom {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255,255,255,0.04);
+}
+.hm-schedule {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 8px;
+}
+.hm-sched-btn {
+    flex: 1;
+    padding: 8px 0;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 8px;
+    color: var(--accent-dim);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
     cursor: pointer;
     transition: all 0.2s;
 }
-.habit-action-btn:active { transform: scale(0.9); }
-
-.habit-action-btn.save {
+.hm-sched-btn.active {
     background: rgba(46,204,113,0.12);
     border-color: rgba(46,204,113,0.3);
     color: #2ECC71;
 }
-.habit-action-btn.save svg { stroke: #2ECC71; }
+.hm-sched-btn:active { transform: scale(0.95); }
 
-.habit-action-btn.delete {
-    background: rgba(231,76,60,0.12);
-    border-color: rgba(231,76,60,0.3);
+.hm-days {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 10px;
+    justify-content: center;
+}
+.hm-day {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    color: var(--accent-dim);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.hm-day.selected {
+    background: rgba(46,204,113,0.15);
+    border-color: rgba(46,204,113,0.4);
+    color: #2ECC71;
+}
+.hm-day:active { transform: scale(0.85); }
+
+.hm-card-actions {
+    display: flex;
+    gap: 8px;
+}
+.hm-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 10px 16px;
+    border-radius: 10px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: 1px solid;
+}
+.hm-btn:active { transform: scale(0.95); }
+
+.hm-btn-save {
+    flex: 1;
+    background: linear-gradient(135deg, rgba(46,204,113,0.15), rgba(46,204,113,0.05));
+    border-color: rgba(46,204,113,0.3);
+    color: #2ECC71;
+}
+.hm-btn-save svg { stroke: #2ECC71; }
+
+.hm-btn-delete {
+    width: 42px;
+    padding: 10px;
+    background: rgba(231,76,60,0.08);
+    border-color: rgba(231,76,60,0.2);
     color: #E74C3C;
 }
-.habit-action-btn.delete svg { stroke: #E74C3C; }
+.hm-btn-delete svg { stroke: #E74C3C; }
 
 .add-habit-section {
     background: var(--dark-gray);

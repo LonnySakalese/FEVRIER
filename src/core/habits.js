@@ -368,44 +368,47 @@ export function renderHabitsManagementList() {
         const daysOfWeek = habit.daysOfWeek || [0, 1, 2, 3, 4, 5, 6];
         const dayLabels = ['D', 'L', 'M', 'M', 'J', 'V', 'S'];
 
-        const scheduleDisplay = scheduleType === 'daily'
-            ? '📅 Tous les jours'
-            : '📆 ' + daysOfWeek.sort((a,b) => a-b).map(d => dayLabels[d]).join(', ');
-
         return `
-            <div class="habit-management-item" data-habit-id="${habit.id}">
-                <div class="habit-management-header">
-                    <div class="move-buttons">
-                        <button class="move-btn" onclick="moveHabit('${escapedId}', -1)" ${disabledUp}>▲</button>
-                        <button class="move-btn" onclick="moveHabit('${escapedId}', 1)" ${disabledDown}>▼</button>
+            <div class="hm-card" data-habit-id="${habit.id}">
+                <div class="hm-card-accent" style="background: ${color};"></div>
+                <div class="hm-card-body">
+                    <div class="hm-card-top">
+                        <div class="hm-card-icon">${habit.icon}</div>
+                        <div class="hm-card-fields">
+                            <input type="text" class="hm-input hm-input-name" id="name-${habit.id}" value="${escapedName}" placeholder="Nom de l'habitude">
+                            <input type="text" class="hm-input hm-input-desc" id="desc-${habit.id}" value="${escapedDesc}" placeholder="Description (optionnel)" maxlength="150">
+                        </div>
+                        <div class="hm-card-order">
+                            <button class="hm-order-btn" onclick="moveHabit('${escapedId}', -1)" ${disabledUp}>
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
+                            </button>
+                            <button class="hm-order-btn" onclick="moveHabit('${escapedId}', 1)" ${disabledDown}>
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                            </button>
+                        </div>
                     </div>
-                    <div class="habit-color-indicator" style="background: ${color};"></div>
-                    <div class="habit-icon-display">${habit.icon}</div>
-                    <input type="text" class="habit-name-input" id="name-${habit.id}" value="${escapedName}" placeholder="Nom de l'habitude">
-                    <div class="habit-actions">
-                        <button class="habit-action-btn save" onclick="updateHabit('${escapedId}')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></button>
-                        <button class="habit-action-btn delete" onclick="deleteHabit('${escapedId}')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>
-                    </div>
-                </div>
-                <div class="habit-management-description">
-                    <input type="text" class="habit-desc-input" id="desc-${habit.id}" value="${escapedDesc}" placeholder="Description (optionnel)" maxlength="150">
-                </div>
-                <div class="habit-management-schedule">
-                    <div class="schedule-type-picker-mini" id="scheduleTypePicker-${habit.id}">
-                        <button type="button" class="schedule-type-btn-mini ${scheduleType === 'daily' ? 'active' : ''}"
-                            data-type="daily" onclick="setHabitScheduleType('${escapedId}', 'daily')">
-                            📅 Quotidien
-                        </button>
-                        <button type="button" class="schedule-type-btn-mini ${scheduleType === 'weekly' ? 'active' : ''}"
-                            data-type="weekly" onclick="setHabitScheduleType('${escapedId}', 'weekly')">
-                            📆 Hebdo
-                        </button>
-                    </div>
-                    <div class="days-of-week-picker-mini" id="daysOfWeekPicker-${habit.id}" style="display: ${scheduleType === 'weekly' ? 'flex' : 'none'};">
-                        ${[1, 2, 3, 4, 5, 6, 0].map(d => `
-                            <div class="day-checkbox-mini ${daysOfWeek.includes(d) ? 'selected' : ''}"
-                                data-day="${d}" onclick="toggleHabitDayOfWeek('${escapedId}', ${d})">${dayLabels[d]}</div>
-                        `).join('')}
+                    <div class="hm-card-bottom">
+                        <div class="hm-schedule">
+                            <button type="button" class="hm-sched-btn ${scheduleType === 'daily' ? 'active' : ''}"
+                                onclick="setHabitScheduleType('${escapedId}', 'daily')">Quotidien</button>
+                            <button type="button" class="hm-sched-btn ${scheduleType === 'weekly' ? 'active' : ''}"
+                                onclick="setHabitScheduleType('${escapedId}', 'weekly')">Hebdo</button>
+                        </div>
+                        <div class="hm-days" id="daysOfWeekPicker-${habit.id}" style="display: ${scheduleType === 'weekly' ? 'flex' : 'none'};">
+                            ${[1, 2, 3, 4, 5, 6, 0].map(d => `
+                                <div class="hm-day ${daysOfWeek.includes(d) ? 'selected' : ''}"
+                                    data-day="${d}" onclick="toggleHabitDayOfWeek('${escapedId}', ${d})">${dayLabels[d]}</div>
+                            `).join('')}
+                        </div>
+                        <div class="hm-card-actions">
+                            <button class="hm-btn hm-btn-save" onclick="updateHabit('${escapedId}')">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                                Sauvegarder
+                            </button>
+                            <button class="hm-btn hm-btn-delete" onclick="deleteHabit('${escapedId}')">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
