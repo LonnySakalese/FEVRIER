@@ -11,7 +11,7 @@ import { getData, saveData, getDateKey } from './services/storage.js';
 import { t, getCurrentLang, setLang, getAvailableLangs, applyTranslations, cycleLang as cycleLangFromModule } from './services/i18n.js';
 
 // --- Services ---
-import { scheduleNotification, toggleNotifications, updateNotificationButton, updateNotificationTime, loadNotificationTime, setShowValidateDayModal } from './services/notifications.js';
+// old notification imports removed — replaced by new notifications.js
 
 // --- Core ---
 import {
@@ -618,7 +618,7 @@ function showAppPage(pageName) {
 setOnHabitsChanged(() => updateUI());
 setOnRanksChanged(() => updateStats());
 setOnLevelUp((newLevel) => checkNewThemeUnlocks(newLevel));
-setShowValidateDayModal(() => showValidateDayModal());
+// setShowValidateDayModal removed (old notification system)
 window._onFilterChange = () => {
     updateUI();
     // After onboarding finishes: pseudo first, then guided tour
@@ -682,9 +682,6 @@ Object.assign(window, {
 
     // Theme
     toggleTheme,
-
-    // Notifications
-    toggleNotifications, updateNotificationTime,
 
     // Tutorial
     nextTutorialStep, prevTutorialStep, skipTutorial,
@@ -794,12 +791,7 @@ document.addEventListener('DOMContentLoaded', () => {
         renderRanks(false);
         updateUI();
         const savedData = getData();
-        if (savedData.notificationsEnabled && Notification.permission === 'granted') {
-            scheduleNotification();
-        }
         document.querySelector('.header .quote').textContent = `"${getGreeting()}" - STAY HARD`;
-        updateNotificationButton();
-        loadNotificationTime();
     }
 
     // Gérer l'affichage initial
