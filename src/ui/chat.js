@@ -230,12 +230,48 @@ export function stopChatListener() {
 }
 
 // ============================================================
+// PSEUDO CACHE — resolve "Anonyme" to real pseudos
+// ============================================================
+const pseudoCache = {};
+
+async function resolvePseudo(uid) {
+    if (!uid) return 'Anonyme';
+    if (pseudoCache[uid]) return pseudoCache[uid];
+    try {
+        const userDoc = await firebase.firestore().collection('users').doc(uid).get();
+        if (userDoc.exists) {
+            const p = userDoc.data().pseudo || 'Anonyme';
+            pseudoCache[uid] = p;
+            return p;
+        }
+    } catch (e) { /* ignore */ }
+    return 'Anonyme';
+}
+
+// Pre-fetch pseudos for all "Anonyme" senders in a message batch
+async function prefetchPseudos(docs) {
+    const uidsToFetch = new Set();
+    for (const doc of docs) {
+        const msg = doc.data();
+        if (!msg.senderPseudo || msg.senderPseudo === 'Anonyme') {
+            if (msg.senderId && !pseudoCache[msg.senderId]) {
+                uidsToFetch.add(msg.senderId);
+            }
+        }
+    }
+    await Promise.all([...uidsToFetch].map(uid => resolvePseudo(uid)));
+}
+
+// ============================================================
 // RENDER MESSAGES
 // ============================================================
 
-function renderMessages(docs) {
+async function renderMessages(docs) {
     const container = document.getElementById('chatMessages');
     if (!container) return;
+
+    // Pre-fetch real pseudos for "Anonyme" senders
+    await prefetchPseudos(docs);
 
     if (docs.length === 0) {
         container.innerHTML = `
@@ -258,6 +294,11 @@ function renderMessages(docs) {
         const msg = doc.data();
         const msgId = doc.id;
         const isMe = msg.senderId === userId;
+        // Resolve pseudo from cache if "Anonyme"
+        const resolvedPseudo = (!msg.senderPseudo || msg.senderPseudo === 'Anonyme')
+            ? (pseudoCache[msg.senderId] || msg.senderPseudo || 'Anonyme')
+            : msg.senderPseudo;
+        msg._displayPseudo = resolvedPseudo;
         const ts = msg.createdAt?.toDate?.() || new Date();
 
         // Date separator
@@ -317,7 +358,7 @@ function renderMessages(docs) {
         // Reply preview
         if (msg.replyTo) {
             html += `<div class="chat-reply-quote" onclick="scrollToMessage('${escapeHtml(msg.replyTo.messageId || '')}')">
-                <span class="chat-reply-quote-author">${escapeHtml(msg.replyTo.senderPseudo || 'Anonyme')}</span>
+                <span class="chat-reply-quote-author">${escapeHtml(pseudoCache[msg.replyTo.senderId] || msg.replyTo.senderPseudo || 'Anonyme')}</span>
                 <span class="chat-reply-quote-text">${escapeHtml(truncate(msg.replyTo.text || '', 80))}</span>
             </div>`;
         }
@@ -350,7 +391,7 @@ function renderMessages(docs) {
 
         // "..." menu button (replaces hover actions)
         const msgTextForAttr = escapeAttr(msg.text || (msg.type === 'audio' ? '🎵 Audio' : ''));
-        const senderForAttr = escapeAttr(msg.senderPseudo || 'Anonyme');
+        const senderForAttr = escapeAttr(msg._displayPseudo);
         html += `<button class="chat-msg-more-btn" onclick="toggleMsgMenu(event, '${msgId}', '${senderForAttr}', '${msgTextForAttr}', ${isMe})">⋯</button>`;
         html += `<div class="chat-msg-menu" id="msgMenu-${msgId}" style="display:none;">
             <button onclick="setReplyTo('${msgId}', '${senderForAttr}', '${msgTextForAttr}'); closeMsgMenus()">↩ Répondre</button>
@@ -361,7 +402,7 @@ function renderMessages(docs) {
         if (!isMe && isLastInGroup) {
             html += `<div class="chat-bubble-sender-bottom">
                 <span class="chat-bubble-avatar">${escapeHtml(msg.senderAvatar || '👤')}</span>
-                <span class="chat-bubble-name" style="color: ${senderColor}">${escapeHtml(msg.senderPseudo || 'Anonyme')}</span>
+                <span class="chat-bubble-name" style="color: ${senderColor}">${escapeHtml(msg._displayPseudo)}</span>
             </div>`;
         }
 

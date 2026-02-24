@@ -544,12 +544,27 @@ export async function openGroupDetail(groupId) {
                 }
             } catch (e) { /* ignore */ }
 
+            // Fetch real pseudo from /users/{uid} if member doc has no pseudo
+            let pseudo = mData.pseudo;
+            let avatar = mData.avatar;
+            if (!pseudo || pseudo === 'Anonyme') {
+                try {
+                    const userDoc = await db.collection('users').doc(memberId).get();
+                    if (userDoc.exists) {
+                        const ud = userDoc.data();
+                        pseudo = ud.pseudo || pseudo || 'Anonyme';
+                        avatar = ud.avatar || avatar || '👤';
+                    }
+                } catch (e) { /* ignore */ }
+            }
+
             members.push({
                 id: memberId,
-                pseudo: mData.pseudo || 'Anonyme',
-                avatar: mData.avatar || '👤',
+                pseudo: pseudo || 'Anonyme',
+                avatar: avatar || '👤',
                 todayScore,
-                rank: getRank(avgScore)
+                rank: getRank(avgScore),
+                isCreator: memberId === g.creatorId
             });
         }
 
@@ -605,7 +620,7 @@ export async function openGroupDetail(groupId) {
                                 <div class="group-member-position">${i + 1}</div>
                                 <div class="group-member-avatar">${m.avatar}</div>
                                 <div class="group-member-info">
-                                    <div class="group-member-pseudo">${escapeHtml(m.pseudo)}</div>
+                                    <div class="group-member-pseudo">${escapeHtml(m.pseudo)}${m.isCreator ? ' <span class="group-creator-badge">👑 Chef</span>' : ''}</div>
                                     <div class="group-member-rank" style="color: ${m.rank.color}">${m.rank.name}</div>
                                 </div>
                                 <div class="group-member-score">${m.todayScore}%</div>
