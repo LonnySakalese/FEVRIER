@@ -519,15 +519,7 @@
                             <button class="settings-btn" onclick="exportDataCSV()">📤 Export</button>
                         </div>
                     </div>
-                    <div class="settings-item">
-                        <div class="settings-item-info">
-                            <div class="settings-item-label" data-i18n="settings.reset">Réinitialiser</div>
-                            <div class="settings-item-desc" data-i18n="settings.resetDesc">Effacer toutes les données</div>
-                        </div>
-                        <div class="settings-item-action">
-                            <button class="settings-btn danger" onclick="resetAllData()" data-i18n="settings.resetBtn">Effacer</button>
-                        </div>
-                    </div>
+                    <!-- Réinitialiser supprimé — utiliser Supprimer le compte à la place -->
                 </div>
             </div>
 
@@ -811,7 +803,7 @@
                 Entre ton <strong>mot de passe</strong> pour confirmer :
             </p>
             <input type="password" id="deleteAccountInput" placeholder="Ton mot de passe"
-                style="width: 100%; padding: 12px; background: var(--charcoal); border: 1px solid var(--steel); border-radius: 8px; color: var(--accent); font-size: 1rem; text-align: center; margin-bottom: 20px;">
+                style="width: 100%; padding: 12px; background: var(--charcoal); border: 1px solid var(--steel); border-radius: 8px; color: var(--accent); font-size: 1rem; text-align: center; margin-bottom: 20px; box-sizing: border-box;">
             <div class="modal-buttons">
                 <button class="modal-btn cancel" onclick="closeDeleteAccountModal()">Annuler</button>
                 <button class="modal-btn save" style="background: #8B0000; color: #FFE5E5;"

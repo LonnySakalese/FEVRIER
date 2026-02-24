@@ -278,12 +278,18 @@ async function confirmDeleteAccount() {
         // Ré-authentifier avec le mot de passe
         const credential = firebase.auth.EmailAuthProvider.credential(user.email, password);
         await user.reauthenticateWithCredential(credential);
+        console.log('✅ Ré-authentification réussie');
     } catch (error) {
-        console.error('❌ Erreur ré-authentification:', error);
-        if (error.code === 'auth/wrong-password' || error.code === 'auth/invalid-credential') {
+        console.error('❌ Erreur ré-authentification:', error.code, error.message);
+        const code = error.code || '';
+        if (code.includes('wrong-password') || code.includes('invalid-credential') || code.includes('invalid-login')) {
             showPopup('Mot de passe incorrect', 'error');
+        } else if (code.includes('too-many-requests')) {
+            showPopup('Trop de tentatives. Attends quelques minutes.', 'error');
+        } else if (code.includes('network')) {
+            showPopup('Erreur réseau. Vérifie ta connexion.', 'error');
         } else {
-            showPopup('Erreur de vérification : ' + (error.message || error.code), 'error');
+            showPopup('Erreur : ' + (error.message || error.code), 'error');
         }
         return;
     }
