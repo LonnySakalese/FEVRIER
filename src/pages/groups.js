@@ -276,8 +276,8 @@ export async function createGroup() {
 
         // Add creator as member
         await db.collection('groups').doc(groupRef.id).collection('members').doc(userId).set({
-            pseudo: userData.pseudo || 'Anonyme',
-            avatar: userData.avatar || '👤',
+            pseudo: userData.pseudo || userData.profile?.pseudo || 'Anonyme',
+            avatar: userData.avatar || userData.profile?.avatar || '👤',
             joinedAt: firebase.firestore.FieldValue.serverTimestamp()
         });
 
@@ -447,8 +447,8 @@ export async function joinGroup() {
 
         // Add as member
         await db.collection('groups').doc(groupId).collection('members').doc(userId).set({
-            pseudo: userData.pseudo || 'Anonyme',
-            avatar: userData.avatar || '👤',
+            pseudo: userData.pseudo || userData.profile?.pseudo || 'Anonyme',
+            avatar: userData.avatar || userData.profile?.avatar || '👤',
             joinedAt: firebase.firestore.FieldValue.serverTimestamp()
         });
 
@@ -552,8 +552,8 @@ export async function openGroupDetail(groupId) {
                     const userDoc = await db.collection('users').doc(memberId).get();
                     if (userDoc.exists) {
                         const ud = userDoc.data();
-                        pseudo = ud.pseudo || pseudo || 'Anonyme';
-                        avatar = ud.avatar || avatar || '👤';
+                        pseudo = ud.pseudo || ud.profile?.pseudo || ud.displayName || pseudo || 'Anonyme';
+                        avatar = ud.avatar || ud.profile?.avatar || avatar || '👤';
                     }
                 } catch (e) { /* ignore */ }
             }

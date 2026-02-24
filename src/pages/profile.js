@@ -42,7 +42,12 @@ async function syncProfileToFirestore(profile) {
 
     try {
         const userRef = db.collection('users').doc(appState.currentUser.uid);
-        await userRef.set({ profile: profile }, { merge: true });
+        await userRef.set({
+            profile: profile,
+            pseudo: profile.pseudo || null,
+            avatar: profile.avatar || null,
+            bio: profile.bio || null,
+        }, { merge: true });
         console.log('✅ Profil synchronisé avec Firestore');
     } catch (error) {
         console.error('❌ Erreur sync profil:', error);

@@ -240,8 +240,11 @@ async function resolvePseudo(uid) {
     try {
         const userDoc = await firebase.firestore().collection('users').doc(uid).get();
         if (userDoc.exists) {
-            const p = userDoc.data().pseudo || 'Anonyme';
-            pseudoCache[uid] = p;
+            const d = userDoc.data();
+            const p = d.pseudo || d.profile?.pseudo || d.displayName || 'Anonyme';
+            if (p !== 'Anonyme') {
+                pseudoCache[uid] = p;
+            }
             return p;
         }
     } catch (e) { /* ignore */ }
@@ -454,8 +457,8 @@ export async function sendChatMessage(groupId) {
             type: 'text',
             text,
             senderId: appState.currentUser.uid,
-            senderPseudo: userData.pseudo || 'Anonyme',
-            senderAvatar: userData.avatar || '👤',
+            senderPseudo: userData.pseudo || userData.profile?.pseudo || 'Anonyme',
+            senderAvatar: userData.avatar || userData.profile?.avatar || '👤',
             createdAt: firebase.firestore.FieldValue.serverTimestamp()
         };
 
@@ -908,8 +911,8 @@ export async function sendPendingAudio() {
             audioData: base64,
             audioDuration: duration,
             senderId: appState.currentUser.uid,
-            senderPseudo: userData.pseudo || 'Anonyme',
-            senderAvatar: userData.avatar || '👤',
+            senderPseudo: userData.pseudo || userData.profile?.pseudo || 'Anonyme',
+            senderAvatar: userData.avatar || userData.profile?.avatar || '👤',
             createdAt: firebase.firestore.FieldValue.serverTimestamp()
         };
 
