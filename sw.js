@@ -43,7 +43,7 @@ self.addEventListener('notificationclick', (event) => {
 // --- CONFIGURATION DU CACHE ---
 
 // Nom du cache. Changer cette valeur invalidera le cache existant et en créera un nouveau.
-const CACHE_NAME = 'warrior-tracker-v62';
+const CACHE_NAME = 'warrior-tracker-v63';
 
 // Liste des fichiers essentiels à mettre en cache pour que l'application fonctionne hors ligne.
 const urlsToCache = [
@@ -112,12 +112,10 @@ const urlsToCache = [
  * C'est le moment idéal pour mettre en cache les ressources statiques de l'application.
  */
 self.addEventListener('install', event => {
-  // waitUntil attend que la promesse soit résolue avant de terminer l'installation.
+  self.skipWaiting(); // Force activation immédiate
   event.waitUntil(
-    // Ouvre le cache spécifié par CACHE_NAME.
     caches.open(CACHE_NAME)
       .then(cache => {
-        // Ajoute toutes les URLs de la liste urlsToCache au cache.
         console.log('Fichiers mis en cache lors de l\'installation');
         return cache.addAll(urlsToCache);
       })
@@ -130,18 +128,21 @@ self.addEventListener('install', event => {
  */
 self.addEventListener('fetch', event => {
   event.respondWith(
-    caches.match(event.request)
-      .then(response => {
-        if (response) {
-          return response;
+    fetch(event.request).then(response => {
+      // Network OK → update cache + return
+      if (response && response.status === 200) {
+        const clone = response.clone();
+        caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
+      }
+      return response;
+    }).catch(() => {
+      // Offline → fallback to cache
+      return caches.match(event.request).then(cached => {
+        if (cached) return cached;
+        if (event.request.mode === 'navigate') {
+          return caches.match('./offline.html');
         }
-        return fetch(event.request).catch(error => {
-          console.debug('Fetch failed for:', event.request.url);
-          // Si c'est une requête de navigation (page HTML), servir offline.html
-          if (event.request.mode === 'navigate') {
-            return caches.match('./offline.html');
-          }
-          return new Response('', { status: 503, statusText: 'Service Unavailable' });
+        return new Response('', { status: 503, statusText: 'Service Unavailable' });
         });
       })
   );
@@ -153,14 +154,11 @@ self.addEventListener('fetch', event => {
  */
 self.addEventListener('activate', event => {
   event.waitUntil(
-    // Récupère les noms de tous les caches existants.
     caches.keys().then(cacheNames => {
       return Promise.all(
-        // Filtre la liste pour ne garder que les caches qui ne correspondent pas au CACHE_NAME actuel.
         cacheNames.filter(cacheName => cacheName !== CACHE_NAME)
-          // Supprime chacun des anciens caches.
           .map(cacheName => caches.delete(cacheName))
       );
-    })
+    }).then(() => self.clients.claim()) // Prend le contrôle immédiatement
   );
 });
