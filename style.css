@@ -1762,6 +1762,7 @@ canvas {
     max-width: 400px;
     margin: 50px auto;
     padding: 20px;
+    box-sizing: border-box;
 }
 
 .auth-logo {
@@ -1776,10 +1777,11 @@ canvas {
 }
 
 .auth-logo h1 {
-    font-size: 1.8rem;
+    font-size: clamp(1.3rem, 5vw, 1.8rem);
     color: var(--accent);
     font-weight: 900;
     letter-spacing: 3px;
+    word-break: break-word;
 }
 
 .auth-tabs {
@@ -1790,14 +1792,17 @@ canvas {
 
 .auth-tab {
     flex: 1;
-    padding: 12px;
+    padding: 12px 8px;
     background: var(--charcoal);
     border: 1px solid var(--steel);
     color: var(--accent);
     border-radius: 8px;
     cursor: pointer;
     font-weight: bold;
+    font-size: clamp(0.75rem, 3.5vw, 0.9rem);
     transition: all 0.2s;
+    white-space: nowrap;
+    min-width: 0;
 }
 
 .auth-tab.active {
@@ -1827,6 +1832,7 @@ canvas {
     color: var(--accent);
     font-size: 1rem;
     font-family: inherit;
+    box-sizing: border-box;
 }
 
 .auth-form input:focus {
