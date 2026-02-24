@@ -4111,70 +4111,93 @@ canvas {
 }
 
 /* Group cards */
+/* ===== GROUP CARDS — Premium Redesign ===== */
 .group-card {
-    background: var(--dark-gray);
-    border: 1px solid var(--steel);
-    border-radius: 12px;
-    padding: 16px;
+    position: relative;
+    background: linear-gradient(145deg, rgba(30,30,30,0.95), rgba(18,18,18,0.9));
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 16px;
+    padding: 18px;
     margin-bottom: 12px;
     cursor: pointer;
-    transition: transform 0.15s, box-shadow 0.15s;
+    transition: all 0.25s cubic-bezier(0.4,0,0.2,1);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.04);
+    overflow: hidden;
 }
-
-.group-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+.group-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #2ECC71, #27AE60);
+    opacity: 0.6;
 }
 
 .group-card:active {
-    transform: translateY(0);
+    transform: scale(0.98);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.4);
 }
 
 .group-card-header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
     margin-bottom: 10px;
 }
 
 .group-card-name {
     font-size: 1.05rem;
-    font-weight: 700;
+    font-weight: 800;
     color: var(--accent);
+    letter-spacing: -0.2px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .group-card-count {
-    font-size: 0.75rem;
+    font-size: 0.7rem;
+    font-weight: 600;
     color: var(--accent-dim);
+    background: rgba(255,255,255,0.05);
+    padding: 3px 8px;
+    border-radius: 20px;
+    letter-spacing: 0.3px;
 }
 
 .group-card-avatars {
     display: flex;
-    gap: 4px;
-    margin-bottom: 8px;
+    gap: 0;
+    margin-bottom: 4px;
 }
 
 .group-card-avatar {
-    font-size: 1.3rem;
-    width: 30px;
-    height: 30px;
+    font-size: 1.1rem;
+    width: 32px;
+    height: 32px;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: var(--charcoal);
+    background: linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+    border: 2px solid rgba(20,20,20,0.9);
     border-radius: 50%;
+    margin-left: -6px;
 }
+.group-card-avatar:first-child { margin-left: 0; }
 
 .group-card-avatar-more {
-    font-size: 0.7rem;
-    width: 30px;
-    height: 30px;
+    font-size: 0.65rem;
+    font-weight: 700;
+    width: 32px;
+    height: 32px;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: var(--charcoal);
+    background: rgba(46,204,113,0.12);
+    border: 2px solid rgba(20,20,20,0.9);
     border-radius: 50%;
-    color: var(--accent-dim);
+    color: #2ECC71;
+    margin-left: -6px;
 }
 
 .group-card-desc {
@@ -4186,13 +4209,15 @@ canvas {
 /* Group empty state */
 .group-empty {
     text-align: center;
-    padding: 40px 20px;
+    padding: 50px 20px;
     color: var(--accent-dim);
 }
 
 .group-empty-icon {
-    font-size: 2.5rem;
-    margin-bottom: 12px;
+    margin-bottom: 16px;
+    opacity: 0.4;
+    display: flex;
+    justify-content: center;
 }
 
 /* Group detail */
@@ -8952,11 +8977,15 @@ body.tour-active .header {
 .group-card-preview {
     font-size: 0.75rem;
     color: var(--accent-dim);
-    margin-top: 6px;
+    margin: 8px 0;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     line-height: 1.3;
+    padding: 8px 12px;
+    background: rgba(255,255,255,0.02);
+    border-radius: 8px;
+    border-left: 2px solid rgba(46,204,113,0.3);
 }
 
 .group-card-meta {
@@ -8970,6 +8999,7 @@ body.tour-active .header {
 .group-card-time {
     color: var(--accent-dark);
     font-size: 0.65rem;
+    font-weight: 600;
 }
 
 /* Online indicator */
