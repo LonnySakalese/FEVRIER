@@ -53,7 +53,7 @@ export async function renderGroups() {
     if (!isFirebaseConfigured || !appState.currentUser) {
         container.innerHTML = `
             <div class="group-empty">
-                <div class="group-empty-icon">🔒</div>
+                <div class="group-empty-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
                 <div>Connecte-toi pour accéder aux groupes</div>
             </div>`;
         return;
@@ -71,7 +71,7 @@ export async function renderGroups() {
             </button>
         </div>
         <div class="groups-list" id="groupsList">
-            <div class="group-empty"><div class="group-empty-icon">⏳</div><div>Chargement...</div></div>
+            <div class="group-empty"><div class="group-empty-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div>Chargement...</div></div>
         </div>`;
 
     try {
@@ -84,7 +84,7 @@ export async function renderGroups() {
         if (groupIds.length === 0) {
             listEl.innerHTML = `
                 <div class="group-empty">
-                    <div class="group-empty-icon">👥</div>
+                    <div class="group-empty-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
                     <div>Aucun groupe pour le moment</div>
                     <div style="font-size: 0.8rem; margin-top: 8px; color: var(--accent-dim);">
                         Crée un groupe ou rejoins-en un avec un code d'invitation !
@@ -120,7 +120,7 @@ export async function renderGroups() {
                     if (!lastMsgSnap.empty) {
                         const lastMsg = lastMsgSnap.docs[0].data();
                         const sender = lastMsg.senderPseudo || 'Anonyme';
-                        const text = lastMsg.type === 'audio' ? '🎵 Audio' : (lastMsg.text || '');
+                        const text = lastMsg.type === 'audio' ? 'Audio' : (lastMsg.text || '');
                         lastMsgPreview = `${sender}: ${text.length > 40 ? text.substring(0, 40) + '…' : text}`;
                         if (lastMsg.createdAt) {
                             const d = lastMsg.createdAt.toDate();
@@ -147,7 +147,7 @@ export async function renderGroups() {
                             </div>
                             <div class="group-card-meta">
                                 ${onlineCount > 0 ? `<span class="group-online-dot"></span><span class="group-online-count">${onlineCount}</span>` : ''}
-                                <span class="group-card-count">${g.memberCount || 0} 👥</span>
+                                <span class="group-card-count">${g.memberCount || 0} </span>
                                 ${lastMsgTime ? `<span class="group-card-time">${lastMsgTime}</span>` : ''}
                             </div>
                         </div>
@@ -164,7 +164,7 @@ export async function renderGroups() {
 
         listEl.innerHTML = cardsHtml || `
             <div class="group-empty">
-                <div class="group-empty-icon">👥</div>
+                <div class="group-empty-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
                 <div>Aucun groupe trouvé</div>
             </div>`;
 
@@ -172,7 +172,7 @@ export async function renderGroups() {
         console.error('Erreur renderGroups:', err);
         document.getElementById('groupsList').innerHTML = `
             <div class="group-empty">
-                <div class="group-empty-icon">❌</div>
+                <div class="group-empty-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg></div>
                 <div>Erreur de chargement</div>
             </div>`;
     }
@@ -195,7 +195,7 @@ export function openCreateGroupModal() {
             habitsListEl.innerHTML = habits.map(h => `
                 <label class="group-habit-checkbox">
                     <input type="checkbox" value="${h.id}" data-name="${escapeHtml(h.name)}">
-                    <span class="group-habit-icon">${h.icon || '📌'}</span>
+                    <span class="group-habit-icon">${h.icon || '•'}</span>
                     <span class="group-habit-name">${escapeHtml(h.name)}</span>
                 </label>
             `).join('');
@@ -581,9 +581,9 @@ export async function openGroupDetail(groupId) {
                         <div style="display: flex; align-items: center; gap: 8px; justify-content: center;">
                             <div class="group-code" onclick="copyGroupCode('${g.code}')">
                                 <span class="group-code-value">${g.code}</span>
-                                <span class="group-code-copy">📋</span>
+                                <span class="group-code-copy"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></span>
                             </div>
-                            <button class="group-qr-btn" onclick="showQRModal('${g.code}')" style="background: var(--charcoal); border: 1px solid var(--steel); border-radius: 8px; padding: 8px 12px; color: var(--accent); font-size: 1.1rem; cursor: pointer;">📱 QR</button>
+                            <button class="group-qr-btn" onclick="showQRModal('${g.code}')" style="background: var(--charcoal); border: 1px solid var(--steel); border-radius: 8px; padding: 8px 12px; color: var(--accent); font-size: 1.1rem; cursor: pointer;">QR</button>
                         </div>
                     </div>
                     <div class="group-detail-count">${g.memberCount || members.length} membre${(g.memberCount || members.length) > 1 ? 's' : ''}</div>
@@ -607,9 +607,9 @@ export async function openGroupDetail(groupId) {
                 </div>
 
                 <div class="group-tabs">
-                    <button class="group-tab active" data-tab="chat" onclick="switchGroupTab('chat', '${groupId}')">💬 Chat</button>
-                    <button class="group-tab" data-tab="leaderboard" onclick="switchGroupTab('leaderboard', '${groupId}')">🏆 Classement</button>
-                    <button class="group-tab" data-tab="challenges" onclick="switchGroupTab('challenges', '${groupId}')">⚔️ Challenges</button>
+                    <button class="group-tab active" data-tab="chat" onclick="switchGroupTab('chat', '${groupId}')">Chat</button>
+                    <button class="group-tab" data-tab="leaderboard" onclick="switchGroupTab('leaderboard', '${groupId}')">Classement</button>
+                    <button class="group-tab" data-tab="challenges" onclick="switchGroupTab('challenges', '${groupId}')">Challenges</button>
                 </div>
 
                 <div class="group-tab-content" id="groupTabChat">
@@ -620,7 +620,7 @@ export async function openGroupDetail(groupId) {
                                 <div class="group-member-position">${i + 1}</div>
                                 <div class="group-member-avatar">${m.avatar}</div>
                                 <div class="group-member-info">
-                                    <div class="group-member-pseudo">${escapeHtml(m.pseudo)}${m.isCreator ? ' <span class="group-creator-badge">👑 Chef</span>' : ''}</div>
+                                    <div class="group-member-pseudo">${escapeHtml(m.pseudo)}${m.isCreator ? ' <span class="group-creator-badge">Chef</span>' : ''}</div>
                                     <div class="group-member-rank" style="color: ${m.rank.color}">${m.rank.name}</div>
                                 </div>
                                 <div class="group-member-score">${m.todayScore}%</div>
@@ -634,7 +634,7 @@ export async function openGroupDetail(groupId) {
                 <div class="group-tab-content" id="groupTabLeaderboard" style="display: none;">
                     <div id="leaderboardContent">
                         <div class="leaderboard-loading">
-                            <div class="leaderboard-loading-icon">⏳</div>
+                            <div class="leaderboard-loading-icon" style="color:var(--accent-dim)">...</div>
                             <div>Chargement...</div>
                         </div>
                     </div>
@@ -652,9 +652,9 @@ export async function openGroupDetail(groupId) {
 
                 <div class="group-detail-actions">
                     ${isCreator ? `
-                        <button class="group-danger-btn" onclick="deleteGroup('${groupId}')">🗑️ Supprimer le groupe</button>
+                        <button class="group-danger-btn" onclick="deleteGroup('${groupId}')">Supprimer le groupe</button>
                     ` : `
-                        <button class="group-danger-btn" onclick="leaveGroup('${groupId}')">🚪 Quitter le groupe</button>
+                        <button class="group-danger-btn" onclick="leaveGroup('${groupId}')">Quitter le groupe</button>
                     `}
                 </div>
             </div>`;
@@ -721,7 +721,7 @@ export function closeGroupDetail() {
 
 export async function leaveGroup(groupId) {
     const confirmed = await ConfirmModal.show({
-        title: '🚪 QUITTER LE GROUPE',
+        title: 'QUITTER LE GROUPE',
         message: 'Es-tu sûr de vouloir quitter ce groupe ?',
         confirmText: 'Quitter',
         cancelText: 'Annuler',
@@ -753,7 +753,7 @@ export async function leaveGroup(groupId) {
 
 export async function deleteGroup(groupId) {
     const confirmed = await ConfirmModal.show({
-        title: '🗑️ SUPPRIMER LE GROUPE',
+        title: 'SUPPRIMER LE GROUPE',
         message: 'Supprimer ce groupe définitivement ?',
         subtext: 'Tous les membres seront retirés.',
         confirmText: 'Supprimer',
@@ -816,7 +816,7 @@ export async function renderProfileGroups() {
     if (!isFirebaseConfigured || !appState.currentUser) {
         container.innerHTML = `
             <div style="text-align: center; padding: 20px; color: var(--accent-dim);">
-                <div style="font-size: 2rem; margin-bottom: 10px;">👥</div>
+                <div style="margin-bottom: 10px;"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
                 <div>Connecte-toi pour voir tes groupes</div>
             </div>`;
         return;
@@ -830,7 +830,7 @@ export async function renderProfileGroups() {
         if (groupIds.length === 0) {
             container.innerHTML = `
                 <div style="text-align: center; padding: 20px; color: var(--accent-dim);">
-                    <div style="font-size: 2rem; margin-bottom: 10px;">👥</div>
+                    <div style="margin-bottom: 10px;"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
                     <div>Aucun groupe pour le moment</div>
                     <div style="font-size: 0.8rem; margin-top: 5px; cursor: pointer; color: var(--accent);"
                          onclick="showPage('groups', event)">Rejoindre ou créer un groupe →</div>
