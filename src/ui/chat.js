@@ -325,6 +325,23 @@ async function renderMessages(docs) {
             continue;
         }
 
+        // Score share message
+        if (msg.type === 'score-share') {
+            const shareScore = msg.score || 0;
+            const sColor = shareScore >= 80 ? '#2ECC71' : shareScore >= 50 ? '#F39C12' : '#E74C3C';
+            html += `<div class="chat-bubble chat-bubble-system" style="background: linear-gradient(135deg, rgba(46,204,113,0.08), rgba(46,204,113,0.02)); border-color: rgba(46,204,113,0.15);">`;
+            html += `<div style="text-align:center;">`;
+            html += `<div style="font-size:0.7rem; color: var(--accent-dim); margin-bottom:4px;">${escapeHtml(msg._displayPseudo || msg.senderPseudo || 'Anonyme')} a partagé son score</div>`;
+            html += `<div style="font-size:1.8rem; font-weight:900; color:${sColor}; text-shadow: 0 0 10px ${sColor}40;">${shareScore}%</div>`;
+            html += `<div style="font-size:0.7rem; color: var(--accent-dim);">${msg.completed || 0}/${msg.total || 0} habitudes 🔥</div>`;
+            html += `</div>`;
+            html += `<div class="chat-bubble-time">${timeStr}</div>`;
+            html += `</div>`;
+            lastSenderId = null;
+            lastSenderType = 'system';
+            continue;
+        }
+
         // Grouping: check if same sender as previous
         const isGrouped = lastSenderId === msg.senderId && lastSenderType !== 'system';
         const isFirstInGroup = !isGrouped;

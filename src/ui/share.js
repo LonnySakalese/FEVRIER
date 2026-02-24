@@ -1,156 +1,185 @@
 // ============================================================
-// SOCIAL SHARING - "MA JOURNÉE" SHARE IMAGE
+// SHARE — Partager son score dans les groupes de l'app
 // ============================================================
 
-import { appState, habits } from '../services/state.js';
-import { getData, getDateKey } from '../services/storage.js';
-import { getRank } from '../core/ranks.js';
+import { appState } from '../services/state.js';
+import { db, isFirebaseConfigured } from '../config/firebase.js';
+import { showPopup } from './toast.js';
 
 /**
- * Generate a 1080x1080 share image using Canvas API
+ * Opens the share modal with user's groups
  */
-export async function generateShareImage() {
-    const canvas = document.createElement('canvas');
-    canvas.width = 1080;
-    canvas.height = 1080;
-    const ctx = canvas.getContext('2d');
+export async function shareDay() {
+    if (!isFirebaseConfigured || !appState.currentUser) {
+        showPopup('Connecte-toi pour partager', 'warning');
+        return;
+    }
 
-    // Background
-    ctx.fillStyle = '#0A0A0A';
-    ctx.fillRect(0, 0, 1080, 1080);
+    const userId = appState.currentUser.uid;
 
-    // Subtle border
-    ctx.strokeStyle = '#1E1E1E';
-    ctx.lineWidth = 4;
-    ctx.strokeRect(40, 40, 1000, 1000);
+    // Get user's groups
+    let groupIds = [];
+    try {
+        const userDoc = await db.collection('users').doc(userId).get();
+        groupIds = userDoc.data()?.groups || [];
+    } catch (e) {
+        showPopup('Erreur chargement groupes', 'error');
+        return;
+    }
 
-    // Accent line at top
-    ctx.fillStyle = '#19E639';
-    ctx.fillRect(40, 40, 1000, 4);
+    if (groupIds.length === 0) {
+        showPopup('Rejoins un groupe pour partager ton score !', 'warning');
+        return;
+    }
 
-    // Title
-    ctx.fillStyle = '#F5F5F0';
-    ctx.font = 'bold 48px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
-    ctx.textAlign = 'center';
-    ctx.fillText('PROJET FEVRIER', 540, 130);
-
-    // Date
-    const now = new Date();
-    const dateStr = now.toLocaleDateString('fr-FR', {
-        weekday: 'long',
-        day: 'numeric',
-        month: 'long',
-        year: 'numeric'
-    });
-    ctx.fillStyle = '#8A8A85';
-    ctx.font = '28px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
-    ctx.fillText(dateStr.toUpperCase(), 540, 180);
-
-    // Get today's data
+    // Get today's score
+    const { getData } = await import('../services/storage.js');
+    const { getDateKey } = await import('../services/storage.js');
     const data = getData();
-    const dateKey = getDateKey(now);
-    const todayData = data.days?.[dateKey] || {};
-
-    // Calculate score
-    const currentHabits = habits || [];
+    const today = getDateKey(new Date());
+    const dayData = data.history?.[today];
+    
+    let score = 0;
     let completed = 0;
-    let total = currentHabits.length;
-
-    currentHabits.forEach(h => {
-        if (todayData[h.id]) completed++;
-    });
-
-    const score = total > 0 ? Math.round((completed / total) * 100) : 0;
-
-    // Score big
-    ctx.fillStyle = score === 100 ? '#19E639' : '#F5F5F0';
-    ctx.font = 'bold 160px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
-    ctx.fillText(score + '%', 540, 360);
-
-    // Score label
-    ctx.fillStyle = '#8A8A85';
-    ctx.font = '30px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
-    ctx.fillText(`${completed}/${total} MISSIONS`, 540, 410);
-
-    // Rank
-    const rankInfo = getRank(score);
-    if (rankInfo) {
-        ctx.fillStyle = rankInfo.color || '#F5F5F0';
-        ctx.font = 'bold 36px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
-        ctx.fillText(rankInfo.name || 'DÉBUTANT', 540, 475);
+    let total = 0;
+    
+    if (dayData) {
+        const habits = data.customHabits || [];
+        total = habits.filter(h => {
+            if (!h.schedule || h.schedule.type === 'everyday') return true;
+            if (h.schedule.type === 'specific') {
+                const dayIndex = new Date().getDay();
+                const dayNames = ['sunday','monday','tuesday','wednesday','thursday','friday','saturday'];
+                return h.schedule.days?.includes(dayNames[dayIndex]);
+            }
+            return true;
+        }).length;
+        
+        if (total > 0) {
+            completed = Object.values(dayData.habits || {}).filter(v => v === true).length;
+            score = Math.round((completed / total) * 100);
+        }
     }
 
-    // Streak
-    const streak = data.stats?.currentStreak || 0;
-    ctx.fillStyle = '#FF6B35';
-    ctx.font = 'bold 32px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
-    ctx.fillText(`🔥 ${streak} jour${streak > 1 ? 's' : ''} de streak`, 540, 530);
+    // Get today's share status for each group
+    const shareKey = `shareDay_${today}`;
+    const sharedGroups = JSON.parse(localStorage.getItem(shareKey) || '[]');
 
-    // Habits list
-    const startY = 590;
-    const lineHeight = 52;
-    const maxVisible = Math.min(currentHabits.length, 8);
+    // Fetch group details
+    let groupsHtml = '';
+    for (const gId of groupIds) {
+        try {
+            const gDoc = await db.collection('groups').doc(gId).get();
+            if (!gDoc.exists) continue;
+            const g = gDoc.data();
+            const alreadyShared = sharedGroups.includes(gId);
 
-    ctx.textAlign = 'left';
-    ctx.font = '28px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
-
-    for (let i = 0; i < maxVisible; i++) {
-        const h = currentHabits[i];
-        const done = todayData[h.id] || false;
-        const y = startY + i * lineHeight;
-
-        const icon = done ? '✅' : '⬜';
-        ctx.fillStyle = done ? '#F5F5F0' : '#5A5A55';
-        ctx.fillText(`${icon}  ${h.icon || '🎯'} ${h.name}`, 120, y);
+            groupsHtml += `
+                <div class="share-group-item ${alreadyShared ? 'share-group-shared' : ''}" 
+                     id="shareGroup-${gId}"
+                     onclick="${alreadyShared ? '' : `shareToGroup('${gId}', ${score}, ${completed}, ${total})`}">
+                    <div class="share-group-emoji">${g.emoji || '👥'}</div>
+                    <div class="share-group-info">
+                        <div class="share-group-name">${escapeHtml(g.name || 'Groupe')}</div>
+                        <div class="share-group-status">${alreadyShared ? '✅ Partagé' : 'Appuie pour partager'}</div>
+                    </div>
+                    <div class="share-group-action">
+                        ${alreadyShared 
+                            ? '<span style="color: #2ECC71; font-size: 1.2rem;">✓</span>' 
+                            : '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>'}
+                    </div>
+                </div>`;
+        } catch (e) { /* skip */ }
     }
 
-    if (currentHabits.length > maxVisible) {
-        ctx.fillStyle = '#5A5A55';
-        ctx.fillText(`   +${currentHabits.length - maxVisible} autres...`, 120, startY + maxVisible * lineHeight);
+    // Show modal
+    let modal = document.getElementById('shareGroupModal');
+    if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'shareGroupModal';
+        modal.className = 'modal-overlay';
+        document.body.appendChild(modal);
     }
 
-    // Watermark
-    ctx.textAlign = 'center';
-    ctx.fillStyle = '#3A3A3A';
-    ctx.font = '24px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
-    ctx.fillText('projetfevrier.app', 540, 1030);
-
-    // Bottom accent line
-    ctx.fillStyle = '#19E639';
-    ctx.fillRect(40, 1036, 1000, 4);
-
-    return canvas;
+    modal.innerHTML = `
+        <div class="modal" style="max-width: 400px;">
+            <h3>📤 PARTAGER MON SCORE</h3>
+            <div class="share-score-preview">
+                <div class="share-score-value">${score}%</div>
+                <div class="share-score-detail">${completed}/${total} habitudes</div>
+            </div>
+            <div class="share-group-list">
+                ${groupsHtml || '<div style="text-align:center; color: var(--accent-dim); padding: 20px;">Aucun groupe disponible</div>'}
+            </div>
+            <div class="modal-buttons">
+                <button class="modal-btn cancel" onclick="closeShareGroupModal()">Fermer</button>
+            </div>
+        </div>`;
+    
+    modal.classList.add('active');
 }
 
 /**
- * Share today's progress as an image
+ * Share score to a specific group
  */
-export async function shareDay() {
+window.shareToGroup = async function(groupId, score, completed, total) {
+    const userId = appState.currentUser?.uid;
+    if (!userId) return;
+
     try {
-        const canvas = await generateShareImage();
+        // Get user profile
+        const userDoc = await db.collection('users').doc(userId).get();
+        const userData = userDoc.data() || {};
+        const pseudo = userData.pseudo || userData.profile?.pseudo || 'Anonyme';
+        const avatar = userData.avatar || userData.profile?.avatar || '👤';
 
-        const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
-        const file = new File([blob], 'projet-fevrier-jour.png', { type: 'image/png' });
+        // Send as system-style message in chat
+        await db.collection('groups').doc(groupId).collection('messages').add({
+            type: 'score-share',
+            text: `${pseudo} a partagé son score : ${score}% (${completed}/${total}) 🔥`,
+            senderId: userId,
+            senderPseudo: pseudo,
+            senderAvatar: avatar,
+            score,
+            completed,
+            total,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
 
-        // Try Web Share API (mobile)
-        if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
-            await navigator.share({
-                title: 'PROJET FEVRIER - Ma Journée',
-                text: 'Mon suivi du jour 💪',
-                files: [file]
-            });
-        } else {
-            // Fallback: download
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'projet-fevrier-jour.png';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
+        // Mark as shared today
+        const today = new Date().toISOString().split('T')[0];
+        const shareKey = `shareDay_${today}`;
+        const sharedGroups = JSON.parse(localStorage.getItem(shareKey) || '[]');
+        sharedGroups.push(groupId);
+        localStorage.setItem(shareKey, JSON.stringify(sharedGroups));
+
+        // Update UI
+        const item = document.getElementById(`shareGroup-${groupId}`);
+        if (item) {
+            item.classList.add('share-group-shared');
+            item.onclick = null;
+            const status = item.querySelector('.share-group-status');
+            if (status) status.textContent = '✅ Partagé';
+            const action = item.querySelector('.share-group-action');
+            if (action) action.innerHTML = '<span style="color: #2ECC71; font-size: 1.2rem;">✓</span>';
         }
+
+        showPopup('Score partagé ! 🔥', 'success');
+        if (navigator.vibrate) navigator.vibrate([30, 30]);
+
     } catch (e) {
-        console.log('Partage annulé ou erreur:', e);
+        console.error('Share error:', e);
+        showPopup('Erreur lors du partage', 'error');
     }
+};
+
+window.closeShareGroupModal = function() {
+    const modal = document.getElementById('shareGroupModal');
+    if (modal) modal.classList.remove('active');
+};
+
+function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
 }
