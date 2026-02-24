@@ -373,6 +373,54 @@ select,
 }
 
 /* ============================================================ */
+/* SMALL MOBILE (≤375px) — iPhone SE, old phones                */
+/* ============================================================ */
+
+@media (max-width: 375px) {
+    .score-banner {
+        padding: 12px 14px;
+        gap: 10px;
+        margin: 10px;
+    }
+    .score-banner-value {
+        font-size: 1.5rem;
+        min-width: 55px;
+    }
+    .score-banner-icon {
+        width: 36px;
+        height: 36px;
+    }
+    .xp-bar-container {
+        margin: 0 10px 10px;
+        padding: 12px 12px;
+    }
+    .xp-level {
+        font-size: 0.75rem;
+    }
+    .stat-card .stat-value {
+        font-size: 1.3rem;
+    }
+    .stat-card .stat-label {
+        font-size: 0.6rem;
+    }
+    .section-title {
+        font-size: 0.75rem;
+        margin: 12px 10px 8px;
+    }
+    .ranked-coming-soon {
+        margin: 10px;
+        padding: 12px 14px;
+    }
+    .stats-grid {
+        gap: 8px;
+        padding: 0 10px;
+    }
+    .week-dots-container {
+        margin: 0 10px;
+    }
+}
+
+/* ============================================================ */
 /* MOBILE STANDARD (≤480px)                                     */
 /* ============================================================ */
 
@@ -380,6 +428,15 @@ select,
     /* Ensure no horizontal overflow */
     .page {
         overflow-x: hidden;
+    }
+
+    /* Score banner */
+    .score-banner {
+        margin: 12px;
+    }
+    .score-banner-value {
+        font-size: 1.8rem;
+        min-width: 60px;
     }
 
     /* Manage habits modal - ensure form doesn't overflow */
@@ -652,10 +709,11 @@ select,
     #page-stats,
     #page-motivation,
     #page-profile,
-    #page-groups {
-        max-width: 640px;
+    #page-groups,
+    #page-admin {
+        max-width: 700px;
         margin: 0 auto;
-        padding: 0 20px;
+        padding: 0 24px;
     }
 
     #page-auth {
@@ -682,7 +740,7 @@ select,
 
     /* ---- Bottom nav stays but gets cleaner ---- */
     .bottom-nav {
-        max-width: 640px;
+        max-width: 700px;
         margin: 0 auto;
         left: 50%;
         transform: translateX(-50%);
@@ -868,7 +926,7 @@ select,
 
     /* ---- Install banner — centered ---- */
     .install-banner {
-        max-width: 640px;
+        max-width: 700px;
         left: 50%;
         transform: translateX(-50%) translateY(100%);
         border-radius: 16px 16px 0 0;
@@ -946,8 +1004,9 @@ select,
     #page-stats,
     #page-motivation,
     #page-profile,
-    #page-groups {
-        max-width: 680px;
+    #page-groups,
+    #page-admin {
+        max-width: 760px;
     }
 
     /* Stats grid stays 4 cols */
@@ -969,7 +1028,7 @@ select,
 
     /* Bottom nav max width */
     .bottom-nav {
-        max-width: 680px;
+        max-width: 760px;
     }
 }
 
