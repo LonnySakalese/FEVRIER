@@ -7551,6 +7551,8 @@ button:active, .modal-btn:active, .auth-btn:active, .settings-btn:active, .form-
     overflow-y: auto;
     line-height: 1.4;
     box-sizing: border-box;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 .chat-text-input:focus {
