@@ -6936,6 +6936,7 @@ button:active, .modal-btn:active, .auth-btn:active, .settings-btn:active, .form-
 .chat-messages {
     height: 300px;
     overflow-y: auto;
+    overflow-x: hidden;
     padding: 10px 6px;
     display: flex;
     flex-direction: column;
@@ -9316,17 +9317,18 @@ body.tour-active .header {
 .chat-msg-actions { display: none !important; }
 
 /* "..." button on each message */
+/* Message "..." button — inside bubble, no overflow */
 .chat-msg-more-btn {
     position: absolute;
-    top: 4px;
-    right: -8px;
-    width: 28px;
-    height: 28px;
+    top: 6px;
+    right: 6px;
+    width: 24px;
+    height: 24px;
     border: none;
-    background: var(--card-bg, #1a1a1a);
+    background: rgba(0,0,0,0.3);
     color: rgba(255,255,255,0.5);
     border-radius: 50%;
-    font-size: 1rem;
+    font-size: 0.8rem;
     cursor: pointer;
     opacity: 0;
     transition: opacity 0.2s;
@@ -9334,47 +9336,56 @@ body.tour-active .header {
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    padding: 0;
+    line-height: 1;
 }
 .chat-bubble:hover .chat-msg-more-btn,
 .chat-bubble:active .chat-msg-more-btn { opacity: 1; }
-.chat-bubble-me .chat-msg-more-btn { right: auto; left: -8px; }
+.chat-bubble-me .chat-msg-more-btn { right: 6px; left: auto; }
 
-/* Message menu dropdown */
+/* Message action menu — inside bubble, no overflow */
 .chat-msg-menu {
     position: absolute;
-    bottom: -4px;
-    left: 50%;
-    transform: translateX(-50%) translateY(100%);
-    background: var(--card-bg, #222);
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 10px;
-    padding: 4px;
-    z-index: 100;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(15,15,15,0.92);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    border-radius: inherit;
+    z-index: 10;
     display: flex;
-    gap: 2px;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.5);
-    animation: menuPop 0.15s ease-out;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 6px;
+    animation: menuFade 0.15s ease-out;
 }
-@keyframes menuPop {
-    from { opacity: 0; transform: translateX(-50%) translateY(100%) scale(0.9); }
-    to { opacity: 1; transform: translateX(-50%) translateY(100%) scale(1); }
+@keyframes menuFade {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 .chat-msg-menu button {
-    background: none;
-    border: none;
-    color: var(--text-primary, #fff);
-    padding: 8px 12px;
-    font-size: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: rgba(255,255,255,0.8);
+    padding: 6px 10px;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.3px;
     border-radius: 8px;
     cursor: pointer;
     white-space: nowrap;
-    transition: background 0.15s;
+    transition: all 0.15s;
 }
-.chat-msg-menu button:active { background: rgba(255,255,255,0.1); }
+.chat-msg-menu button:active { transform: scale(0.93); background: rgba(255,255,255,0.15); }
 
 /* Relative positioning for bubbles to anchor menu */
-.chat-bubble { position: relative; }
+.chat-bubble { position: relative; overflow: hidden; }
 
 /* Send button states */
 .chat-send-btn {
