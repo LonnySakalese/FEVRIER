@@ -96,10 +96,10 @@ export function renderChatSection(groupId) {
                 </div>
                 <div class="chat-input-row" id="chatInputRow">
                     <button class="chat-mic-btn" id="chatMicBtn" onclick="toggleRecording('${groupId}')">🎙️</button>
-                    <input type="text" class="chat-text-input" id="chatTextInput" 
-                           placeholder="Message..." maxlength="500"
-                           onkeydown="if(event.key==='Enter')sendChatMessage('${groupId}')"
-                           oninput="handleTypingInput('${groupId}'); updateSendBtnState()">
+                    <textarea class="chat-text-input" id="chatTextInput" 
+                           placeholder="Message..." maxlength="500" rows="1"
+                           onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendChatMessage('${groupId}')}"
+                           oninput="handleTypingInput('${groupId}'); updateSendBtnState(); this.style.height='auto'; this.style.height=Math.min(this.scrollHeight,100)+'px'"></textarea>
                     <button class="chat-send-btn chat-send-btn-disabled" id="chatSendBtn" onclick="sendChatMessage('${groupId}')">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
                     </button>
@@ -911,10 +911,10 @@ function restoreChatInputRow() {
     
     inputRow.innerHTML = `
         <button class="chat-mic-btn" id="chatMicBtn" onclick="toggleRecording('${currentChatGroupId}')">🎙️</button>
-        <input type="text" class="chat-text-input" id="chatTextInput" 
-               placeholder="Message..." maxlength="500"
-               onkeydown="if(event.key==='Enter')sendChatMessage('${currentChatGroupId}')"
-               oninput="handleTypingInput('${currentChatGroupId}'); updateSendBtnState()">
+        <textarea class="chat-text-input" id="chatTextInput" 
+               placeholder="Message..." maxlength="500" rows="1"
+               onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendChatMessage('${currentChatGroupId}')}"
+               oninput="handleTypingInput('${currentChatGroupId}'); updateSendBtnState(); this.style.height='auto'; this.style.height=Math.min(this.scrollHeight,100)+'px'"></textarea>
         <button class="chat-send-btn chat-send-btn-disabled" id="chatSendBtn" onclick="sendChatMessage('${currentChatGroupId}')">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
         </button>

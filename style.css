@@ -7103,6 +7103,9 @@ button:active, .modal-btn:active, .auth-btn:active, .settings-btn:active, .form-
 .chat-bubble-text {
     font-size: 0.85rem;
     line-height: 1.4;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: pre-wrap;
 }
 
 /* Deleted message */
@@ -7527,7 +7530,7 @@ button:active, .modal-btn:active, .auth-btn:active, .settings-btn:active, .form-
 
 .chat-input-row {
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     gap: 8px;
 }
 
@@ -7539,8 +7542,15 @@ button:active, .modal-btn:active, .auth-btn:active, .settings-btn:active, .form-
     padding: 10px 16px;
     color: var(--accent);
     font-size: 0.85rem;
+    font-family: inherit;
     outline: none;
     transition: border-color 0.2s;
+    resize: none;
+    min-height: 40px;
+    max-height: 100px;
+    overflow-y: auto;
+    line-height: 1.4;
+    box-sizing: border-box;
 }
 
 .chat-text-input:focus {
@@ -9343,28 +9353,30 @@ body.tour-active .header {
 .chat-bubble:active .chat-msg-more-btn { opacity: 1; }
 .chat-bubble-me .chat-msg-more-btn { right: 6px; left: auto; }
 
-/* Message action menu — inside bubble, no overflow */
+/* Message action menu — compact bar at top of bubble */
 .chat-msg-menu {
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
-    bottom: 0;
-    background: rgba(15,15,15,0.92);
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
+    height: auto;
+    background: rgba(15,15,15,0.95);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
     border-radius: inherit;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
     z-index: 10;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 6px;
-    padding: 6px;
-    animation: menuFade 0.15s ease-out;
+    padding: 8px 10px;
+    animation: menuSlide 0.15s ease-out;
 }
-@keyframes menuFade {
-    from { opacity: 0; }
-    to { opacity: 1; }
+@keyframes menuSlide {
+    from { opacity: 0; transform: translateY(-4px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 .chat-msg-menu button {
     display: flex;
@@ -9385,7 +9397,7 @@ body.tour-active .header {
 .chat-msg-menu button:active { transform: scale(0.93); background: rgba(255,255,255,0.15); }
 
 /* Relative positioning for bubbles to anchor menu */
-.chat-bubble { position: relative; overflow: hidden; }
+.chat-bubble { position: relative; overflow: visible; }
 
 /* Send button states */
 .chat-send-btn {
