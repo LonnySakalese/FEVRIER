@@ -58,7 +58,7 @@ export function renderCalendarGrid() {
 
     const monthNames = ['JANVIER', 'FÉVRIER', 'MARS', 'AVRIL', 'MAI', 'JUIN',
         'JUILLET', 'AOÛT', 'SEPTEMBRE', 'OCTOBRE', 'NOVEMBRE', 'DÉCEMBRE'];
-    titleEl.textContent = `📅 ${monthNames[month]} ${year}`;
+    titleEl.textContent = `${monthNames[month]} ${year}`;
 
     const data = getData();
 

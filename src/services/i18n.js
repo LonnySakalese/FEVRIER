@@ -25,9 +25,9 @@ const translations = {
         // Stats
         'stats.currentRank': 'Ton Rang Actuel',
         'stats.thisMonth': '⏳ CE MOIS-CI',
-        'stats.viewCalendar': '📅 VOIR LE CALENDRIER DU MOIS',
-        'stats.thisWeek': '📊 CETTE SEMAINE',
-        'stats.progression': '📈 PROGRESSION',
+        'stats.viewCalendar': 'VOIR LE CALENDRIER DU MOIS',
+        'stats.thisWeek': 'CETTE SEMAINE',
+        'stats.progression': 'PROGRESSION',
         'stats.last7days': 'Score des 7 derniers jours',
         'stats.byHabit': 'Performance par habitude',
         'stats.monthScore': 'Score du mois',
@@ -36,7 +36,7 @@ const translations = {
         'stats.avgScore': 'Moyenne globale',
         
         // Settings
-        'settings.title': '⚙️ PARAMÈTRES',
+        'settings.title': 'PARAMÈTRES',
         'settings.habits': 'Habitudes',
         'settings.manageHabits': 'Gestion des habitudes',
         'settings.manageHabitsDesc': 'Ajouter, modifier ou supprimer',
@@ -69,12 +69,12 @@ const translations = {
         'profile.pseudo': 'Pseudo',
         'profile.bio': 'Bio',
         'profile.noBio': 'Aucune bio',
-        'profile.myStats': '📊 MES STATS',
+        'profile.myStats': 'MES STATS',
         'profile.avgScore': 'Score moyen',
         'profile.bestStreak': 'Meilleur streak',
         'profile.perfectDays': 'Jours parfaits',
         'profile.rank': 'Rang',
-        'profile.myGroups': '👥 MES GROUPES',
+        'profile.myGroups': 'MES GROUPES',
         'profile.memberSince': 'Membre depuis',
         
         // Auth
@@ -95,8 +95,8 @@ const translations = {
         'general.loading': 'Chargement...',
         
         // Motivation
-        'motivation.mental': '🔥 MENTAL',
-        'motivation.ranksTitle': '🏆 RANG À ATTEINDRE',
+        'motivation.mental': 'MENTAL',
+        'motivation.ranksTitle': 'RANG À ATTEINDRE',
     },
     en: {
         'nav.habits': 'Habits',
@@ -117,9 +117,9 @@ const translations = {
         
         'stats.currentRank': 'Your Current Rank',
         'stats.thisMonth': '⏳ THIS MONTH',
-        'stats.viewCalendar': '📅 VIEW MONTHLY CALENDAR',
-        'stats.thisWeek': '📊 THIS WEEK',
-        'stats.progression': '📈 PROGRESSION',
+        'stats.viewCalendar': 'VIEW MONTHLY CALENDAR',
+        'stats.thisWeek': 'THIS WEEK',
+        'stats.progression': 'PROGRESSION',
         'stats.last7days': 'Last 7 days score',
         'stats.byHabit': 'Performance by habit',
         'stats.monthScore': 'Month score',
@@ -127,7 +127,7 @@ const translations = {
         'stats.totalWins': 'Total wins',
         'stats.avgScore': 'Overall average',
         
-        'settings.title': '⚙️ SETTINGS',
+        'settings.title': 'SETTINGS',
         'settings.habits': 'Habits',
         'settings.manageHabits': 'Manage habits',
         'settings.manageHabitsDesc': 'Add, edit or delete',
@@ -159,12 +159,12 @@ const translations = {
         'profile.pseudo': 'Username',
         'profile.bio': 'Bio',
         'profile.noBio': 'No bio',
-        'profile.myStats': '📊 MY STATS',
+        'profile.myStats': 'MY STATS',
         'profile.avgScore': 'Average score',
         'profile.bestStreak': 'Best streak',
         'profile.perfectDays': 'Perfect days',
         'profile.rank': 'Rank',
-        'profile.myGroups': '👥 MY GROUPS',
+        'profile.myGroups': 'MY GROUPS',
         'profile.memberSince': 'Member since',
         
         'auth.login': 'LOGIN',
@@ -182,8 +182,8 @@ const translations = {
         'general.confirm': 'Confirm',
         'general.loading': 'Loading...',
         
-        'motivation.mental': '🔥 MINDSET',
-        'motivation.ranksTitle': '🏆 RANKS TO REACH',
+        'motivation.mental': 'MINDSET',
+        'motivation.ranksTitle': 'RANKS TO REACH',
     },
     es: {
         'nav.habits': 'Hábitos',
@@ -204,9 +204,9 @@ const translations = {
         
         'stats.currentRank': 'Tu Rango Actual',
         'stats.thisMonth': '⏳ ESTE MES',
-        'stats.viewCalendar': '📅 VER CALENDARIO DEL MES',
-        'stats.thisWeek': '📊 ESTA SEMANA',
-        'stats.progression': '📈 PROGRESIÓN',
+        'stats.viewCalendar': 'VER CALENDARIO DEL MES',
+        'stats.thisWeek': 'ESTA SEMANA',
+        'stats.progression': 'PROGRESIÓN',
         'stats.last7days': 'Puntuación últimos 7 días',
         'stats.byHabit': 'Rendimiento por hábito',
         'stats.monthScore': 'Puntuación del mes',
@@ -214,7 +214,7 @@ const translations = {
         'stats.totalWins': 'Victorias totales',
         'stats.avgScore': 'Promedio general',
         
-        'settings.title': '⚙️ AJUSTES',
+        'settings.title': 'AJUSTES',
         'settings.habits': 'Hábitos',
         'settings.manageHabits': 'Gestión de hábitos',
         'settings.manageHabitsDesc': 'Añadir, editar o eliminar',
@@ -246,12 +246,12 @@ const translations = {
         'profile.pseudo': 'Apodo',
         'profile.bio': 'Bio',
         'profile.noBio': 'Sin bio',
-        'profile.myStats': '📊 MIS STATS',
+        'profile.myStats': 'MIS STATS',
         'profile.avgScore': 'Puntuación media',
         'profile.bestStreak': 'Mejor racha',
         'profile.perfectDays': 'Días perfectos',
         'profile.rank': 'Rango',
-        'profile.myGroups': '👥 MIS GRUPOS',
+        'profile.myGroups': 'MIS GRUPOS',
         'profile.memberSince': 'Miembro desde',
         
         'auth.login': 'INICIAR SESIÓN',
@@ -269,8 +269,8 @@ const translations = {
         'general.confirm': 'Confirmar',
         'general.loading': 'Cargando...',
         
-        'motivation.mental': '🔥 MENTALIDAD',
-        'motivation.ranksTitle': '🏆 RANGOS A ALCANZAR',
+        'motivation.mental': 'MENTALIDAD',
+        'motivation.ranksTitle': 'RANGOS A ALCANZAR',
     }
 };
 

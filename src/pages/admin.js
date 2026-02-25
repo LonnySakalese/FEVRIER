@@ -78,13 +78,13 @@ window.openAdminSection = function(section) {
     detail.style.display = 'block';
 
     if (section === 'users') {
-        title.textContent = '👥 UTILISATEURS';
+        title.textContent = 'UTILISATEURS';
         renderUsersList(content, cachedUsers || []);
     } else if (section === 'groups') {
-        title.textContent = '🏘️ GROUPES';
+        title.textContent = 'GROUPES';
         renderGroupsList(content, cachedGroups || []);
     } else if (section === 'challenges') {
-        title.textContent = '⚔️ CHALLENGES';
+        title.textContent = 'CHALLENGES';
         renderChallengesList(content);
     }
 };

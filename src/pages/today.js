@@ -99,7 +99,7 @@ export function renderHabits() {
         const dayName = dayNames[currentDate.getDay()];
         container.innerHTML = `
             <div style="text-align: center; padding: 40px 20px; color: var(--accent-dim);">
-                <div style="font-size: 3rem; margin-bottom: 15px;">😌</div>
+                <div style="margin-bottom: 15px; opacity: 0.4;"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 18a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2"/><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="9" y1="10" x2="9" y2="10"/><line x1="15" y1="10" x2="15" y2="10"/></svg></div>
                 <div style="font-size: 1.1rem; color: var(--accent); margin-bottom: 10px; font-weight: bold;">
                     JOUR DE REPOS
                 </div>
@@ -114,7 +114,7 @@ export function renderHabits() {
     if (filteredHabits.length === 0 && scheduledHabits.length > 0) {
         container.innerHTML = `
             <div style="text-align: center; padding: 30px 20px; color: var(--accent-dim);">
-                <div style="font-size: 2rem; margin-bottom: 10px;">🔍</div>
+                <div style="margin-bottom: 10px; opacity: 0.4;"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
                 <div style="font-size: 0.9rem;">Aucune habitude dans cette catégorie</div>
             </div>
         `;
@@ -133,7 +133,7 @@ export function renderHabits() {
         const onclickAttr = locked ? '' : `onclick="toggleHabit('${escapedId}')"`;
 
         const isFailed = isPastDay && !checked;
-        const streakText = locked ? (isFailed ? '❌ Non fait' : '✅ Fait') : `🔥 Série: ${streak} jours`;
+        const streakText = locked ? (isFailed ? 'Non fait' : 'Fait') : `Série: ${streak} jours`;
 
         let itemClasses = 'habit-item';
 
@@ -253,7 +253,7 @@ function pulseElement(el) {
 
 function spawnScoreParticles(el) {
     const rect = el.getBoundingClientRect();
-    const symbols = ['⚡', '🔥', '💪', '✨', '+'];
+    const symbols = ['+', '×', '•', '★', '+'];
     for (let i = 0; i < 5; i++) {
         const p = document.createElement('span');
         p.className = 'score-particle';
@@ -360,7 +360,7 @@ export function updateKPIs() {
         // Animate completed count
         if (completedCountEl) {
             if (locked) {
-                completedCountEl.textContent = '🔒 VERROUILLÉ';
+                completedCountEl.textContent = 'VERROUILLÉ';
             } else {
                 const prevCompleted = _lastCompleted !== null ? _lastCompleted : completed;
                 if (completed !== prevCompleted) {
@@ -373,7 +373,7 @@ export function updateKPIs() {
 
         if (currentStreakEl) currentStreakEl.textContent = getStreak();
         if (perfectDaysEl) perfectDaysEl.textContent = getPerfectDays();
-        if (currentDateEl) currentDateEl.textContent = formatDate(currentDate) + (locked ? ' 🔒' : '');
+        if (currentDateEl) currentDateEl.textContent = formatDate(currentDate) + (locked ? ' (verrouillé)' : '');
 
         const data = getData();
         const currentStreak = getStreak();
@@ -414,7 +414,7 @@ export function confirmValidateDay() {
     const scheduledForXP = habits.filter(h => isHabitScheduledForDate(h, new Date()));
     if (scheduledForXP.length === 0) {
         closeValidateDayModal();
-        showPopup('😌 Jour de repos — rien à valider !', 'info');
+        showPopup('Jour de repos — rien à valider !', 'info');
         return;
     }
 
@@ -427,7 +427,7 @@ export function confirmValidateDay() {
 
     if (data.validatedDays.includes(today)) {
         closeValidateDayModal();
-        showPopup('✅ Cette journée est déjà validée !', 'info');
+        showPopup('Journée déjà validée !', 'info');
         return;
     }
 
@@ -459,7 +459,7 @@ export function confirmValidateDay() {
     if (window.updateXPDisplay) window.updateXPDisplay();
 
     if (navigator.vibrate) navigator.vibrate([100, 50, 100, 50, 100]);
-    showPopup('✅ Journée validée !', 'success');
+    showPopup('Journée validée !', 'success');
 
     const dayDataToday = getDayData(new Date());
     const completedCount = habits.filter(h => dayDataToday[h.id]).length;
@@ -477,7 +477,7 @@ export function confirmValidateDay() {
         const userId = appState.currentUser.uid;
         db.collection('users').doc(userId).get().then(uDoc => {
             const pseudo = uDoc.data()?.pseudo || 'Anonyme';
-            broadcastToUserGroups(userId, `${pseudo} a validé sa journée avec ${score}% 🔥`);
+            broadcastToUserGroups(userId, `${pseudo} a validé sa journée avec ${score}% `);
         }).catch(err => console.error('Erreur auto-message validation:', err));
     }
 }

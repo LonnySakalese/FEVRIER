@@ -148,9 +148,9 @@ export function renderProfile() {
     
     const streakIcon = document.getElementById('streakFlameIcon');
     if (streakIcon) {
-        if (currentStreak >= 30) streakIcon.textContent = '💎';
+        if (currentStreak >= 30) streakIcon.textContent = '◆';
         else if (currentStreak >= 7) streakIcon.textContent = '⭐';
-        else streakIcon.textContent = '🔥';
+        else streakIcon.textContent = '●';
     }
     
     const bestStreakFun = document.getElementById('profileBestStreakFun');
@@ -310,7 +310,7 @@ export function saveSetupPseudo() {
     renderProfile();
 
     if (navigator.vibrate) navigator.vibrate([50, 50, 50]);
-    showPopup(`Bienvenue ${pseudo} ! 🔥`, 'success');
+    showPopup(`Bienvenue ${pseudo} !`, 'success');
 
     // Lancer le tour guidé après le pseudo
     setTimeout(() => {

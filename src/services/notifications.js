@@ -179,7 +179,7 @@ export async function checkDailyReminder() {
 
         if (!dayData?.validated) {
             showLocalNotification(
-                '⚡ PROJET FEVRIER',
+                'PROJET FEVRIER',
                 'N\'oublie pas de valider ta journée ! 💪',
             );
             localStorage.setItem('lastDailyReminder', today);
@@ -228,15 +228,15 @@ export async function renderNotifSettings(containerId) {
         <div class="notif-settings">
             ${status === 'denied' ? `
                 <div class="notif-blocked-banner">
-                    🚫 Notifications bloquées. Active-les dans les réglages de ton navigateur.
+                    Notifications bloquées. Active-les dans les réglages de ton navigateur.
                 </div>
             ` : ''}
             ${status === 'default' ? `
                 <button class="notif-enable-btn" id="enableNotifBtn">
-                    🔔 Activer les notifications
+                    Activer les notifications
                 </button>
             ` : ''}
-            ${isGranted ? '<div class="notif-status-ok">🔔 Notifications activées</div>' : ''}
+            ${isGranted ? '<div class="notif-status-ok">Notifications activées</div>' : ''}
             
             <div class="notif-toggle-list" style="${isGranted ? '' : 'opacity:0.5; pointer-events:none;'}">
                 <div class="notif-toggle-item">
@@ -259,7 +259,7 @@ export async function renderNotifSettings(containerId) {
                 </div>
                 <div class="notif-toggle-item">
                     <div class="notif-toggle-info">
-                        <div class="notif-toggle-label">💬 Nouveaux messages</div>
+                        <div class="notif-toggle-label">Nouveaux messages</div>
                         <div class="notif-toggle-desc">Messages dans tes groupes</div>
                     </div>
                     <label class="toggle-switch">
@@ -269,7 +269,7 @@ export async function renderNotifSettings(containerId) {
                 </div>
                 <div class="notif-toggle-item">
                     <div class="notif-toggle-info">
-                        <div class="notif-toggle-label">👥 Nouveau membre</div>
+                        <div class="notif-toggle-label">Nouveau membre</div>
                         <div class="notif-toggle-desc">Quand quelqu'un rejoint ton groupe</div>
                     </div>
                     <label class="toggle-switch">
@@ -279,7 +279,7 @@ export async function renderNotifSettings(containerId) {
                 </div>
                 <div class="notif-toggle-item notif-locked">
                     <div class="notif-toggle-info">
-                        <div class="notif-toggle-label">⚔️ Nouveau challenge</div>
+                        <div class="notif-toggle-label">Nouveau challenge</div>
                         <div class="notif-toggle-desc">Toujours activé</div>
                     </div>
                     <label class="toggle-switch">
@@ -289,7 +289,7 @@ export async function renderNotifSettings(containerId) {
                 </div>
                 <div class="notif-toggle-item notif-locked">
                     <div class="notif-toggle-info">
-                        <div class="notif-toggle-label">🏆 Résultat challenge</div>
+                        <div class="notif-toggle-label">Résultat challenge</div>
                         <div class="notif-toggle-desc">Toujours activé</div>
                     </div>
                     <label class="toggle-switch">

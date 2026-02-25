@@ -105,7 +105,7 @@ export function addXP(amount, reason) {
             const userId = appState.currentUser.uid;
             db.collection('users').doc(userId).get().then(uDoc => {
                 const pseudo = uDoc.data()?.pseudo || 'Anonyme';
-                broadcastToUserGroups(userId, `${pseudo} a atteint le niveau ${newLevel} ⚡`);
+                broadcastToUserGroups(userId, `${pseudo} a atteint le niveau ${newLevel} `);
             }).catch(err => console.error('Erreur auto-message level up:', err));
         }
     }
@@ -257,7 +257,7 @@ export function checkClearFatigue(currentDayScore) {
         if (!data.xp) data.xp = {};
         data.xp.fatigueClearedDate = getDateKey(new Date());
         saveData(data);
-        showPopup('⚡ FATIGUE LEVÉE ! XP normal rétabli !', 'success', 4000);
+        showPopup('FATIGUE LEVÉE ! XP normal rétabli !', 'success', 4000);
         return true;
     }
     return false;

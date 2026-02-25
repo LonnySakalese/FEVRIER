@@ -226,7 +226,7 @@ async function handleForgotPassword() {
     }
 
     const confirmed = await ConfirmModal.show({
-        title: '📧 RÉINITIALISATION',
+        title: 'RÉINITIALISATION',
         message: `Envoyer un email de réinitialisation à <strong>${email}</strong> ?`,
         confirmText: 'Envoyer',
         cancelText: 'Annuler'
@@ -320,7 +320,7 @@ async function confirmDeleteAccount() {
 
         localStorage.removeItem('warriorTracker');
 
-        showPopup('Ton compte a été supprimé définitivement. Au revoir, WARRIOR. On espère te revoir ! 💪', 'success', 6000);
+        showPopup('Ton compte a été supprimé définitivement. Au revoir, WARRIOR. On espère te revoir !', 'success', 6000);
 
     } catch (error) {
         console.error('❌ Erreur suppression compte:', error);
@@ -473,7 +473,7 @@ async function skipMigration() {
     closeMigrationModal();
 
     const confirmed = await ConfirmModal.show({
-        title: '🗑️ DONNÉES LOCALES',
+        title: 'DONNÉES LOCALES',
         message: 'Veux-tu supprimer les données locales ?',
         confirmText: 'Supprimer',
         cancelText: 'Conserver',
@@ -493,7 +493,7 @@ function closeMigrationModal() {
 
 async function resetAllData() {
     const firstConfirm = await ConfirmModal.show({
-        title: '⚠️ RÉINITIALISATION',
+        title: 'RÉINITIALISATION',
         message: 'Es-tu sûr de vouloir tout réinitialiser ?',
         subtext: 'Cette action est irréversible !',
         confirmText: 'Continuer',
@@ -504,7 +504,7 @@ async function resetAllData() {
     if (!firstConfirm) return;
 
     const secondConfirm = await ConfirmModal.show({
-        title: '🔥 DERNIÈRE CHANCE',
+        title: 'DERNIÈRE CHANCE',
         message: 'Vraiment TOUT supprimer ?',
         subtext: 'Toutes tes données seront perdues définitivement.',
         confirmText: 'Supprimer tout',
@@ -646,7 +646,7 @@ document.getElementById('manageHabitsModal')?.addEventListener('click', function
 
 // --- Ranked teaser ---
 function showRankedTeaser() {
-    showPopup('🏆 Mode Ranked — Bientôt disponible ! Saisons, classements et badges exclusifs arrivent...', 'info', 4000);
+    showPopup('Mode Ranked — Bientôt disponible ! Saisons, classements et badges exclusifs arrivent...', 'info', 4000);
     if (navigator.vibrate) navigator.vibrate([50, 30, 50]);
 }
 

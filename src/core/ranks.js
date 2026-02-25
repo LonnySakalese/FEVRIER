@@ -163,7 +163,7 @@ export function renderRanks(isEditing = false) {
         html += `
             <div class="palette-selector">
                 <div class="palette-selector-header">
-                    <span class="palette-icon">🎨</span>
+                    <span class="palette-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r=".5"/><circle cx="17.5" cy="10.5" r=".5"/><circle cx="8.5" cy="7.5" r=".5"/><circle cx="6.5" cy="12" r=".5"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/></svg></span>
                     <span class="palette-label">PALETTE DE COULEURS</span>
                 </div>
                 <div class="palette-grid" id="paletteGrid">
@@ -250,12 +250,12 @@ export function toggleRankEditMode() {
     if (isRankEditMode) {
         rankSettingsBackup = JSON.parse(JSON.stringify(rankSettings));
         selectedPaletteIdBackup = selectedPaletteId;
-        editBtn.textContent = '🔒';
+        editBtn.textContent = '⊘';
         editBtn.title = 'Mode édition actif';
         editButtons.style.display = 'flex';
         renderRanks(true);
     } else {
-        editBtn.textContent = '✏️';
+        editBtn.textContent = '✎';
         editBtn.title = 'Modifier les rangs';
         editButtons.style.display = 'none';
         renderRanks(false);
@@ -272,7 +272,7 @@ export function cancelRankEdit() {
     const editBtn = document.getElementById('editRanksBtn');
     const editButtons = document.getElementById('rankEditButtons');
 
-    editBtn.textContent = '✏️';
+    editBtn.textContent = '✎';
     editButtons.style.display = 'none';
     renderRanks(false);
 
@@ -312,7 +312,7 @@ export function saveRankSettings() {
     const editBtn = document.getElementById('editRanksBtn');
     const editButtons = document.getElementById('rankEditButtons');
 
-    editBtn.textContent = '✏️';
+    editBtn.textContent = '✎';
     editButtons.style.display = 'none';
     renderRanks(false);
 
@@ -391,7 +391,7 @@ export function closeRanksModal() {
 // Réinitialiser les rangs par défaut
 export async function resetRanksToDefault() {
     const confirmed = await ConfirmModal.show({
-        title: '🔄 RÉINITIALISER LES RANGS',
+        title: 'RÉINITIALISER LES RANGS',
         message: 'Remettre les rangs par défaut ?',
         confirmText: 'Réinitialiser',
         cancelText: 'Annuler'

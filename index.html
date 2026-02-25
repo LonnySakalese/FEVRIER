@@ -79,7 +79,7 @@
     <div class="onboarding-overlay" id="onboardingOverlay">
         <div class="onboarding-card">
             <button class="onboarding-skip" onclick="skipTutorial()">Passer</button>
-            <div class="onboarding-icon" id="onboardingIcon">🎯</div>
+            <div class="onboarding-icon" id="onboardingIcon"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div>
             <h2 class="onboarding-title" id="onboardingTitle">DÉFINIS TES HABITUDES</h2>
             <p class="onboarding-text" id="onboardingText"></p>
             <div class="onboarding-dots">
@@ -206,20 +206,20 @@
             </div>
             <div class="xp-status" id="xpStatus">
                 <span class="xp-today" id="xpToday">+0 XP aujourd'hui</span>
-                <span class="xp-fatigue-badge" id="xpFatigueBadge" style="display: none;">😴 FATIGUE</span>
+                <span class="xp-fatigue-badge" id="xpFatigueBadge" style="display: none;">FATIGUE</span>
             </div>
             <!-- Panel d'explication XP -->
             <div class="xp-info-panel" id="xpInfoPanel" style="display: none;">
-                <div class="xp-info-title">⚡ COMMENT ÇA MARCHE</div>
+                <div class="xp-info-title">COMMENT ÇA MARCHE</div>
                 <div class="xp-info-rules">
-                    <div class="xp-info-rule">✅ Cocher une habitude <strong>+10 XP</strong></div>
-                    <div class="xp-info-rule">📋 Valider la journée <strong>+50 XP</strong></div>
-                    <div class="xp-info-rule">🏆 Journée parfaite (100%) <strong>+100 XP</strong></div>
-                    <div class="xp-info-rule">🔥 Streak 7 jours <strong>+200 XP</strong></div>
-                    <div class="xp-info-rule">🔥 Streak 30 jours <strong>+500 XP</strong></div>
+                    <div class="xp-info-rule">Cocher une habitude <strong>+10 XP</strong></div>
+                    <div class="xp-info-rule">Valider la journée <strong>+50 XP</strong></div>
+                    <div class="xp-info-rule">Journée parfaite (100%) <strong>+100 XP</strong></div>
+                    <div class="xp-info-rule">Streak 7 jours <strong>+200 XP</strong></div>
+                    <div class="xp-info-rule">Streak 30 jours <strong>+500 XP</strong></div>
                 </div>
                 <div class="xp-info-divider"></div>
-                <div class="xp-info-title">😴 FATIGUE</div>
+                <div class="xp-info-title">FATIGUE</div>
                 <div class="xp-info-rules">
                     <div class="xp-info-rule">Si ton score de la veille est <strong>< 70%</strong>, la fatigue s'active</div>
                     <div class="xp-info-rule">En fatigue, tu gagnes <strong>2× moins d'XP</strong></div>
@@ -298,11 +298,11 @@
         <!-- Heatmap 90 jours -->
 
         <!-- Grille de performance de la semaine -->
-        <div class="section-title" data-i18n="stats.thisWeek">📊 CETTE SEMAINE</div>
+        <div class="section-title" data-i18n="stats.thisWeek">CETTE SEMAINE</div>
         <div class="weekly-grid" id="weeklyGrid"></div>
 
         <!-- Section des graphiques de progression -->
-        <div class="section-title" data-i18n="stats.progression">📈 PROGRESSION</div>
+        <div class="section-title" data-i18n="stats.progression">PROGRESSION</div>
         <div class="chart-container">
             <div class="chart-wrapper">
                 <div class="chart-title" data-i18n="stats.last7days">Score des 7 derniers jours</div>
@@ -339,7 +339,7 @@
         </div>
 
         <!-- Analyses avancées -->
-        <div class="section-title">🔬 ANALYSES AVANCÉES</div>
+        <div class="section-title">ANALYSES AVANCÉES</div>
         <div class="analytics-container" id="analyticsContainer">
             <!-- Rendu dynamique -->
         </div>
@@ -352,13 +352,13 @@
             <button class="admin-back-btn" onclick="showPage('profile')">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
             </button>
-            <h2 class="admin-title">🛡️ ADMIN PANEL</h2>
+            <h2 class="admin-title">ADMIN PANEL</h2>
         </div>
         <div class="admin-container">
             <!-- Menu principal admin -->
             <div id="adminMenu" class="admin-menu">
                 <div class="admin-menu-card admin-menu-green" onclick="openAdminSection('users')">
-                    <div class="admin-menu-icon">👥</div>
+                    <div class="admin-menu-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
                     <div class="admin-menu-info">
                         <div class="admin-menu-label">Utilisateurs</div>
                         <div class="admin-menu-count" id="adminTotalUsers">-</div>
@@ -366,7 +366,7 @@
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
                 </div>
                 <div class="admin-menu-card admin-menu-orange" onclick="openAdminSection('groups')">
-                    <div class="admin-menu-icon">🏘️</div>
+                    <div class="admin-menu-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
                     <div class="admin-menu-info">
                         <div class="admin-menu-label">Groupes</div>
                         <div class="admin-menu-count" id="adminTotalGroups">-</div>
@@ -374,7 +374,7 @@
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
                 </div>
                 <div class="admin-menu-card admin-menu-purple" onclick="openAdminSection('challenges')">
-                    <div class="admin-menu-icon">⚔️</div>
+                    <div class="admin-menu-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
                     <div class="admin-menu-info">
                         <div class="admin-menu-label">Challenges</div>
                         <div class="admin-menu-count" id="adminTotalChallenges">-</div>
@@ -398,13 +398,13 @@
     <div id="page-motivation" class="page" role="main">
 
         <!-- Section des paramètres -->
-        <div class="section-title" data-i18n="settings.title">⚙️ PARAMÈTRES</div>
+        <div class="section-title" data-i18n="settings.title">PARAMÈTRES</div>
 
         <div class="settings-container">
             <!-- Catégorie : Habitudes -->
             <div class="settings-category">
                 <div class="settings-category-header">
-                    <span class="settings-category-icon">📝</span>
+                    <span class="settings-category-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></span>
                     <span class="settings-category-title" data-i18n="settings.habits">Habitudes</span>
                 </div>
                 <div class="settings-category-content">
@@ -423,7 +423,7 @@
             <!-- Catégorie : Notifications -->
             <div class="settings-category">
                 <div class="settings-category-header">
-                    <span class="settings-category-icon">🔔</span>
+                    <span class="settings-category-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></span>
                     <span class="settings-category-title" data-i18n="settings.notifications">Notifications</span>
                 </div>
                 <div class="settings-category-content">
@@ -455,7 +455,7 @@
             <!-- Catégorie : Compte -->
             <div class="settings-category">
                 <div class="settings-category-header">
-                    <span class="settings-category-icon">👤</span>
+                    <span class="settings-category-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
                     <span class="settings-category-title" data-i18n="settings.account">Compte</span>
                 </div>
                 <div class="settings-category-content">
@@ -484,7 +484,7 @@
             <!-- Catégorie : Notifications -->
             <div class="settings-category">
                 <div class="settings-category-header">
-                    <span class="settings-category-icon">🔔</span>
+                    <span class="settings-category-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></span>
                     <span class="settings-category-title">Notifications</span>
                 </div>
                 <div class="settings-category-content">
@@ -495,7 +495,7 @@
             <!-- Catégorie : Langue -->
             <div class="settings-category">
                 <div class="settings-category-header">
-                    <span class="settings-category-icon">🌍</span>
+                    <span class="settings-category-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></span>
                     <span class="settings-category-title" data-i18n="settings.language">Langue</span>
                 </div>
                 <div class="settings-category-content">
@@ -514,7 +514,7 @@
             <!-- Catégorie : Application -->
             <div class="settings-category">
                 <div class="settings-category-header">
-                    <span class="settings-category-icon">📱</span>
+                    <span class="settings-category-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg></span>
                     <span class="settings-category-title">Application</span>
                 </div>
                 <div class="settings-category-content">
@@ -524,7 +524,7 @@
                             <div class="settings-item-desc">Ajouter un widget ou raccourci sur iPhone</div>
                         </div>
                         <div class="settings-item-action">
-                            <button class="settings-btn" onclick="window.open('apple-shortcut.html', '_blank')">📲 Guide</button>
+                            <button class="settings-btn" onclick="window.open('apple-shortcut.html', '_blank')">Guide</button>
                         </div>
                     </div>
                     <!-- Install button removed -->
@@ -534,7 +534,7 @@
                             <div class="settings-item-desc">FEVRIER v1.0</div>
                         </div>
                         <div class="settings-item-action">
-                            <span style="color: var(--accent-dim); font-size: 0.8rem;">⚡</span>
+                            
                         </div>
                     </div>
                 </div>
@@ -543,7 +543,7 @@
             <!-- Catégorie : Légal -->
             <div class="settings-category">
                 <div class="settings-category-header">
-                    <span class="settings-category-icon">📄</span>
+                    <span class="settings-category-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></span>
                     <span class="settings-category-title">Légal</span>
                 </div>
                 <div class="settings-category-content">
@@ -573,12 +573,12 @@
     <!-- Fenêtre modale pour la gestion complète des habitudes -->
     <div class="modal-overlay" id="manageHabitsModal">
         <div class="modal modal-large">
-            <h3>⚙️ GÉRER LES HABITUDES</h3>
+            <h3>GÉRER LES HABITUDES</h3>
 
             <!-- Section pour ajouter une nouvelle habitude -->
             <div class="add-habit-section collapsed" id="addHabitSection">
                 <button class="add-habit-toggle" onclick="toggleAddHabitForm()">
-                    ➕ Ajouter une habitude
+                    + Ajouter une habitude
                 </button>
                 <div class="add-habit-form" id="addHabitForm">
                     <div class="form-group">
@@ -634,10 +634,10 @@
                         <label>Fréquence</label>
                         <div class="schedule-type-picker" id="scheduleTypePicker">
                             <button type="button" class="schedule-type-btn active" data-type="daily" onclick="setScheduleType('daily')">
-                                📅 Tous les jours
+                                Tous les jours
                             </button>
                             <button type="button" class="schedule-type-btn" data-type="weekly" onclick="setScheduleType('weekly')">
-                                📆 Certains jours
+                                Certains jours
                             </button>
                         </div>
                         <div class="days-of-week-picker" id="daysOfWeekPicker" style="display: none;">
@@ -672,7 +672,7 @@
     <!-- Modal de migration localStorage → Firestore -->
     <div class="modal-overlay" id="migrationModal">
         <div class="modal">
-            <h3>🔄 MIGRATION DES DONNÉES</h3>
+            <h3>MIGRATION DES DONNÉES</h3>
             <p style="color: var(--accent-dim); text-align: center; margin-bottom: 15px;">
                 Nous avons détecté des données existantes sur cet appareil.<br>
                 Veux-tu les transférer vers ton nouveau compte ?
@@ -690,7 +690,7 @@
     <!-- Modal de validation de journée -->
     <div class="modal-overlay" id="validateDayModal">
         <div class="modal">
-            <h3>✅ VALIDER LA JOURNÉE</h3>
+            <h3>VALIDER LA JOURNÉE</h3>
             <p style="color: var(--accent); text-align: center; margin: 20px 0; font-size: 1.1rem;">
                 Es-tu sûr de vouloir valider ta journée ?
             </p>
@@ -708,7 +708,7 @@
     <!-- Modal de déconnexion -->
     <div class="modal-overlay" id="logoutModal">
         <div class="modal">
-            <h3>🚪 DÉCONNEXION</h3>
+            <h3>DÉCONNEXION</h3>
             <p style="color: var(--accent); text-align: center; margin: 20px 0; font-size: 1.1rem;">
                 Veux-tu vraiment te déconnecter ?
             </p>
@@ -739,7 +739,7 @@
     <!-- Modal de suppression de compte -->
     <div class="modal-overlay" id="deleteAccountModal">
         <div class="modal">
-            <h3>⚠️ SUPPRIMER MON COMPTE</h3>
+            <h3>SUPPRIMER MON COMPTE</h3>
             <p style="color: #FF6B6B; text-align: center; margin: 15px 0; font-size: 1rem; font-weight: bold;">
                 Cette action est IRRÉVERSIBLE !
             </p>
@@ -769,7 +769,7 @@
         <div class="modal modal-calendar">
             <div class="calendar-header">
                 <button class="calendar-nav-btn" onclick="changeCalendarMonth(-1)" aria-label="Mois précédent">◀</button>
-                <h3 id="calendarTitle">📅 JANVIER 2025</h3>
+                <h3 id="calendarTitle">JANVIER 2025</h3>
                 <button class="calendar-nav-btn" onclick="changeCalendarMonth(1)" aria-label="Mois suivant">▶</button>
             </div>
             <p class="calendar-subtitle">Visualise tes victoires et tes échecs d'un seul regard</p>
@@ -820,17 +820,17 @@
                 <div class="profile-field">
                     <label class="profile-label" data-i18n="profile.pseudo">Pseudo</label>
                     <div class="profile-value" id="profilePseudo">-</div>
-                    <button class="profile-edit-btn" onclick="openEditPseudoModal()">✏️</button>
+                    <button class="profile-edit-btn" onclick="openEditPseudoModal()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
                 </div>
                 <div class="profile-field">
                     <label class="profile-label" data-i18n="profile.bio">Bio</label>
                     <div class="profile-value" id="profileBio" style="font-style: italic; color: var(--accent-dim);">Aucune bio</div>
-                    <button class="profile-edit-btn" onclick="openEditBioModal()">✏️</button>
+                    <button class="profile-edit-btn" onclick="openEditBioModal()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
                 </div>
             </div>
 
             <!-- Stats publiques — premium cards -->
-            <div class="section-title" data-i18n="profile.myStats">📊 MES STATS</div>
+            <div class="section-title" data-i18n="profile.myStats">MES STATS</div>
             <div class="stats-grid">
                 <div class="stat-card stat-card-green">
                     <div class="stat-card-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div>
@@ -855,7 +855,7 @@
             </div>
 
             <!-- Stats fun -->
-            <div class="section-title">🎮 STATS FUN</div>
+            <div class="section-title">STATS FUN</div>
             <div class="stats-grid stats-grid-3">
                 <div class="stat-card stat-card-orange">
                     <div class="stat-card-icon" id="streakFlameIcon">🔥</div>
@@ -875,7 +875,7 @@
             </div>
 
             <!-- Groupes -->
-            <div class="section-title" data-i18n="profile.myGroups">👥 MES GROUPES</div>
+            <div class="section-title" data-i18n="profile.myGroups">MES GROUPES</div>
             <div id="profileGroups" class="profile-groups-container">
                 <div class="profile-groups-placeholder">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: rgba(255,255,255,0.2);"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
@@ -903,7 +903,7 @@
     <!-- Modal Avatar Picker -->
     <div class="modal-overlay" id="avatarPickerModal">
         <div class="modal">
-            <h3>🎨 CHOISIS TON AVATAR</h3>
+            <h3>CHOISIS TON AVATAR</h3>
             <div class="avatar-picker-grid" id="avatarPickerGrid">
                 <!-- Rempli par JavaScript -->
             </div>
@@ -916,7 +916,7 @@
     <!-- Modal Edit Pseudo -->
     <div class="modal-overlay" id="editPseudoModal">
         <div class="modal">
-            <h3>✏️ MODIFIER LE PSEUDO</h3>
+            <h3>MODIFIER LE PSEUDO</h3>
             <input type="text" id="editPseudoInput" placeholder="Ton pseudo" maxlength="20" style="width: 100%; padding: 12px; background: var(--charcoal); border: 1px solid var(--steel); border-radius: 8px; color: var(--accent); font-size: 1rem; text-align: center; margin-bottom: 15px;">
             <div class="modal-buttons">
                 <button class="modal-btn cancel" onclick="closeEditPseudoModal()">Annuler</button>
@@ -928,7 +928,7 @@
     <!-- Modal Edit Bio -->
     <div class="modal-overlay" id="editBioModal">
         <div class="modal">
-            <h3>✏️ MODIFIER LA BIO</h3>
+            <h3>MODIFIER LA BIO</h3>
             <textarea id="editBioInput" placeholder="Ta bio (ex: Discipline = Liberté)" maxlength="100" rows="3" style="width: 100%; padding: 12px; background: var(--charcoal); border: 1px solid var(--steel); border-radius: 8px; color: var(--accent); font-size: 1rem; text-align: center; margin-bottom: 15px; resize: none;"></textarea>
             <div class="modal-buttons">
                 <button class="modal-btn cancel" onclick="closeEditBioModal()">Annuler</button>
@@ -940,13 +940,13 @@
     <!-- Modal Setup Pseudo (après inscription) -->
     <div class="modal-overlay" id="setupPseudoModal">
         <div class="modal">
-            <h3>👋 BIENVENUE, GUERRIER !</h3>
+            <h3>BIENVENUE, GUERRIER !</h3>
             <p style="color: var(--accent-dim); text-align: center; margin-bottom: 15px;">
                 Comment on doit t'appeler ?
             </p>
             <input type="text" id="setupPseudoInput" placeholder="Ton pseudo" maxlength="20" style="width: 100%; padding: 12px; background: var(--charcoal); border: 1px solid var(--steel); border-radius: 8px; color: var(--accent); font-size: 1rem; text-align: center; margin-bottom: 15px;">
             <div class="modal-buttons">
-                <button class="modal-btn save" onclick="saveSetupPseudo()" style="flex: 1;">C'EST PARTI 🔥</button>
+                <button class="modal-btn save" onclick="saveSetupPseudo()" style="flex: 1;">C'EST PARTI</button>
             </div>
         </div>
     </div>
@@ -961,7 +961,7 @@
     <!-- Modal Créer un groupe -->
     <div class="modal-overlay" id="createGroupModal">
         <div class="modal">
-            <h3>➕ CRÉER UN GROUPE</h3>
+            <h3>CRÉER UN GROUPE</h3>
             <div class="form-group">
                 <label>Nom du groupe</label>
                 <input type="text" id="createGroupName" placeholder="Ex: Team Morning" maxlength="30"
@@ -993,7 +993,7 @@
     <!-- Modal Rejoindre un groupe -->
     <div class="modal-overlay" id="joinGroupModal">
         <div class="modal">
-            <h3>🔗 REJOINDRE UN GROUPE</h3>
+            <h3>REJOINDRE UN GROUPE</h3>
             <p style="color: var(--accent-dim); text-align: center; margin-bottom: 15px;">
                 Entre le code d'invitation à 6 caractères
             </p>
@@ -1030,7 +1030,7 @@
     <!-- Modal Créer un challenge -->
     <div class="modal-overlay" id="createChallengeModal">
         <div class="modal">
-            <h3>⚔️ CRÉER UN CHALLENGE</h3>
+            <h3>CRÉER UN CHALLENGE</h3>
             <div class="form-group">
                 <label>Nom du challenge</label>
                 <input type="text" id="challengeName" placeholder="Ex: 7 jours sans excuses" maxlength="40"
@@ -1062,7 +1062,7 @@
             </div>
             <div class="modal-buttons">
                 <button class="modal-btn cancel" onclick="closeCreateChallengeModal()">Annuler</button>
-                <button class="modal-btn save" onclick="createChallenge()">Lancer ⚔️</button>
+                <button class="modal-btn save" onclick="createChallenge()">Lancer</button>
             </div>
         </div>
     </div>
@@ -1070,14 +1070,14 @@
     <!-- Modal QR Code d'invitation -->
     <div class="modal-overlay" id="qrCodeModal">
         <div class="modal">
-            <h3>📱 QR CODE D'INVITATION</h3>
+            <h3>QR CODE D'INVITATION</h3>
             <div style="text-align: center; padding: 20px 0;">
                 <canvas id="qrCanvas" style="border-radius: 12px; margin: 0 auto; display: block;"></canvas>
                 <div class="qr-code-text" id="qrCodeTitle" style="font-family: monospace; font-size: 1.5rem; letter-spacing: 6px; margin-top: 15px; color: var(--accent);">CODE</div>
             </div>
             <div class="modal-buttons">
                 <button class="modal-btn cancel" onclick="closeQRModal()" data-i18n="general.close">Fermer</button>
-                <button class="modal-btn save" onclick="downloadQR()">📥 Télécharger</button>
+                <button class="modal-btn save" onclick="downloadQR()">Télécharger</button>
             </div>
         </div>
     </div>
@@ -1085,7 +1085,7 @@
     <!-- Bannière PWA Install -->
     <div class="install-banner" id="installBanner" style="display: none;">
         <div class="install-banner-content">
-            <div class="install-banner-icon">📲</div>
+            <div class="install-banner-icon"></div>
             <div class="install-banner-text">
                 <div class="install-banner-title">Installer PROJET FEVRIER</div>
                 <div class="install-banner-desc">Accès rapide depuis ton écran d'accueil</div>

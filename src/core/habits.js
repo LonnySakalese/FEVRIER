@@ -531,7 +531,7 @@ export async function deleteHabit(habitId) {
     if (!habit) return;
 
     const confirmed = await ConfirmModal.show({
-        title: '🗑️ SUPPRIMER HABITUDE',
+        title: 'SUPPRIMER HABITUDE',
         message: `Supprimer "<strong>${habit.name}</strong>" ?`,
         subtext: "L'historique sera conservé mais l'habitude n'apparaîtra plus.",
         confirmText: 'Supprimer',
