@@ -375,6 +375,16 @@ async function renderMessages(docs) {
                       ontouchmove="handleBubbleTouchMove(event)"
                       ondblclick="showReactionPopup(event, '${msgId}')">`;
 
+        // Deleted message
+        if (msg.deleted) {
+            html += `<div class="chat-bubble-deleted"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg> Message supprimé</div>`;
+            html += `<div class="chat-bubble-time">${timeStr}</div>`;
+            html += `</div>`;
+            lastSenderId = msg.senderId;
+            lastSenderType = 'user';
+            continue;
+        }
+
         // Reply preview
         if (msg.replyTo) {
             html += `<div class="chat-reply-quote" onclick="scrollToMessage('${escapeHtml(msg.replyTo.messageId || '')}')">
@@ -414,8 +424,9 @@ async function renderMessages(docs) {
         const senderForAttr = escapeAttr(msg._displayPseudo);
         html += `<button class="chat-msg-more-btn" onclick="toggleMsgMenu(event, '${msgId}', '${senderForAttr}', '${msgTextForAttr}', ${isMe})">⋯</button>`;
         html += `<div class="chat-msg-menu" id="msgMenu-${msgId}" style="display:none;">
-            <button onclick="setReplyTo('${msgId}', '${senderForAttr}', '${msgTextForAttr}'); closeMsgMenus()">↩ Répondre</button>
-            ${isMe ? `<button onclick="pinMessage('${msgId}', '${msgTextForAttr}'); closeMsgMenus()">📌 Épingler</button>` : ''}
+            <button onclick="setReplyTo('${msgId}', '${senderForAttr}', '${msgTextForAttr}'); closeMsgMenus()">Répondre</button>
+            ${isMe ? `<button onclick="pinMessage('${msgId}', '${msgTextForAttr}'); closeMsgMenus()">Épingler</button>` : ''}
+            ${isMe ? `<button onclick="deleteMessage('${msgId}'); closeMsgMenus()" style="color: #E74C3C;">Supprimer</button>` : ''}
         </div>`;
 
         // Sender pseudo at bottom (not me, last in group)
@@ -1054,6 +1065,21 @@ export async function pinMessage(msgId, text) {
     } catch (e) {
         console.error('Erreur pin:', e);
         showPopup('Erreur', 'error');
+    }
+}
+
+export async function deleteMessage(msgId) {
+    if (!currentChatGroupId || !msgId) return;
+    try {
+        await db.collection('groups').doc(currentChatGroupId).collection('messages').doc(msgId).update({
+            deleted: true,
+            text: '',
+            audioData: firebase.firestore.FieldValue.delete()
+        });
+        showPopup('Message supprimé', 'info');
+    } catch (e) {
+        console.error('Erreur suppression message:', e);
+        showPopup('Erreur lors de la suppression', 'error');
     }
 }
 

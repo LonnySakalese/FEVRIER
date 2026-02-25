@@ -7104,6 +7104,18 @@ button:active, .modal-btn:active, .auth-btn:active, .settings-btn:active, .form-
     line-height: 1.4;
 }
 
+/* Deleted message */
+.chat-bubble-deleted {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.8rem;
+    font-style: italic;
+    color: rgba(255,255,255,0.25);
+    padding: 2px 0;
+}
+.chat-bubble-deleted svg { stroke: rgba(255,255,255,0.2); }
+
 .chat-bubble-time {
     font-size: 0.55rem;
     opacity: 0.5;
