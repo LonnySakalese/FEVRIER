@@ -96,6 +96,7 @@ function renderEngagementStats() {
     const socialEngagement = Math.round((withGroups / total) * 100);
 
     statsContainer.innerHTML = `
+        <div class="admin-section-label">VUE D'ENSEMBLE</div>
         <div class="admin-stats-grid">
             <div class="admin-stat-card admin-stat-highlight">
                 <div class="admin-stat-value">${activeToday}</div>
@@ -149,7 +150,158 @@ function renderEngagementStats() {
                 </div>
             </div>
         </div>
+
+        <div class="admin-section-label" style="margin-top: 24px;">GRAPHIQUES</div>
+        <div class="admin-chart-card">
+            <div class="admin-chart-title">Activité des 14 derniers jours</div>
+            <canvas id="adminActivityChart" height="180"></canvas>
+        </div>
+        <div class="admin-chart-card">
+            <div class="admin-chart-title">Répartition des niveaux</div>
+            <canvas id="adminLevelChart" height="160"></canvas>
+        </div>
+        <div class="admin-chart-card">
+            <div class="admin-chart-title">Engagement social</div>
+            <canvas id="adminSocialChart" height="160"></canvas>
+        </div>
     `;
+
+    setTimeout(() => renderAdminCharts(), 50);
+}
+
+function renderAdminCharts() {
+    if (!cachedUsers || typeof Chart === 'undefined') return;
+
+    // ===== 1. Activity Chart (14 days) =====
+    const actCtx = document.getElementById('adminActivityChart')?.getContext('2d');
+    if (actCtx) {
+        const days = 14;
+        const labels = [];
+        const data = [];
+        const now = new Date();
+
+        for (let i = days - 1; i >= 0; i--) {
+            const d = new Date(now);
+            d.setDate(d.getDate() - i);
+            const dayStart = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+            const dayEnd = new Date(dayStart.getTime() + 24 * 60 * 60 * 1000);
+            labels.push(d.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit' }));
+
+            let count = 0;
+            cachedUsers.forEach(doc => {
+                const ll = doc.data().lastLogin?.toDate?.();
+                if (ll && ll >= dayStart && ll < dayEnd) count++;
+            });
+            data.push(count);
+        }
+
+        new Chart(actCtx, {
+            type: 'bar',
+            data: {
+                labels,
+                datasets: [{
+                    data,
+                    backgroundColor: data.map((v, i) => i === data.length - 1 ? '#2ECC71' : 'rgba(46,204,113,0.3)'),
+                    borderRadius: 6,
+                    borderSkipped: false,
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: { legend: { display: false } },
+                scales: {
+                    x: { grid: { display: false }, ticks: { color: 'rgba(255,255,255,0.3)', font: { size: 9 } } },
+                    y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { color: 'rgba(255,255,255,0.3)', font: { size: 10 }, stepSize: 1 } }
+                }
+            }
+        });
+    }
+
+    // ===== 2. Level Distribution =====
+    const lvlCtx = document.getElementById('adminLevelChart')?.getContext('2d');
+    if (lvlCtx) {
+        const buckets = { '1-5': 0, '6-10': 0, '11-20': 0, '21-30': 0, '31-40': 0, '41-50': 0 };
+        cachedUsers.forEach(doc => {
+            const lvl = doc.data().level || 1;
+            if (lvl <= 5) buckets['1-5']++;
+            else if (lvl <= 10) buckets['6-10']++;
+            else if (lvl <= 20) buckets['11-20']++;
+            else if (lvl <= 30) buckets['21-30']++;
+            else if (lvl <= 40) buckets['31-40']++;
+            else buckets['41-50']++;
+        });
+
+        const colors = ['#7B8FA1', '#4B9CD3', '#E74C3C', '#FFD700', '#9B59B6', '#FFFAF0'];
+        new Chart(lvlCtx, {
+            type: 'doughnut',
+            data: {
+                labels: Object.keys(buckets),
+                datasets: [{
+                    data: Object.values(buckets),
+                    backgroundColor: colors,
+                    borderWidth: 0,
+                    hoverOffset: 8,
+                }]
+            },
+            options: {
+                responsive: true,
+                cutout: '65%',
+                plugins: {
+                    legend: {
+                        position: 'right',
+                        labels: { color: 'rgba(255,255,255,0.6)', font: { size: 11 }, padding: 12, usePointStyle: true, pointStyleWidth: 10 }
+                    }
+                }
+            }
+        });
+    }
+
+    // ===== 3. Social Engagement =====
+    const socCtx = document.getElementById('adminSocialChart')?.getContext('2d');
+    if (socCtx) {
+        let withGroups = 0, withoutGroups = 0;
+        let withPseudo = 0, withoutPseudo = 0;
+
+        cachedUsers.forEach(doc => {
+            const d = doc.data();
+            if (d.groups && d.groups.length > 0) withGroups++; else withoutGroups++;
+            if (d.pseudo && d.pseudo !== 'Anonyme') withPseudo++; else withoutPseudo++;
+        });
+
+        new Chart(socCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Pseudo défini', 'Dans un groupe'],
+                datasets: [
+                    {
+                        label: 'Oui',
+                        data: [withPseudo, withGroups],
+                        backgroundColor: '#2ECC71',
+                        borderRadius: 6,
+                        borderSkipped: false,
+                    },
+                    {
+                        label: 'Non',
+                        data: [withoutPseudo, withoutGroups],
+                        backgroundColor: 'rgba(231,76,60,0.3)',
+                        borderRadius: 6,
+                        borderSkipped: false,
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                indexAxis: 'y',
+                plugins: {
+                    legend: { labels: { color: 'rgba(255,255,255,0.6)', font: { size: 11 }, usePointStyle: true, pointStyleWidth: 10 } }
+                },
+                scales: {
+                    x: { stacked: true, grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { color: 'rgba(255,255,255,0.3)', font: { size: 10 } } },
+                    y: { stacked: true, grid: { display: false }, ticks: { color: 'rgba(255,255,255,0.5)', font: { size: 11, weight: 'bold' } } }
+                }
+            }
+        });
+    }
 }
 
 window.openAdminSection = function(section) {
