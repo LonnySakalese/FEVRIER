@@ -7117,8 +7117,9 @@ button:active, .modal-btn:active, .auth-btn:active, .settings-btn:active, .form-
     font-style: italic;
     color: rgba(255,255,255,0.25);
     padding: 2px 0;
+    white-space: nowrap;
 }
-.chat-bubble-deleted svg { stroke: rgba(255,255,255,0.2); }
+.chat-bubble-deleted svg { stroke: rgba(255,255,255,0.2); flex-shrink: 0; }
 
 .chat-bubble-time {
     font-size: 0.55rem;
@@ -9331,12 +9332,18 @@ body.tour-active .header {
 /* Bubble row — flex container for bubble + action menu side by side */
 .chat-bubble-row {
     display: flex;
-    align-items: center;
-    gap: 6px;
-    max-width: 100%;
+    align-items: flex-start;
+    gap: 4px;
+    width: 100%;
 }
-.chat-bubble-row-me { justify-content: flex-end; flex-direction: row-reverse; }
-.chat-bubble-row-other { justify-content: flex-start; }
+.chat-bubble-row-me { flex-direction: row-reverse; }
+.chat-bubble-row-other { flex-direction: row; }
+.chat-bubble-row .chat-bubble {
+    max-width: 75%;
+    min-width: 60px;
+    flex-shrink: 1;
+}
+.chat-bubble-row .chat-msg-menu { flex-shrink: 0; }
 
 /* Message "..." button */
 .chat-msg-more-btn {
