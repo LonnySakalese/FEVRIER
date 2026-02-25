@@ -368,6 +368,7 @@ async function renderMessages(docs) {
 
         const senderColor = !isMe ? hashStringToColor(msg.senderId || 'anon') : '';
 
+        html += `<div class="chat-bubble-row ${isMe ? 'chat-bubble-row-me' : 'chat-bubble-row-other'}">`;
         html += `<div class="chat-bubble ${isMe ? 'chat-bubble-me' : 'chat-bubble-other'} ${groupClass}" 
                       data-msg-id="${msgId}"
                       ontouchstart="handleBubbleTouchStart(event, '${msgId}')"
@@ -423,11 +424,6 @@ async function renderMessages(docs) {
         const msgTextForAttr = escapeAttr(msg.text || (msg.type === 'audio' ? '🎵 Audio' : ''));
         const senderForAttr = escapeAttr(msg._displayPseudo);
         html += `<button class="chat-msg-more-btn" onclick="toggleMsgMenu(event, '${msgId}', '${senderForAttr}', '${msgTextForAttr}', ${isMe})">⋯</button>`;
-        html += `<div class="chat-msg-menu" id="msgMenu-${msgId}" style="display:none;">
-            <button onclick="setReplyTo('${msgId}', '${senderForAttr}', '${msgTextForAttr}'); closeMsgMenus()"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 17 4 12 9 7"/><path d="M20 18v-2a4 4 0 0 0-4-4H4"/></svg>Répondre</button>
-            ${isMe ? `<button onclick="pinMessage('${msgId}', '${msgTextForAttr}'); closeMsgMenus()"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>Épingler</button>` : ''}
-            ${isMe ? `<button onclick="deleteMessage('${msgId}'); closeMsgMenus()" style="color: #E74C3C; border-color: rgba(231,76,60,0.2);"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#E74C3C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>Supprimer</button>` : ''}
-        </div>`;
 
         // Sender pseudo at bottom (not me, last in group)
         if (!isMe && isLastInGroup) {
@@ -438,7 +434,15 @@ async function renderMessages(docs) {
         }
 
         html += `<div class="chat-bubble-time">${timeStr}</div>`;
-        html += `</div>`;
+        html += `</div>`; // close .chat-bubble
+
+        // Action menu — outside bubble, on opposite side
+        html += `<div class="chat-msg-menu" id="msgMenu-${msgId}" style="display:none;">
+            <button onclick="setReplyTo('${msgId}', '${senderForAttr}', '${msgTextForAttr}'); closeMsgMenus()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 17 4 12 9 7"/><path d="M20 18v-2a4 4 0 0 0-4-4H4"/></svg></button>
+            ${isMe ? `<button onclick="pinMessage('${msgId}', '${msgTextForAttr}'); closeMsgMenus()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg></button>` : ''}
+            ${isMe ? `<button onclick="deleteMessage('${msgId}'); closeMsgMenus()" class="chat-msg-delete-btn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#E74C3C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>` : ''}
+        </div>`;
+        html += `</div>`; // close .chat-bubble-row
 
         lastSenderId = msg.senderId;
         lastSenderType = 'user';
