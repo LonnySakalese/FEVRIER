@@ -405,7 +405,7 @@ async function renderMessages(docs) {
 
         if (msg.type === 'audio' && msg.audioData) {
             html += `<div class="chat-audio-msg">
-                <button class="chat-play-btn" onclick="playAudio(this, '${msgId}')" data-audio="${msg.audioData}">▶️</button>
+                <button class="chat-play-btn" onclick="playAudio(this, '${msgId}')" data-audio="${msg.audioData}"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="5 3 19 12 5 21 5 3"/></svg></button>
                 <div class="chat-audio-wave">
                     <div class="chat-audio-progress" id="progress-${msgId}"></div>
                 </div>
@@ -1106,7 +1106,7 @@ export function playAudio(btn, msgId) {
     const audio = new Audio(base64);
     currentAudio = audio;
     currentPlayBtn = btn;
-    btn.textContent = '⏸️';
+    btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" stroke="none"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>';
 
     const progressEl = document.getElementById(`progress-${msgId}`);
 
@@ -1118,14 +1118,14 @@ export function playAudio(btn, msgId) {
     };
 
     audio.onended = () => {
-        btn.textContent = '▶️';
+        btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="5 3 19 12 5 21 5 3"/></svg>';
         if (progressEl) progressEl.style.width = '0%';
         currentAudio = null;
         currentPlayBtn = null;
     };
 
     audio.onerror = () => {
-        btn.textContent = '▶️';
+        btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="5 3 19 12 5 21 5 3"/></svg>';
         showPopup('Erreur lecture audio', 'error');
         currentAudio = null;
         currentPlayBtn = null;
@@ -1133,7 +1133,7 @@ export function playAudio(btn, msgId) {
 
     audio.play().catch(err => {
         console.error('Audio play error:', err);
-        btn.textContent = '▶️';
+        btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="5 3 19 12 5 21 5 3"/></svg>';
     });
 }
 
