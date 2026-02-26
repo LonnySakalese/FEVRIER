@@ -3907,6 +3907,191 @@ canvas {
     }
 }
 
+/* ============================================================
+   Badge Detail Modal
+   ============================================================ */
+
+.bdm-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.75);
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    animation: fadeIn 0.2s ease;
+}
+
+.bdm-modal {
+    background: var(--dark-gray);
+    border: 1px solid var(--steel);
+    border-radius: 20px;
+    width: 100%;
+    max-width: 380px;
+    max-height: 85vh;
+    overflow-y: auto;
+    position: relative;
+    animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+    from { transform: translateY(30px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.bdm-close {
+    position: absolute;
+    top: 12px; right: 12px;
+    background: none;
+    border: none;
+    color: var(--accent-dark);
+    cursor: pointer;
+    padding: 4px;
+}
+
+.bdm-close svg { width: 20px; height: 20px; }
+
+.bdm-header {
+    text-align: center;
+    padding: 28px 20px 16px;
+    border-bottom: 1px solid var(--steel);
+}
+
+.bdm-icon {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 8px;
+}
+
+.bdm-icon svg {
+    width: 48px;
+    height: 48px;
+}
+
+.bdm-title {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+}
+
+.bdm-rank {
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-top: 2px;
+}
+
+.bdm-value {
+    font-size: 0.75rem;
+    color: var(--accent-dark);
+    margin-top: 6px;
+}
+
+.bdm-tiers {
+    padding: 16px 20px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.bdm-tier-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    border-radius: 12px;
+    background: var(--charcoal);
+    border: 1px solid transparent;
+    opacity: 0.4;
+    transition: all 0.2s ease;
+}
+
+.bdm-tier-row.achieved {
+    opacity: 1;
+    background: var(--charcoal);
+}
+
+.bdm-tier-row.current {
+    border-color: var(--steel);
+    opacity: 1;
+}
+
+.bdm-tier-row.next {
+    opacity: 0.8;
+    border: 1px dashed var(--steel);
+}
+
+.bdm-tier-dot {
+    width: 28px;
+    height: 28px;
+    min-width: 28px;
+    border-radius: 50%;
+    background: var(--steel);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.bdm-tier-dot svg {
+    width: 14px;
+    height: 14px;
+}
+
+.bdm-tier-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.bdm-tier-name {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--accent-dim);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.bdm-tier-threshold {
+    font-size: 0.65rem;
+    color: var(--accent-dark);
+    margin-top: 1px;
+}
+
+.bdm-tier-progress {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 6px;
+}
+
+.bdm-tier-bar {
+    flex: 1;
+    height: 4px;
+    background: var(--steel);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.bdm-tier-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.5s ease;
+}
+
+.bdm-tier-pct {
+    font-size: 0.6rem;
+    color: var(--accent-dark);
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.bdm-tier-check {
+    display: none; /* already shown in dot */
+}
+
 /* Legacy compat */
 .badge-card { display: none; }
 

@@ -250,6 +250,128 @@ export function toggleBadgesVisibility() {
 }
 
 // ============================================================
+// HELPER: Get all current values
+// ============================================================
+
+function getCurrentValues(unlockedBadges) {
+    try {
+        const data = getData();
+        const stats = calculateStats();
+        const vals = {
+            totalWins: stats.totalWins || 0,
+            perfectDays: stats.perfectDaysCount || 0,
+            bestStreak: stats.bestStreak || 0,
+            customHabits: (data.customHabits || []).length,
+            lateValidations: data.lateValidations || 0,
+            rankMasterDays: data.rankMasterDays || 0,
+            goldBadges: 0,
+        };
+        BADGE_FAMILIES.forEach(f => {
+            if (f.id === 'collector') return;
+            if (getFamilyTier(f.id, unlockedBadges) >= 3) vals.goldBadges++;
+        });
+        return vals;
+    } catch (e) {
+        return {};
+    }
+}
+
+// ============================================================
+// DETAIL MODAL — tap a badge to see all tiers
+// ============================================================
+
+export function showBadgeDetail(familyId) {
+    const fam = BADGE_FAMILIES.find(f => f.id === familyId);
+    if (!fam) return;
+
+    const unlockedBadges = loadBadges();
+    const currentTier = getFamilyTier(familyId, unlockedBadges);
+    const vals = getCurrentValues(unlockedBadges);
+    const currentValue = vals[fam.condition] || 0;
+
+    // Build tier rows
+    let tiersHtml = '';
+    BADGE_TIERS.forEach((tier, i) => {
+        const threshold = fam.tiers[i];
+        const isAchieved = i < currentTier;
+        const isCurrent = i === currentTier - 1;
+        const isNext = i === currentTier;
+
+        // Progress for this specific tier
+        let pct = 0;
+        if (isAchieved) {
+            pct = 100;
+        } else if (isNext) {
+            const prev = i > 0 ? fam.tiers[i - 1] : 0;
+            const range = threshold - prev;
+            pct = range > 0 ? Math.min(100, Math.round(((currentValue - prev) / range) * 100)) : 0;
+        }
+
+        const checkIcon = svg('<polyline points="20 6 9 17 4 12"/>', 2.5);
+
+        tiersHtml += `
+            <div class="bdm-tier-row ${isAchieved ? 'achieved' : ''} ${isCurrent ? 'current' : ''} ${isNext ? 'next' : ''}">
+                <div class="bdm-tier-dot" style="${isAchieved ? `background: ${tier.color}; box-shadow: 0 0 8px ${tier.color};` : ''}">
+                    ${isAchieved ? `<span style="color: #000; display: flex;">${checkIcon}</span>` : ''}
+                </div>
+                <div class="bdm-tier-info">
+                    <div class="bdm-tier-name" style="${isAchieved || isCurrent ? `color: ${tier.color};` : ''}">${tier.name}</div>
+                    <div class="bdm-tier-threshold">${fam.desc} : ${threshold}</div>
+                    ${isNext ? `
+                        <div class="bdm-tier-progress">
+                            <div class="bdm-tier-bar">
+                                <div class="bdm-tier-fill" style="width: ${pct}%; background: ${tier.color};"></div>
+                            </div>
+                            <span class="bdm-tier-pct">${currentValue} / ${threshold}</span>
+                        </div>
+                    ` : ''}
+                </div>
+                ${isAchieved ? `<div class="bdm-tier-check" style="color: ${tier.color};">${checkIcon}</div>` : ''}
+            </div>
+        `;
+    });
+
+    // Remove existing modal if any
+    const old = document.getElementById('badgeDetailModal');
+    if (old) old.remove();
+
+    const tierInfo = currentTier > 0 ? BADGE_TIERS[currentTier - 1] : null;
+    const tierColor = tierInfo ? tierInfo.color : 'var(--steel)';
+    const tierName = tierInfo ? tierInfo.name : 'Aucun rang';
+
+    const modal = document.createElement('div');
+    modal.id = 'badgeDetailModal';
+    modal.className = 'bdm-overlay';
+    modal.innerHTML = `
+        <div class="bdm-modal">
+            <button class="bdm-close" onclick="document.getElementById('badgeDetailModal').remove()">
+                ${svg('<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>')}
+            </button>
+            <div class="bdm-header">
+                <div class="bdm-icon" style="color: ${tierColor}; ${currentTier > 0 ? `filter: drop-shadow(0 0 12px ${tierColor});` : 'opacity: 0.3;'}">
+                    ${fam.icon}
+                </div>
+                <div class="bdm-title">${fam.name}</div>
+                <div class="bdm-rank" style="color: ${tierColor};">${tierName}</div>
+                <div class="bdm-value">${currentValue} ${fam.desc.toLowerCase()}</div>
+            </div>
+            <div class="bdm-tiers">
+                ${tiersHtml}
+            </div>
+        </div>
+    `;
+
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) modal.remove();
+    });
+
+    document.body.appendChild(modal);
+}
+
+// Make it available globally for onclick
+window.showBadgeDetail = showBadgeDetail;
+
+// ============================================================
 // RENDER — Badge cards grouped by family with tier progress
 // ============================================================
 
@@ -297,26 +419,8 @@ export function renderBadges() {
             const nextThreshold = nextTierIdx < 5 ? fam.tiers[nextTierIdx] : null;
 
             // Get current value for progress
-            let currentValue = 0;
-            try {
-                const data = getData();
-                const stats = calculateStats();
-                const vals = {
-                    totalWins: stats.totalWins || 0,
-                    perfectDays: stats.perfectDaysCount || 0,
-                    bestStreak: stats.bestStreak || 0,
-                    customHabits: (data.customHabits || []).length,
-                    lateValidations: data.lateValidations || 0,
-                    rankMasterDays: data.rankMasterDays || 0,
-                    goldBadges: 0,
-                };
-                // Count gold badges
-                BADGE_FAMILIES.forEach(f => {
-                    if (f.id === 'collector') return;
-                    if (getFamilyTier(f.id, unlockedBadges) >= 3) vals.goldBadges++;
-                });
-                currentValue = vals[fam.condition] || 0;
-            } catch (e) { /* ignore */ }
+            const allVals = getCurrentValues(unlockedBadges);
+            const currentValue = allVals[fam.condition] || 0;
 
             // Progress bar toward next tier
             let progressPct = 0;
@@ -341,7 +445,7 @@ export function renderBadges() {
             }
 
             html += `
-                <div class="badge-family-card" style="border-color: ${tierColor};">
+                <div class="badge-family-card" onclick="showBadgeDetail('${fam.id}')" style="border-color: ${tierColor}; cursor: pointer;">
                     <div class="badge-family-top" style="background: ${tierColor}20;"></div>
                     <div class="badge-family-icon" style="color: ${tierColor}; ${currentTier > 0 ? `filter: drop-shadow(0 0 8px ${tierColor});` : 'opacity: 0.3; filter: grayscale(100%);'}">
                         ${fam.icon}
