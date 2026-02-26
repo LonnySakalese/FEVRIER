@@ -95,7 +95,7 @@ export function renderChatSection(groupId) {
                     <button class="chat-cancel-record" onclick="cancelRecording()">✕</button>
                 </div>
                 <div class="chat-input-row" id="chatInputRow">
-                    <button class="chat-mic-btn" id="chatMicBtn" onclick="toggleRecording('${groupId}')">🎙️</button>
+                    <button class="chat-mic-btn" id="chatMicBtn" onclick="toggleRecording('${groupId}')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg></button>
                     <textarea class="chat-text-input" id="chatTextInput" 
                            placeholder="Message..." maxlength="500" rows="1"
                            onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendChatMessage('${groupId}')}"
@@ -853,7 +853,7 @@ function stopRecording(groupId) {
     const recordBar = document.getElementById('chatRecordingBar');
     const micBtn = document.getElementById('chatMicBtn');
     if (recordBar) recordBar.style.display = 'none';
-    if (micBtn) { micBtn.textContent = '🎙️'; micBtn.classList.remove('recording'); }
+    if (micBtn) { micBtn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>'; micBtn.classList.remove('recording'); }
 
     if (navigator.vibrate) navigator.vibrate(30);
 }
@@ -878,7 +878,7 @@ export function cancelRecording() {
     const recordBar = document.getElementById('chatRecordingBar');
     const micBtn = document.getElementById('chatMicBtn');
     if (recordBar) recordBar.style.display = 'none';
-    if (micBtn) { micBtn.textContent = '🎙️'; micBtn.classList.remove('recording'); }
+    if (micBtn) { micBtn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>'; micBtn.classList.remove('recording'); }
 }
 
 function showAudioPreview(duration) {
@@ -892,7 +892,7 @@ function showAudioPreview(duration) {
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
             </button>
             <div class="chat-audio-preview-wave">
-                <span class="chat-audio-preview-icon">🎙️</span>
+                <span class="chat-audio-preview-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg></span>
                 <span class="chat-audio-preview-duration">${duration}</span>
             </div>
             <button class="chat-audio-preview-send" onclick="sendPendingAudio()">
@@ -914,7 +914,7 @@ function restoreChatInputRow() {
     if (!inputRow || !currentChatGroupId) return;
     
     inputRow.innerHTML = `
-        <button class="chat-mic-btn" id="chatMicBtn" onclick="toggleRecording('${currentChatGroupId}')">🎙️</button>
+        <button class="chat-mic-btn" id="chatMicBtn" onclick="toggleRecording('${currentChatGroupId}')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg></button>
         <textarea class="chat-text-input" id="chatTextInput" 
                placeholder="Message..." maxlength="500" rows="1"
                onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendChatMessage('${currentChatGroupId}')}"

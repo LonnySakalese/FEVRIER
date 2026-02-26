@@ -4407,19 +4407,30 @@ canvas {
     padding-top: 10px;
 }
 
+/* ===== Group Danger Button — Premium Redesign ===== */
 .group-danger-btn {
-    padding: 10px 20px;
-    background: transparent;
-    border: 1px solid #8B0000;
-    border-radius: 10px;
-    color: #FF6B6B;
-    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 14px 20px;
+    background: linear-gradient(135deg, rgba(231,76,60,0.08), rgba(231,76,60,0.02));
+    border: 1px solid rgba(231,76,60,0.2);
+    border-radius: 14px;
+    color: #E74C3C;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
     cursor: pointer;
-    transition: background 0.2s;
+    transition: all 0.25s cubic-bezier(0.4,0,0.2,1);
+    box-shadow: 0 2px 8px rgba(231,76,60,0.08);
 }
-
-.group-danger-btn:hover {
-    background: rgba(139, 0, 0, 0.15);
+.group-danger-btn:active {
+    transform: scale(0.97);
+    background: rgba(231,76,60,0.15);
+    box-shadow: 0 0 16px rgba(231,76,60,0.15);
 }
 
 /* Habits selection in create modal */
@@ -7584,30 +7595,37 @@ button:active, .modal-btn:active, .auth-btn:active, .settings-btn:active, .form-
     transform: scale(0.9);
 }
 
+/* ===== Mic Button — Premium Redesign ===== */
 .chat-mic-btn {
-    background: var(--charcoal);
-    border: 1px solid var(--steel);
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    font-size: 1.1rem;
+    background: linear-gradient(135deg, rgba(46,204,113,0.12), rgba(46,204,113,0.04));
+    border: 1px solid rgba(46,204,113,0.25);
+    border-radius: 14px;
+    width: 44px;
+    height: 44px;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.2s;
+    transition: all 0.25s cubic-bezier(0.4,0,0.2,1);
     flex-shrink: 0;
+    color: #2ECC71;
+}
+.chat-mic-btn svg { stroke: #2ECC71; }
+.chat-mic-btn:active {
+    transform: scale(0.9);
+    background: rgba(46,204,113,0.2);
 }
 
 .chat-mic-btn.recording {
-    background: #E74C3C;
-    border-color: #E74C3C;
-    animation: recordPulse 1s infinite;
+    background: linear-gradient(135deg, rgba(231,76,60,0.2), rgba(231,76,60,0.1));
+    border-color: rgba(231,76,60,0.4);
+    animation: recordPulse 1.2s ease infinite;
 }
+.chat-mic-btn.recording svg { stroke: #E74C3C; }
 
 @keyframes recordPulse {
-    0%, 100% { box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.4); }
-    50% { box-shadow: 0 0 0 8px rgba(231, 76, 60, 0); }
+    0%, 100% { box-shadow: 0 0 0 0 rgba(231,76,60,0.3); }
+    50% { box-shadow: 0 0 0 10px rgba(231,76,60,0); }
 }
 
 /* Recording bar */
