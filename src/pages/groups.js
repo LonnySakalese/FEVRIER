@@ -641,10 +641,10 @@ export async function openGroupDetail(groupId) {
                 </div>
 
                 <div class="group-tab-content" id="groupTabChallenges" style="display: none;">
-                    <button class="action-btn action-btn-secondary" onclick="openCreateChallengeModal('${groupId}')" style="width:100%;">
+                    ${isCreator ? `<button class="action-btn action-btn-secondary" onclick="openCreateChallengeModal('${groupId}')" style="width:100%;">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
                         <span>Créer un challenge</span>
-                    </button>
+                    </button>` : ''}
                     <div id="challengesTabContent">
                         <div style="text-align:center; padding: 20px; color: var(--accent-dim);">⏳ Chargement...</div>
                     </div>

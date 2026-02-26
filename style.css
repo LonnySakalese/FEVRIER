@@ -7931,8 +7931,13 @@ button:active, .modal-btn:active, .auth-btn:active, .settings-btn:active, .form-
 .challenge-countdown-red { color: #E74C3C; }
 
 /* Join button on card */
-.challenge-join-btn {
+.challenge-card-actions {
+    display: flex;
+    gap: 8px;
     margin-top: 10px;
+}
+.challenge-join-btn {
+    flex: 1;
     padding: 8px 16px;
     background: var(--accent);
     color: var(--black);
@@ -7942,8 +7947,23 @@ button:active, .modal-btn:active, .auth-btn:active, .settings-btn:active, .form-
     font-size: 0.8rem;
     cursor: pointer;
     transition: all 0.2s;
-    width: 100%;
 }
+.challenge-delete-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    background: rgba(231,76,60,0.08);
+    border: 1px solid rgba(231,76,60,0.2);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+    flex-shrink: 0;
+    padding: 0;
+}
+.challenge-delete-btn svg { stroke: #E74C3C; }
+.challenge-delete-btn:active { transform: scale(0.85); background: rgba(231,76,60,0.2); }
 
 .challenge-join-btn:hover {
     transform: scale(1.02);

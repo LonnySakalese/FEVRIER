@@ -5,6 +5,7 @@
 import { auth, db, isFirebaseConfigured } from '../config/firebase.js';
 import { appState } from '../services/state.js';
 import { showPopup } from '../ui/toast.js';
+import { ConfirmModal } from '../ui/modals.js';
 import { addXP } from '../core/xp.js';
 
 // ============================================================
@@ -208,6 +209,38 @@ export async function createChallenge() {
 // RENDER CHALLENGES LIST
 // ============================================================
 
+// ============================================================
+// DELETE CHALLENGE (creator only)
+// ============================================================
+
+window.deleteChallengeConfirm = function(groupId, challengeId, name) {
+    ConfirmModal.show({
+        title: 'SUPPRIMER LE CHALLENGE',
+        message: `Supprimer "${name}" ? Cette action est irréversible.`,
+        confirmText: 'Supprimer',
+        cancelText: 'Annuler',
+        danger: true,
+        onConfirm: async () => {
+            try {
+                // Delete participants subcollection
+                const partsSnap = await db.collection('groups').doc(groupId)
+                    .collection('challenges').doc(challengeId)
+                    .collection('participants').get();
+                const batch = db.batch();
+                partsSnap.docs.forEach(d => batch.delete(d.ref));
+                batch.delete(db.collection('groups').doc(groupId).collection('challenges').doc(challengeId));
+                await batch.commit();
+                
+                showPopup('Challenge supprimé', 'success');
+                renderChallenges(groupId);
+            } catch (e) {
+                console.error('Erreur suppression challenge:', e);
+                showPopup('Erreur lors de la suppression', 'error');
+            }
+        }
+    });
+};
+
 export async function renderChallenges(groupId) {
     const container = document.getElementById('challengesTabContent');
     if (!container) return;
@@ -280,10 +313,16 @@ export async function renderChallenges(groupId) {
                     <div class="challenge-progress-bar">
                         <div class="challenge-progress-fill" style="width: ${progressPct}%"></div>
                     </div>
-                    ${!isParticipant && c.status === 'active' ? `
-                        <button class="challenge-join-btn" onclick="event.stopPropagation(); joinChallenge('${groupId}', '${challengeId}')">
-                            🤝 Rejoindre
-                        </button>` : ''}
+                    <div class="challenge-card-actions">
+                        ${!isParticipant && c.status === 'active' ? `
+                            <button class="challenge-join-btn" onclick="event.stopPropagation(); joinChallenge('${groupId}', '${challengeId}')">
+                                Rejoindre
+                            </button>` : ''}
+                        ${c.creatorId === userId ? `
+                            <button class="challenge-delete-btn" onclick="event.stopPropagation(); deleteChallengeConfirm('${groupId}', '${challengeId}', '${escapeHtml(c.name)}')">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                            </button>` : ''}
+                    </div>
                 </div>`;
 
             if (c.status === 'active') activeHtml += card;
