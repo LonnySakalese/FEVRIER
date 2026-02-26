@@ -17,6 +17,9 @@ let isRecording = false;
 let recordingTimer = null;
 let recordingSeconds = 0;
 const MAX_RECORDING_SECONDS = 120;
+let audioContext = null;
+let analyser = null;
+let waveformAnimId = null;
 
 // Audio preview state (recorded but not yet sent)
 let pendingAudioBase64 = null;
@@ -90,9 +93,12 @@ export function renderChatSection(groupId) {
             </div>
             <div class="chat-input-area">
                 <div class="chat-recording-bar" id="chatRecordingBar" style="display:none;">
+                    <button class="chat-cancel-record" onclick="cancelRecording()">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                    </button>
                     <div class="chat-recording-dot"></div>
+                    <canvas class="chat-waveform" id="chatWaveform" height="32"></canvas>
                     <span class="chat-recording-time" id="chatRecordingTime">0:00</span>
-                    <button class="chat-cancel-record" onclick="cancelRecording()">✕</button>
                 </div>
                 <div class="chat-input-row" id="chatInputRow">
                     <button class="chat-mic-btn" id="chatMicBtn" onclick="toggleRecording('${groupId}')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg></button>
@@ -785,6 +791,16 @@ async function startRecording(groupId) {
         audioChunks = [];
         recordingSeconds = 0;
 
+        // Setup audio analyser for waveform
+        try {
+            audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const source = audioContext.createMediaStreamSource(stream);
+            analyser = audioContext.createAnalyser();
+            analyser.fftSize = 256;
+            source.connect(analyser);
+            startWaveformAnimation();
+        } catch (e) { console.warn('Waveform not supported'); }
+
         mediaRecorder = new MediaRecorder(stream, {
             mimeType: MediaRecorder.isTypeSupported('audio/webm;codecs=opus')
                 ? 'audio/webm;codecs=opus'
@@ -797,6 +813,7 @@ async function startRecording(groupId) {
 
         mediaRecorder.onstop = async () => {
             stream.getTracks().forEach(t => t.stop());
+            stopWaveformAnimation();
 
             if (audioChunks.length === 0) return;
 
@@ -810,11 +827,8 @@ async function startRecording(groupId) {
             const base64 = await blobToBase64(blob);
             const duration = formatDuration(recordingSeconds);
 
-            // Don't auto-send — show preview instead
-            pendingAudioBase64 = base64;
-            pendingAudioDuration = duration;
-            pendingAudioGroupId = groupId;
-            showAudioPreview(duration);
+            // Auto-send immediately — no preview step
+            autoSendAudio(groupId, base64, duration);
         };
 
         mediaRecorder.start(250);
@@ -822,8 +836,10 @@ async function startRecording(groupId) {
 
         const recordBar = document.getElementById('chatRecordingBar');
         const micBtn = document.getElementById('chatMicBtn');
+        const inputRow = document.getElementById('chatInputRow');
         if (recordBar) recordBar.style.display = 'flex';
-        if (micBtn) { micBtn.textContent = '⏹️'; micBtn.classList.add('recording'); }
+        if (inputRow) inputRow.style.display = 'none';
+        if (micBtn) { micBtn.classList.add('recording'); }
 
         recordingTimer = setInterval(() => {
             recordingSeconds++;
@@ -843,22 +859,111 @@ async function startRecording(groupId) {
     }
 }
 
+// Waveform animation during recording
+function startWaveformAnimation() {
+    const canvas = document.getElementById('chatWaveform');
+    if (!canvas || !analyser) return;
+
+    const ctx = canvas.getContext('2d');
+    const bufferLength = analyser.frequencyBinCount;
+    const dataArray = new Uint8Array(bufferLength);
+
+    function draw() {
+        waveformAnimId = requestAnimationFrame(draw);
+        analyser.getByteTimeDomainData(dataArray);
+
+        const w = canvas.width = canvas.offsetWidth * 2;
+        const h = canvas.height = 64;
+        ctx.clearRect(0, 0, w, h);
+
+        ctx.lineWidth = 2.5;
+        ctx.strokeStyle = '#19E639';
+        ctx.beginPath();
+
+        const sliceWidth = w / bufferLength;
+        let x = 0;
+
+        for (let i = 0; i < bufferLength; i++) {
+            const v = dataArray[i] / 128.0;
+            const y = (v * h) / 2;
+            if (i === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+            x += sliceWidth;
+        }
+
+        ctx.lineTo(w, h / 2);
+        ctx.stroke();
+    }
+
+    draw();
+}
+
+function stopWaveformAnimation() {
+    if (waveformAnimId) {
+        cancelAnimationFrame(waveformAnimId);
+        waveformAnimId = null;
+    }
+    if (audioContext) {
+        try { audioContext.close(); } catch (e) {}
+        audioContext = null;
+        analyser = null;
+    }
+}
+
+// Auto-send audio (no preview step)
+async function autoSendAudio(groupId, base64, duration) {
+    if (!appState.currentUser) return;
+
+    try {
+        const userDoc = await db.collection('users').doc(appState.currentUser.uid).get();
+        const userData = userDoc.data() || {};
+
+        const messageData = {
+            type: 'audio',
+            audioData: base64,
+            audioDuration: duration,
+            senderId: appState.currentUser.uid,
+            senderPseudo: userData.pseudo || userData.profile?.pseudo || 'Anonyme',
+            senderAvatar: userData.avatar || userData.profile?.avatar || '👤',
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        };
+
+        if (replyingTo) {
+            messageData.replyTo = {
+                messageId: replyingTo.messageId,
+                senderPseudo: replyingTo.senderPseudo,
+                text: replyingTo.text
+            };
+            cancelReply();
+        }
+
+        await db.collection('groups').doc(groupId).collection('messages').add(messageData);
+    } catch (err) {
+        console.error('Erreur envoi audio:', err);
+        showPopup('Erreur envoi audio', 'error');
+    }
+}
+
 function stopRecording(groupId) {
     if (!isRecording || !mediaRecorder) return;
 
     isRecording = false;
     clearInterval(recordingTimer);
-    mediaRecorder.stop();
+    mediaRecorder.stop(); // triggers onstop → autoSendAudio
 
     const recordBar = document.getElementById('chatRecordingBar');
+    const inputRow = document.getElementById('chatInputRow');
     const micBtn = document.getElementById('chatMicBtn');
     if (recordBar) recordBar.style.display = 'none';
+    if (inputRow) inputRow.style.display = 'flex';
     if (micBtn) { micBtn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>'; micBtn.classList.remove('recording'); }
 
     if (navigator.vibrate) navigator.vibrate(30);
 }
 
 export function cancelRecording() {
+    stopWaveformAnimation();
+
     if (isRecording) {
         isRecording = false;
         clearInterval(recordingTimer);
@@ -876,8 +981,10 @@ export function cancelRecording() {
     clearAudioPreview();
 
     const recordBar = document.getElementById('chatRecordingBar');
+    const inputRow = document.getElementById('chatInputRow');
     const micBtn = document.getElementById('chatMicBtn');
     if (recordBar) recordBar.style.display = 'none';
+    if (inputRow) inputRow.style.display = 'flex';
     if (micBtn) { micBtn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>'; micBtn.classList.remove('recording'); }
 }
 

@@ -7820,37 +7820,51 @@ button:active, .modal-btn:active, .auth-btn:active, .settings-btn:active, .form-
 .chat-recording-bar {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
     padding: 8px 12px;
-    background: rgba(231, 76, 60, 0.1);
-    border: 1px solid rgba(231, 76, 60, 0.3);
-    border-radius: 10px;
+    background: rgba(231, 76, 60, 0.08);
+    border: 1px solid rgba(231, 76, 60, 0.25);
+    border-radius: 12px;
     margin-bottom: 8px;
 }
 
 .chat-recording-dot {
     width: 10px;
     height: 10px;
+    min-width: 10px;
     background: #E74C3C;
     border-radius: 50%;
     animation: recordPulse 1s infinite;
 }
 
+.chat-waveform {
+    flex: 1;
+    height: 32px;
+    border-radius: 4px;
+}
+
 .chat-recording-time {
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     color: #E74C3C;
     font-weight: 700;
     font-variant-numeric: tabular-nums;
-    flex: 1;
+    min-width: 32px;
+    text-align: right;
 }
 
 .chat-cancel-record {
     background: none;
     border: none;
     color: var(--accent-dim);
-    font-size: 1.1rem;
     cursor: pointer;
-    padding: 4px 8px;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+}
+
+.chat-cancel-record svg {
+    width: 18px;
+    height: 18px;
 }
 
 /* Light theme chat overrides */
