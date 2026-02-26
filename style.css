@@ -7867,6 +7867,30 @@ button:active, .modal-btn:active, .auth-btn:active, .settings-btn:active, .form-
     height: 18px;
 }
 
+.chat-record-send {
+    background: var(--accent-green);
+    border: none;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #000;
+    transition: transform 0.15s ease;
+}
+
+.chat-record-send:active {
+    transform: scale(0.9);
+}
+
+.chat-record-send svg {
+    width: 18px;
+    height: 18px;
+}
+
 /* Light theme chat overrides */
 [data-theme="light"] .chat-messages {
     background: #F8F9FA;

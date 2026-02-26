@@ -99,6 +99,9 @@ export function renderChatSection(groupId) {
                     <div class="chat-recording-dot"></div>
                     <canvas class="chat-waveform" id="chatWaveform" height="32"></canvas>
                     <span class="chat-recording-time" id="chatRecordingTime">0:00</span>
+                    <button class="chat-record-send" id="chatRecordSendBtn" onclick="stopAndSendRecording()">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                    </button>
                 </div>
                 <div class="chat-input-row" id="chatInputRow">
                     <button class="chat-mic-btn" id="chatMicBtn" onclick="toggleRecording('${groupId}')"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg></button>
@@ -779,10 +782,17 @@ export async function getUnreadCount(groupId) {
 
 export async function toggleRecording(groupId) {
     if (isRecording) {
-        stopRecording(groupId);
+        // Mic tap while recording = cancel (send is via arrow button)
+        cancelRecording();
     } else {
         startRecording(groupId);
     }
+}
+
+// Called by the send arrow button in recording bar
+export function stopAndSendRecording() {
+    if (!isRecording || !mediaRecorder) return;
+    stopRecording(currentChatGroupId);
 }
 
 async function startRecording(groupId) {
