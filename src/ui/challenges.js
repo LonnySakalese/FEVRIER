@@ -213,32 +213,32 @@ export async function createChallenge() {
 // DELETE CHALLENGE (creator only)
 // ============================================================
 
-window.deleteChallengeConfirm = function(groupId, challengeId, name) {
-    ConfirmModal.show({
+window.deleteChallengeConfirm = async function(groupId, challengeId, name) {
+    const confirmed = await ConfirmModal.show({
         title: 'SUPPRIMER LE CHALLENGE',
         message: `Supprimer "${name}" ? Cette action est irréversible.`,
         confirmText: 'Supprimer',
         cancelText: 'Annuler',
         danger: true,
-        onConfirm: async () => {
-            try {
-                // Delete participants subcollection
-                const partsSnap = await db.collection('groups').doc(groupId)
-                    .collection('challenges').doc(challengeId)
-                    .collection('participants').get();
-                const batch = db.batch();
-                partsSnap.docs.forEach(d => batch.delete(d.ref));
-                batch.delete(db.collection('groups').doc(groupId).collection('challenges').doc(challengeId));
-                await batch.commit();
-                
-                showPopup('Challenge supprimé', 'success');
-                renderChallenges(groupId);
-            } catch (e) {
-                console.error('Erreur suppression challenge:', e);
-                showPopup('Erreur lors de la suppression', 'error');
-            }
-        }
     });
+
+    if (!confirmed) return;
+
+    try {
+        const partsSnap = await db.collection('groups').doc(groupId)
+            .collection('challenges').doc(challengeId)
+            .collection('participants').get();
+        const batch = db.batch();
+        partsSnap.docs.forEach(d => batch.delete(d.ref));
+        batch.delete(db.collection('groups').doc(groupId).collection('challenges').doc(challengeId));
+        await batch.commit();
+
+        showPopup('Challenge supprimé', 'success');
+        renderChallenges(groupId);
+    } catch (e) {
+        console.error('Erreur suppression challenge:', e);
+        showPopup('Erreur lors de la suppression', 'error');
+    }
 };
 
 export async function renderChallenges(groupId) {
