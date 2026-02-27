@@ -4,17 +4,6 @@
 
 export const ToastManager = {
     show(message, type = 'info', duration = 4000) {
-        // Create a fresh overlay each time — no container, no stacking issues
-        const overlay = document.createElement('div');
-        overlay.style.cssText = `
-            position: fixed;
-            top: 20px; left: 0; right: 0;
-            z-index: 2147483647;
-            pointer-events: none;
-            display: flex;
-            justify-content: center;
-        `;
-
         const colors = {
             success: { bg: '#0a2a0a', border: '#19E639', icon: '✓' },
             error:   { bg: '#2a0a0a', border: '#E74C3C', icon: '✕' },
@@ -24,8 +13,17 @@ export const ToastManager = {
         const c = colors[type] || colors.info;
 
         const toast = document.createElement('div');
+        toast.className = 'oc-toast';
+        toast.innerHTML = `
+            <span style="min-width:24px;height:24px;border-radius:50%;background:${c.border};color:#000;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:13px;">${c.icon}</span>
+            <span style="color:#F5F5F0;font-size:0.85rem;font-weight:600;flex:1;">${message}</span>
+            <button style="background:none;border:none;color:#888;font-size:1.2rem;cursor:pointer;padding:0 4px;" onclick="this.parentElement.remove()">×</button>
+        `;
         toast.style.cssText = `
-            pointer-events: auto;
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
             background: ${c.bg};
             border: 1px solid ${c.border};
             border-radius: 12px;
@@ -36,23 +34,28 @@ export const ToastManager = {
             max-width: 360px;
             width: calc(100% - 40px);
             box-shadow: 0 8px 32px rgba(0,0,0,0.6);
+            z-index: 999999;
             animation: toastIn 0.3s ease-out;
+            pointer-events: auto;
         `;
 
-        toast.innerHTML = `
-            <span style="min-width:24px;height:24px;border-radius:50%;background:${c.border};color:#000;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:13px;">${c.icon}</span>
-            <span style="color:#F5F5F0;font-size:0.85rem;font-weight:600;flex:1;">${message}</span>
-            <button style="background:none;border:none;color:#888;font-size:1.2rem;cursor:pointer;padding:0 4px;" onclick="this.closest('[data-toast-overlay]').remove()">×</button>
-        `;
-
-        overlay.setAttribute('data-toast-overlay', '');
-        overlay.appendChild(toast);
-        document.body.appendChild(overlay);
+        // Find the best parent: active modal or body
+        const activeModal = document.querySelector('.modal-overlay.active')
+            || document.querySelector('.bdm-overlay');
+        
+        if (activeModal) {
+            // Append inside the modal so it's in the same stacking context
+            activeModal.appendChild(toast);
+        } else {
+            // No modal open — put in body
+            toast.style.position = 'fixed';
+            document.body.appendChild(toast);
+        }
 
         if (duration > 0) {
             setTimeout(() => {
                 toast.style.animation = 'toastOut 0.3s ease-in forwards';
-                setTimeout(() => overlay.remove(), 300);
+                setTimeout(() => toast.remove(), 300);
             }, duration);
         }
 
