@@ -398,13 +398,22 @@ function stopQRScanner() {
     }
 }
 
-export async function joinGroup() {
+// Join by code directly (used by QR deep link)
+export async function joinGroupByCode(code) {
+    if (!code) return;
+    // Set input value and call joinGroup
+    const input = document.getElementById('joinGroupCode');
+    if (input) input.value = code;
+    await joinGroup(code);
+}
+
+export async function joinGroup(directCode) {
     if (!isFirebaseConfigured || !appState.currentUser) {
         showPopup('Tu dois être connecté', 'error');
         return;
     }
 
-    const code = (document.getElementById('joinGroupCode')?.value || '').trim().toUpperCase();
+    const code = (directCode || document.getElementById('joinGroupCode')?.value || '').trim().toUpperCase();
 
     if (!code || code.length !== 6) {
         showPopup('Entre un code de 6 caractères', 'warning');

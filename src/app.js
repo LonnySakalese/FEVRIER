@@ -78,7 +78,7 @@ import {
 } from './pages/profile.js';
 import {
     renderGroups, openCreateGroupModal, closeCreateGroupModal, createGroup,
-    openJoinGroupModal, closeJoinGroupModal, joinGroup, toggleQRScanner,
+    openJoinGroupModal, closeJoinGroupModal, joinGroup, joinGroupByCode, toggleQRScanner,
     openGroupDetail, closeGroupDetail, leaveGroup, deleteGroup, copyGroupCode,
     renderProfileGroups, switchGroupTab
 } from './pages/groups.js';
@@ -724,7 +724,7 @@ Object.assign(window, {
 
     // Groups
     openCreateGroupModal, closeCreateGroupModal, createGroup,
-    openJoinGroupModal, closeJoinGroupModal, joinGroup, toggleQRScanner,
+    openJoinGroupModal, closeJoinGroupModal, joinGroup, joinGroupByCode, toggleQRScanner,
     openGroupDetail, closeGroupDetail, leaveGroup, deleteGroup, copyGroupCode,
 
     // QR Code
@@ -901,16 +901,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 activateMaxDemo();
                 break;
             default:
-                // Handle #join/CODE deep links
+                // Handle #join/CODE deep links — auto join
                 if (hash.startsWith('#join/')) {
                     const code = hash.replace('#join/', '').trim();
                     if (code) {
                         showPage('groups');
-                        setTimeout(() => {
-                            const joinInput = document.getElementById('joinGroupCode');
-                            if (joinInput) joinInput.value = code;
-                            if (typeof openJoinGroupModal === 'function') openJoinGroupModal();
-                        }, 600);
+                        setTimeout(async () => {
+                            if (typeof joinGroupByCode === 'function') {
+                                await joinGroupByCode(code);
+                            }
+                        }, 1000);
                     }
                 }
                 break;
