@@ -6,12 +6,14 @@ export const ToastManager = {
     container: null,
 
     init() {
-        if (this.container) return;
+        if (this.container && document.body.contains(this.container)) return;
         this.container = document.createElement('div');
         this.container.className = 'toast-container';
         this.container.setAttribute('role', 'alert');
         this.container.setAttribute('aria-live', 'polite');
         this.container.setAttribute('aria-atomic', 'true');
+        // Force z-index inline to guarantee it's always on top
+        this.container.style.cssText = 'position:fixed;top:20px;left:50%;transform:translateX(-50%);z-index:2147483647;display:flex;flex-direction:column;gap:10px;width:calc(100% - 40px);max-width:400px;pointer-events:none;';
         document.body.appendChild(this.container);
     },
 
@@ -27,6 +29,10 @@ export const ToastManager = {
 
     show(message, type = 'info', duration = 4000) {
         this.init();
+        // Always ensure container is last child of body (on top of everything)
+        if (this.container.parentNode !== document.body || this.container !== document.body.lastElementChild) {
+            document.body.appendChild(this.container);
+        }
 
         const toast = document.createElement('div');
         toast.className = `toast toast-${type}`;
