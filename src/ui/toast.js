@@ -13,7 +13,17 @@ export const ToastManager = {
         this.container.setAttribute('aria-live', 'polite');
         this.container.setAttribute('aria-atomic', 'true');
         // Force z-index inline to guarantee it's always on top
-        this.container.style.cssText = 'position:fixed;top:20px;left:50%;transform:translateX(-50%);z-index:2147483647;display:flex;flex-direction:column;gap:10px;width:calc(100% - 40px);max-width:400px;pointer-events:none;';
+        this.container.style.setProperty('position', 'fixed', 'important');
+        this.container.style.setProperty('top', '20px', 'important');
+        this.container.style.setProperty('left', '50%', 'important');
+        this.container.style.setProperty('transform', 'translateX(-50%)', 'important');
+        this.container.style.setProperty('z-index', '2147483647', 'important');
+        this.container.style.setProperty('display', 'flex', 'important');
+        this.container.style.setProperty('flex-direction', 'column');
+        this.container.style.setProperty('gap', '10px');
+        this.container.style.setProperty('width', 'calc(100% - 40px)');
+        this.container.style.setProperty('max-width', '400px');
+        this.container.style.setProperty('pointer-events', 'none');
         document.body.appendChild(this.container);
     },
 
@@ -29,10 +39,8 @@ export const ToastManager = {
 
     show(message, type = 'info', duration = 4000) {
         this.init();
-        // Find topmost active modal or overlay, append there; else body
-        const activeModal = document.querySelector('.modal-overlay.active, .bdm-overlay');
-        const parent = activeModal || document.body;
-        parent.appendChild(this.container);
+        // Always append to body as last child
+        document.body.appendChild(this.container);
 
         const toast = document.createElement('div');
         toast.className = `toast toast-${type}`;
