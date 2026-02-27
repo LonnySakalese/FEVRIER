@@ -900,6 +900,20 @@ document.addEventListener('DOMContentLoaded', () => {
             case '#maxdemo':
                 activateMaxDemo();
                 break;
+            default:
+                // Handle #join/CODE deep links
+                if (hash.startsWith('#join/')) {
+                    const code = hash.replace('#join/', '').trim();
+                    if (code) {
+                        showPage('groups');
+                        setTimeout(() => {
+                            const joinInput = document.getElementById('joinGroupCode');
+                            if (joinInput) joinInput.value = code;
+                            if (typeof openJoinGroupModal === 'function') openJoinGroupModal();
+                        }, 600);
+                    }
+                }
+                break;
         }
         // Clean hash from URL without triggering navigation
         if (window.history && window.history.replaceState) {
