@@ -9414,6 +9414,23 @@ body.tour-active .header {
     letter-spacing: 1.5px;
 }
 
+.group-goal-edit-btn {
+    margin-left: auto;
+    background: none;
+    border: none;
+    color: var(--accent-dark);
+    cursor: pointer;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    opacity: 0.6;
+    transition: opacity 0.2s;
+}
+
+.group-goal-edit-btn:active {
+    opacity: 1;
+}
+
 .group-goal-text {
     font-size: 0.85rem;
     color: var(--accent);

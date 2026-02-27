@@ -589,15 +589,15 @@ export async function openGroupDetail(groupId) {
                     <div class="group-detail-count">${g.memberCount || members.length} membre${(g.memberCount || members.length) > 1 ? 's' : ''}</div>
                 </div>
 
-                ${g.goal ? `
                 <div class="group-goal">
                     <div class="group-goal-header">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFB84D" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
                         <span class="group-goal-title">Objectif</span>
+                        ${g.creatorId === userId ? `<button class="group-goal-edit-btn" onclick="editGroupGoal('${groupId}', '${escapeAttr(g.goal?.text || '')}')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg></button>` : ''}
                     </div>
-                    <div class="group-goal-text">${escapeHtml(g.goal.text)}</div>
-                    <div class="group-goal-bar"><div class="group-goal-bar-fill" style="width: ${g.goal.progress || 0}%"></div></div>
-                </div>` : ''}
+                    ${g.goal?.text ? `<div class="group-goal-text">${escapeHtml(g.goal.text)}</div>` : `<div class="group-goal-text" style="opacity:0.4; font-style:italic;">${g.creatorId === userId ? 'Aucun objectif défini — appuie sur le stylo' : 'Aucun objectif défini'}</div>`}
+                    ${g.goal?.text ? `<div class="group-goal-bar"><div class="group-goal-bar-fill" style="width: ${g.goal.progress || 0}%"></div></div>` : ''}
+                </div>
 
                 <div class="group-detail-habits">
                     <div class="group-detail-habits-title">Habitudes du groupe</div>
@@ -873,3 +873,60 @@ function escapeHtml(str) {
     div.textContent = str;
     return div.innerHTML;
 }
+
+function escapeAttr(str) {
+    return (str || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
+}
+
+// Edit group goal — modal for creator
+window.editGroupGoal = function(groupId, currentText) {
+    const old = document.getElementById('editGoalModal');
+    if (old) old.remove();
+
+    const modal = document.createElement('div');
+    modal.id = 'editGoalModal';
+    modal.className = 'bdm-overlay';
+    modal.innerHTML = `
+        <div class="bdm-modal" style="padding: 24px;">
+            <div style="font-size: 1rem; font-weight: 800; color: var(--accent); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px; text-align: center;">Modifier l'objectif</div>
+            <textarea id="editGoalInput" style="width: 100%; min-height: 80px; background: var(--charcoal); border: 1px solid var(--steel); border-radius: 10px; color: var(--accent); padding: 12px; font-size: 0.9rem; resize: vertical; font-family: inherit;" maxlength="200" placeholder="Ex: Tenir 30 jours sans craquer">${currentText.replace(/\\'/g, "'")}</textarea>
+            <div style="font-size: 0.65rem; color: var(--accent-dark); text-align: right; margin-top: 4px;"><span id="editGoalCount">${currentText.length}</span>/200</div>
+            <div style="display: flex; gap: 10px; margin-top: 16px;">
+                <button onclick="document.getElementById('editGoalModal').remove()" style="flex:1; padding: 12px; border-radius: 10px; border: 1px solid var(--steel); background: var(--charcoal); color: var(--accent-dim); font-weight: 700; cursor: pointer;">Annuler</button>
+                <button onclick="saveGroupGoal('${groupId}')" style="flex:1; padding: 12px; border-radius: 10px; border: none; background: var(--accent-green); color: #000; font-weight: 700; cursor: pointer;">Enregistrer</button>
+            </div>
+        </div>
+    `;
+
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) modal.remove();
+    });
+
+    document.body.appendChild(modal);
+
+    const input = document.getElementById('editGoalInput');
+    const counter = document.getElementById('editGoalCount');
+    input.addEventListener('input', () => {
+        counter.textContent = input.value.length;
+    });
+    input.focus();
+};
+
+window.saveGroupGoal = async function(groupId) {
+    const input = document.getElementById('editGoalInput');
+    if (!input) return;
+    const text = input.value.trim();
+
+    try {
+        await db.collection('groups').doc(groupId).update({
+            'goal.text': text || firebase.firestore.FieldValue.delete(),
+        });
+        document.getElementById('editGoalModal')?.remove();
+        showPopup('Objectif mis à jour', 'success');
+        // Refresh group view
+        showGroupDetail(groupId);
+    } catch (e) {
+        console.error('Erreur update goal:', e);
+        showPopup('Erreur lors de la mise à jour', 'error');
+    }
+};
