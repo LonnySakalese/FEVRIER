@@ -8,12 +8,11 @@ export const ToastManager = {
         const overlay = document.createElement('div');
         overlay.style.cssText = `
             position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
+            top: 20px; left: 0; right: 0;
             z-index: 2147483647;
             pointer-events: none;
             display: flex;
             justify-content: center;
-            padding-top: 20px;
         `;
 
         const colors = {

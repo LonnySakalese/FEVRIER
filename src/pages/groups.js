@@ -918,13 +918,13 @@ window.saveGroupGoal = async function(groupId) {
     const text = input.value.trim();
 
     try {
-        await db.collection('groups').doc(groupId).update({
-            'goal.text': text || firebase.firestore.FieldValue.delete(),
-        });
+        const updateData = text 
+            ? { goal: { text, progress: 0 } }
+            : { goal: firebase.firestore.FieldValue.delete() };
+        await db.collection('groups').doc(groupId).update(updateData);
         document.getElementById('editGoalModal')?.remove();
         showPopup('Objectif mis à jour', 'success');
-        // Refresh group view
-        showGroupDetail(groupId);
+        openGroupDetail(groupId);
     } catch (e) {
         console.error('Erreur update goal:', e);
         showPopup('Erreur lors de la mise à jour', 'error');
