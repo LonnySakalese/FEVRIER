@@ -29,10 +29,10 @@ export const ToastManager = {
 
     show(message, type = 'info', duration = 4000) {
         this.init();
-        // Always ensure container is last child of body (on top of everything)
-        if (this.container.parentNode !== document.body || this.container !== document.body.lastElementChild) {
-            document.body.appendChild(this.container);
-        }
+        // Find topmost active modal or overlay, append there; else body
+        const activeModal = document.querySelector('.modal-overlay.active, .bdm-overlay');
+        const parent = activeModal || document.body;
+        parent.appendChild(this.container);
 
         const toast = document.createElement('div');
         toast.className = `toast toast-${type}`;
