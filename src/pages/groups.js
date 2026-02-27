@@ -883,6 +883,10 @@ window.editGroupGoal = function(groupId, currentText) {
     const old = document.getElementById('editGoalModal');
     if (old) old.remove();
 
+    // Fermer le modal groupe
+    const groupModal = document.getElementById('groupDetailModal');
+    if (groupModal) groupModal.classList.remove('active');
+
     const modal = document.createElement('div');
     modal.id = 'editGoalModal';
     modal.className = 'bdm-overlay';
@@ -892,14 +896,17 @@ window.editGroupGoal = function(groupId, currentText) {
             <textarea id="editGoalInput" style="width: 100%; min-height: 80px; background: var(--charcoal); border: 1px solid var(--steel); border-radius: 10px; color: var(--accent); padding: 12px; font-size: 0.9rem; resize: vertical; font-family: inherit;" maxlength="200" placeholder="Ex: Tenir 30 jours sans craquer">${currentText.replace(/\\'/g, "'")}</textarea>
             <div style="font-size: 0.65rem; color: var(--accent-dark); text-align: right; margin-top: 4px;"><span id="editGoalCount">${currentText.length}</span>/200</div>
             <div style="display: flex; gap: 10px; margin-top: 16px;">
-                <button onclick="document.getElementById('editGoalModal').remove()" style="flex:1; padding: 12px; border-radius: 10px; border: 1px solid var(--steel); background: var(--charcoal); color: var(--accent-dim); font-weight: 700; cursor: pointer;">Annuler</button>
+                <button onclick="document.getElementById('editGoalModal').remove(); openGroupDetail('${groupId}');" style="flex:1; padding: 12px; border-radius: 10px; border: 1px solid var(--steel); background: var(--charcoal); color: var(--accent-dim); font-weight: 700; cursor: pointer;">Annuler</button>
                 <button onclick="saveGroupGoal('${groupId}')" style="flex:1; padding: 12px; border-radius: 10px; border: none; background: var(--accent-green); color: #000; font-weight: 700; cursor: pointer;">Enregistrer</button>
             </div>
         </div>
     `;
 
     modal.addEventListener('click', (e) => {
-        if (e.target === modal) modal.remove();
+        if (e.target === modal) {
+            modal.remove();
+            openGroupDetail(groupId);
+        }
     });
 
     document.body.appendChild(modal);

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Test Toast</title>
+<link rel="stylesheet" href="style.css">
+<style>
+/* Simulate the modal being open */
+body { background: #0A0A0A; margin: 0; }
+@keyframes toastIn {
+    from { opacity: 0; transform: translateX(-50%) translateY(-20px) scale(0.9); }
+    to { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
+}
+@keyframes toastOut {
+    from { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
+    to { opacity: 0; transform: translateX(-50%) translateY(-20px) scale(0.9); }
+}
+</style>
+</head>
+<body>
+
+<!-- Simulate modal overlay like group detail -->
+<div class="modal-overlay active" id="groupDetailModal" style="position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.9);z-index:25000;display:flex;align-items:center;justify-content:center;opacity:1;">
+    <div class="modal modal-large" style="background:#1E1E1E;border-radius:15px;padding:25px;width:100%;max-width:400px;border:1px solid #3A3A3A;">
+        <h3 style="color:#F5F5F0;margin:0 0 15px;">Groupe Test</h3>
+        <p style="color:#A3A39E;">Contenu du groupe ici...</p>
+        <button onclick="testToast('success')" style="padding:10px 20px;background:#19E639;color:#000;border:none;border-radius:8px;font-weight:700;cursor:pointer;margin:5px;">Toast Success</button>
+        <button onclick="testToast('error')" style="padding:10px 20px;background:#E74C3C;color:#fff;border:none;border-radius:8px;font-weight:700;cursor:pointer;margin:5px;">Toast Error</button>
+        <button onclick="testToast('warning')" style="padding:10px 20px;background:#F39C12;color:#000;border:none;border-radius:8px;font-weight:700;cursor:pointer;margin:5px;">Toast Warning</button>
+    </div>
+</div>
+
+<script type="module">
+import { showPopup } from './src/ui/toast.js';
+window.testToast = function(type) {
+    const messages = {
+        success: 'Objectif mis à jour',
+        error: 'Erreur lors de la mise à jour',
+        warning: 'Audio trop long, max ~1 min'
+    };
+    showPopup(messages[type], type);
+};
+</script>
+</body>
+</html>
