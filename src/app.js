@@ -451,7 +451,7 @@ async function performMigration() {
             for (const [habitId, customName] of Object.entries(localData.customHabitNames)) {
                 const habitRef = db.collection('users').doc(user.uid)
                     .collection('habits').doc(habitId);
-                habitBatch.update(habitRef, { name: customName });
+                habitBatch.set(habitRef, { name: customName }, { merge: true });
             }
             await habitBatch.commit();
             console.log('✅ Noms personnalisés migrés');
@@ -465,7 +465,8 @@ async function performMigration() {
 
     } catch (error) {
         console.error('❌ Erreur de migration:', error);
-        showPopup('Erreur lors de la migration. Tes données locales sont conservées.', 'error');
+        console.error('❌ Migration error details:', error.code, error.message);
+        showPopup(`Erreur migration: ${error.code || error.message || 'Erreur inconnue'}. Données locales conservées.`, 'error');
     }
 }
 
