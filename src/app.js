@@ -807,7 +807,7 @@ document.addEventListener('DOMContentLoaded', () => {
         renderRanks(false);
         updateUI();
         const savedData = getData();
-        document.querySelector('.header .quote').textContent = `"${getGreeting()}" - STAY HARD`;
+        // Header quote removed
     }
 
     // Gérer l'affichage initial
