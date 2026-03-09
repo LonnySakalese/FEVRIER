@@ -232,7 +232,8 @@ export function showBadgeUnlockNotification(badge) {
         triggerConfetti();
     }
     const tierLabel = badge.tierName || '';
-    showPopup(`Badge ${tierLabel} débloqué : ${badge.name}`, 'success');
+    // Use new badge notification system that groups multiple badges
+    showPopup(`${badge.name} ${tierLabel}`, 'badge');
     if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
 }
 
