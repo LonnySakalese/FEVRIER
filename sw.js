@@ -43,7 +43,7 @@ self.addEventListener('notificationclick', (event) => {
 // --- CONFIGURATION DU CACHE ---
 
 // Nom du cache. Changer cette valeur invalidera le cache existant et en créera un nouveau.
-const CACHE_NAME = 'warrior-tracker-v97';
+const CACHE_NAME = 'warrior-tracker-v98';
 
 // Liste des fichiers essentiels à mettre en cache pour que l'application fonctionne hors ligne.
 const urlsToCache = [
@@ -127,6 +127,19 @@ self.addEventListener('install', event => {
  * Ici, on implémente une stratégie "Cache First" (cache d\'abord).
  */
 self.addEventListener('fetch', event => {
+  const url = event.request.url;
+  
+  // Skip caching for Firebase APIs (Firestore, Auth, etc.)
+  if (url.includes('firestore.googleapis.com') || 
+      url.includes('identitytoolkit.googleapis.com') ||
+      url.includes('securetoken.googleapis.com') ||
+      url.includes('firebase.googleapis.com') ||
+      url.includes('fcm.googleapis.com') ||
+      url.includes('fcmregistrations.googleapis.com')) {
+    // Let Firebase requests go through directly
+    return;
+  }
+  
   event.respondWith(
     fetch(event.request).then(response => {
       // Network OK → update cache + return
